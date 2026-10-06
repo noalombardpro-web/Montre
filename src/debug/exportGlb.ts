@@ -31,15 +31,29 @@ export function exposeExporter(scene?: THREE.Scene, controls?: { setLookAt: (...
       s.setMode('normal')
       anim.explode = 0
       await new Promise((r) => setTimeout(r, 400))
-      const root = window.__atelier!.scene!.getObjectByName(`watch-${useAtelier.getState().watchId}`)
+      let root: THREE.Object3D | undefined
+      for (let i = 0; i < 100 && !root; i++) {
+        const found = window.__atelier!.scene!.getObjectByName(`watch-${useAtelier.getState().watchId}`)
+        if (found && useAtelier.getState().staged) root = found
+        else await new Promise((r) => setTimeout(r, 200))
+      }
       if (!root) throw new Error('watch not found')
+      await new Promise((r) => setTimeout(r, 3000)) // textures différées
       const clone = root.clone(true)
-      clone.traverse((o) => {
-        // rétablit les matériaux d'origine et retire les objets HTML
+      // parcours parallèle : userData est cloné en JSON, on récupère les vrais matériaux d'origine
+      const src: THREE.Object3D[] = []
+      const dst: THREE.Object3D[] = []
+      root.traverse((o) => src.push(o))
+      clone.traverse((o) => dst.push(o))
+      const strip: THREE.Object3D[] = []
+      dst.forEach((o, i) => {
+        if ((o as THREE.LineSegments).isLineSegments) strip.push(o)
         const mesh = o as THREE.Mesh
-        if (mesh.isMesh && mesh.userData.orig) mesh.material = mesh.userData.orig
-        o.userData = { partId: o.userData?.partId }
+        const orig = src[i].userData.orig as THREE.Material | undefined
+        if (mesh.isMesh && orig) mesh.material = orig
+        o.userData = o.userData?.partId ? { partId: o.userData.partId } : {}
       })
+      strip.forEach((o) => o.removeFromParent())
       const exporter = new GLTFExporter()
       return (await exporter.parseAsync(clone, { binary: true, onlyVisible: true, maxTextureSize: 2048 })) as ArrayBuffer
     },

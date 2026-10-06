@@ -39,6 +39,7 @@ x0 = Math.max(0, x0 - pad); y0 = Math.max(0, y0 - pad)
 x1 = Math.min(info.width - 1, x1 + pad); y1 = Math.min(info.height - 1, y1 + pad)
 const w = x1 - x0, h = y1 - y0
 await sharp(png).extract({ left: x0, top: y0, width: w, height: h }).resize({ width: Math.min(w, 1400) }).webp({ quality: 82, effort: 6 }).toFile('public/poster.webp')
+await sharp('public/poster.webp').resize({ width: 760 }).webp({ quality: 80, effort: 6 }).toFile('public/poster-760.webp')
 const vh = (px) => +((px / DPR / H) * 100).toFixed(2)
 const out = {
   // position relative au centre horizontal de la fenêtre (proportionnelle à la hauteur, comme la projection 3D)

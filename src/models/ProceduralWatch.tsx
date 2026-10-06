@@ -32,6 +32,9 @@ const STAGES = 8
 function useStages() {
   const [stage, setStage] = useState(0)
   useEffect(() => {
+    useAtelier.getState().set({ staged: false })
+  }, [])
+  useEffect(() => {
     if (stage >= STAGES) {
       useAtelier.getState().set({ staged: true })
       return

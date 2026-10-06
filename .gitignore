@@ -5,3 +5,6 @@ dist
 screenshots/tmp
 .vercel
 .netlify
+
+# sources GLB non compressées (npm run export:glb)
+public/models/*.src.glb

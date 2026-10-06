@@ -7,7 +7,7 @@
 @import '@fontsource-variable/inter';
 
 @theme {
-  --color-ink: #08080a;
+  --color-ink: #030304;
   --color-char: #111114;
   --color-smoke: #1a1a1e;
   --color-line: rgb(255 255 255 / 0.09);
@@ -377,4 +377,42 @@ input[type='range'].lux-range::-moz-range-thumb {
 }
 .hero-poster.is-hidden {
   opacity: 0;
+}
+
+/* Entrée du hero (CSS pur : aucun JS sur le chemin critique) */
+.hero-intro > * {
+  animation: heroUp 1.4s var(--ease-lux) both;
+}
+.hero-intro > *:nth-child(2) {
+  animation-delay: 0.12s;
+}
+.hero-intro > *:nth-child(3) {
+  animation-delay: 0.24s;
+}
+.hero-intro > *:nth-child(4) {
+  animation-delay: 0.36s;
+}
+.hero-line {
+  animation: heroLine 1.6s var(--ease-lux) both;
+}
+@keyframes heroUp {
+  from {
+    opacity: 0;
+    transform: translateY(36px);
+  }
+}
+@keyframes heroLine {
+  from {
+    transform: translateY(110%);
+  }
+}
+.hero-poster {
+  /* bords adoucis : fusion parfaite avec le fond */
+  -webkit-mask-image: linear-gradient(90deg, transparent, #000 7%, #000 93%, transparent),
+    linear-gradient(180deg, transparent, #000 5%, #000 95%, transparent);
+  -webkit-mask-composite: source-in;
+  mask-image: linear-gradient(90deg, transparent, #000 7%, #000 93%, transparent),
+    linear-gradient(180deg, transparent, #000 5%, #000 95%, transparent);
+  mask-composite: intersect;
+  object-fit: contain;
 }

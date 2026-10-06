@@ -1,6 +1,4 @@
 import { useEffect, useLayoutEffect, useRef } from 'react'
-import gsap from 'gsap'
-import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import { WATCHES, type WatchId } from '../data/watches'
 import { t } from '../data/i18n'
 import { anim, useAtelier } from '../store/useAtelier'
@@ -9,7 +7,6 @@ import { setLandingAnchors } from '../scenes/landingKeyframes'
 import { IconArrow } from '../components/ui/Icons'
 import { HeroPoster } from '../components/ui/HeroPoster'
 
-gsap.registerPlugin(ScrollTrigger)
 
 const COPY = {
   heroEyebrow: { fr: 'Haute horlogerie · Exploration 3D', en: 'Fine watchmaking · 3D exploration' },
@@ -53,8 +50,7 @@ const STATS = [
 
 export function Landing({ poster = true }: { poster?: boolean }) {
   const lang = useAtelier((s) => s.lang)
-  const ready = useAtelier((s) => s.sceneReady)
-  const watchId = useAtelier((s) => s.watchId)
+    const watchId = useAtelier((s) => s.watchId)
   const root = useRef<HTMLDivElement>(null)
 
   // Progression du scroll -> scène 3D ; ancres recalées sur les sections réelles
@@ -75,21 +71,20 @@ export function Landing({ poster = true }: { poster?: boolean }) {
       })
       setLandingAnchors(anchors.map((a) => Math.min(Math.max(a, 0), 1)))
     }
-    computeAnchors()
-    const st = ScrollTrigger.create({
-      trigger: el,
-      start: 'top top',
-      end: 'bottom bottom',
-      onUpdate: (self) => {
-        anim.scroll = self.progress
-      },
-      onRefresh: computeAnchors,
-    })
-    anim.scroll = st.progress
-    const ro = new ResizeObserver(() => ScrollTrigger.refresh())
+    const onScroll = () => {
+      const max = Math.max(document.documentElement.scrollHeight - innerHeight, 1)
+      anim.scroll = Math.min(Math.max(scrollY / max, 0), 1)
+    }
+    const onResize = () => {
+      computeAnchors()
+      onScroll()
+    }
+    onResize()
+    addEventListener('scroll', onScroll, { passive: true })
+    const ro = new ResizeObserver(onResize)
     ro.observe(el)
     return () => {
-      st.kill()
+      removeEventListener('scroll', onScroll)
       ro.disconnect()
     }
   }, [])
@@ -105,21 +100,6 @@ export function Landing({ poster = true }: { poster?: boolean }) {
     items.forEach((i) => io.observe(i))
     return () => io.disconnect()
   }, [lang])
-
-  // Entrée du hero une fois la scène prête
-  useEffect(() => {
-    if (!ready || !root.current) return
-    const reduced = useAtelier.getState().reducedMotion
-    const ctx = gsap.context(() => {
-      gsap.fromTo(
-        '[data-hero] > *',
-        { opacity: 0, y: reduced ? 0 : 36 },
-        { opacity: 1, y: 0, duration: reduced ? 0.01 : 1.4, stagger: 0.12, ease: 'expo.out', delay: 0.2 },
-      )
-      gsap.fromTo('[data-hero-line]', { yPercent: reduced ? 0 : 110 }, { yPercent: 0, duration: reduced ? 0.01 : 1.6, stagger: 0.12, ease: 'expo.out', delay: 0.25 })
-    }, root)
-    return () => ctx.revert()
-  }, [ready])
 
   const enter = (id?: WatchId) => {
     if (id) useAtelier.getState().setWatch(id)
@@ -154,12 +134,12 @@ export function Landing({ poster = true }: { poster?: boolean }) {
 
       {/* 0 — Hero */}
       <section data-key="hero" className="relative flex min-h-[100svh] items-end px-[var(--gutter)] pb-[12svh] md:items-center md:pb-0">
-        <div data-hero className="max-w-xl">
+        <div className="hero-intro max-w-2xl">
           <div className="eyebrow">{COPY.heroEyebrow[lang]}</div>
-          <h1 className="display mt-6 text-[clamp(3.4rem,8.5vw,7.8rem)]">
+          <h1 className="display mt-6 text-[clamp(3.1rem,6.6vw,6.6rem)]">
             {COPY.heroTitle[lang].map((l, i) => (
               <span key={i} className="block overflow-hidden pb-[0.08em]">
-                <span data-hero-line className={`block ${i === 1 ? 'italic text-champagne' : ''}`}>
+                <span className={`hero-line block ${i === 1 ? 'italic text-champagne' : ''}`} style={{ animationDelay: `${0.25 + i * 0.12}s` }}>
                   {l}
                 </span>
               </span>

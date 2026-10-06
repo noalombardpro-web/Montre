@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import poster from '../../data/poster.json'
 import { useAtelier } from '../../store/useAtelier'
+import { LANDING_KEYS, MOBILE_DISTANCE } from '../../scenes/landingKeyframes'
 
 /**
  * Image de façade : rendu 3D pré-calculé (scripts/make-poster.mjs) placé exactement
@@ -8,10 +9,13 @@ import { useAtelier } from '../../store/useAtelier'
  * Les positions sont en vh car la projection perspective est proportionnelle à la hauteur.
  */
 const D = poster.desktop
-// pose du hero : décalage focal 24 unités, hauteur visible 74,2 (desktop) / 115 (mobile, distance ×1,55)
-const ORIGIN_X = 32.35
-const MOBILE_K = 1.55
-const MOBILE_UP = 20.87
+// Projection de la pose du hero : hauteur visible = 2·d·tan(fov/2), fov = 30°
+const hero = LANDING_KEYS[0]
+const dist = Math.hypot(hero.pos[0] - hero.target[0], hero.pos[1] - hero.target[1], hero.pos[2] - hero.target[2])
+const visible = 2 * dist * Math.tan((15 * Math.PI) / 180)
+const ORIGIN_X = (-hero.focal[0] / visible) * 100
+const MOBILE_K = MOBILE_DISTANCE
+const MOBILE_UP = (hero.focalMobile[1] / (visible * MOBILE_K)) * 100
 
 export function HeroPoster() {
   const ready = useAtelier((s) => s.sceneReady)
@@ -42,6 +46,8 @@ export function HeroPoster() {
   return (
     <img
       src="/poster.webp"
+      srcSet="/poster-760.webp 760w, /poster.webp 1400w"
+      sizes={narrow ? '45vh' : '71vh'}
       alt=""
       aria-hidden
       fetchPriority="high"

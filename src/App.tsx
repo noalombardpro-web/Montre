@@ -29,7 +29,9 @@ function use3DTrigger(page: string) {
     const fire = () => setGo(true)
     const events = ['pointermove', 'pointerdown', 'wheel', 'touchstart', 'keydown', 'scroll'] as const
     events.forEach((e) => window.addEventListener(e, fire, { once: true, passive: true }))
-    const timer = window.setTimeout(fire, 4000)
+    // sans interaction : chargement différé (plus long sur mobile, réseau souvent plus lent)
+    const coarse = matchMedia('(pointer: coarse)').matches
+    const timer = window.setTimeout(fire, coarse ? 7000 : 3500)
     return () => {
       events.forEach((e) => window.removeEventListener(e, fire))
       clearTimeout(timer)

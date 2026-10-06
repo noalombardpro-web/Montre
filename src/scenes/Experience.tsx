@@ -27,7 +27,7 @@ export default function Experience() {
       camera={{ fov: 30, near: 2, far: 2000, position: [40, 12, 128] }}
       onCreated={({ gl }) => {
         gl.toneMapping = THREE.NoToneMapping
-        gl.setClearColor('#08080a')
+        gl.setClearColor('#030304')
       }}
       onPointerMissed={() => {
         const s = useAtelier.getState()

@@ -14,9 +14,12 @@ interface Key {
   movement: number
 }
 
+/** Recul de la caméra sur écran étroit (la montre occupe le haut, le texte le bas). */
+export const MOBILE_DISTANCE = 1.8
+
 export const LANDING_KEYS: Key[] = [
   // Hero
-  { at: 0.0, pos: [40, 12, 128], target: [0, 0, -4], focal: [-24, 0, 0], focalMobile: [0, 24, 0], explode: 0, movement: 0 },
+  { at: 0.0, pos: [40, 12, 128], target: [0, 0, -4], focal: [-24, 0, 0], focalMobile: [0, 31, 0], explode: 0, movement: 0 },
   // Le boîtier : profil côté couronne
   { at: 0.2, pos: [112, 22, 62], target: [4, 0, -6], focal: [26, 0, 0], focalMobile: [0, 22, 0], explode: 0, movement: 0 },
   // Vue éclatée
@@ -50,7 +53,7 @@ export function landingPose(p: number, narrow: boolean) {
   const a = keys[i]
   const b = keys[i + 1]
   const t = ease(Math.min(Math.max((p - a.at) / (b.at - a.at), 0), 1))
-  const k = narrow ? 1.55 : 1
+  const k = narrow ? MOBILE_DISTANCE : 1
   const pos = lerp3(a.pos, b.pos, t).map((v) => v * k) as V3
   return {
     pos,

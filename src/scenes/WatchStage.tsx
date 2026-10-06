@@ -8,6 +8,7 @@ import { WATCH_BY_ID } from '../data/watches'
 import { anim, useAtelier } from '../store/useAtelier'
 import { landingPose } from './landingKeyframes'
 import { movementClock } from '../models/procedural/MovementParts'
+import { GLB_SOURCE } from '../lib/env'
 
 /**
  * Scène de la montre : interpolation des états (éclatement, mouvement)
@@ -67,8 +68,8 @@ export function WatchStage({ high }: { high: boolean }) {
   const def = WATCH_BY_ID[shown]
   return (
     <group ref={group}>
-      {def.glb ? (
-        <GLBWatch url={def.glb} />
+      {def.glb || GLB_SOURCE ? (
+        <GLBWatch key={shown} url={def.glb ?? `/models/${shown}.glb`} />
       ) : (
         <ProceduralWatch key={shown} id={shown} config={configs[shown]} high={high} />
       )}
