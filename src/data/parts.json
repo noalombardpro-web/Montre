@@ -1,0 +1,1165 @@
+{
+  "$doc": {
+    "units": "Millimètres. Repère : +Z = face cadran (vers l'observateur), +Y = 12 h, +X = 3 h (couronne).",
+    "id": "Nom du nœud 3D (identique dans le modèle procédural et dans un GLB exporté).",
+    "group": "exterior | movement — détermine la visibilité des hotspots selon le mode.",
+    "models": "Liste des modèles concernés, ou [\"*\"] pour tous.",
+    "explode": "Vecteur de déplacement [x,y,z] en mm à 100 % d'éclatement.",
+    "order": "Rang dans la séquence d'éclatement (stagger) — 0 part en premier.",
+    "anchor": "Position locale [x,y,z] du hotspot et de l'origine des lignes de liaison.",
+    "metal": "true si le matériau suit le métal choisi dans le configurateur.",
+    "name/material/function/description/funFact": "Textes bilingues { fr, en }."
+  },
+  "parts": [
+    {
+      "id": "crystal",
+      "group": "exterior",
+      "models": [
+        "*"
+      ],
+      "explode": [
+        0,
+        0,
+        62
+      ],
+      "order": 0,
+      "anchor": [
+        -9,
+        9,
+        7.4
+      ],
+      "name": {
+        "fr": "Verre saphir",
+        "en": "Sapphire crystal"
+      },
+      "material": {
+        "fr": "Saphir synthétique (corindon), traitement antireflet interne",
+        "en": "Synthetic sapphire (corundum), inner anti-reflective coating"
+      },
+      "function": {
+        "fr": "Protège le cadran tout en restant parfaitement transparent.",
+        "en": "Protects the dial while remaining perfectly transparent."
+      },
+      "description": {
+        "fr": "Glace bombée taillée dans un monocristal d'alumine, d'une dureté de 9 sur l'échelle de Mohs.",
+        "en": "Domed glass cut from a single alumina crystal, rated 9 on the Mohs hardness scale."
+      },
+      "funFact": {
+        "fr": "Seul le diamant peut rayer un verre saphir.",
+        "en": "Only diamond can scratch a sapphire crystal."
+      }
+    },
+    {
+      "id": "cyclops",
+      "group": "exterior",
+      "models": [
+        "datejust",
+        "submariner"
+      ],
+      "explode": [
+        0,
+        0,
+        72
+      ],
+      "order": 1,
+      "anchor": [
+        11.2,
+        0,
+        8.6
+      ],
+      "name": {
+        "fr": "Loupe de date",
+        "en": "Date magnifier"
+      },
+      "material": {
+        "fr": "Saphir, collé au verre",
+        "en": "Sapphire, bonded to the crystal"
+      },
+      "function": {
+        "fr": "Grossit la date ×2,5 pour une lecture instantanée.",
+        "en": "Magnifies the date ×2.5 for instant legibility."
+      },
+      "description": {
+        "fr": "Petite lentille plan-convexe placée exactement au-dessus du guichet de date.",
+        "en": "A small plano-convex lens set precisely above the date aperture."
+      },
+      "funFact": {
+        "fr": "Sa position est alignée au centième de millimètre près.",
+        "en": "Its position is aligned to a hundredth of a millimetre."
+      }
+    },
+    {
+      "id": "bezelInsert",
+      "group": "exterior",
+      "models": [
+        "submariner",
+        "daytona"
+      ],
+      "explode": [
+        0,
+        0,
+        52
+      ],
+      "order": 2,
+      "anchor": [
+        0,
+        18.6,
+        6.4
+      ],
+      "name": {
+        "fr": "Disque de lunette",
+        "en": "Bezel insert"
+      },
+      "material": {
+        "fr": "Céramique (oxyde de zirconium), graduations platinées",
+        "en": "Ceramic (zirconium oxide), platinum-coated graduations"
+      },
+      "function": {
+        "fr": "Porte l'échelle de lecture : minutes de plongée ou tachymètre.",
+        "en": "Carries the reading scale: dive minutes or tachymeter."
+      },
+      "description": {
+        "fr": "Insert céramique poli miroir, inrayable et insensible aux UV.",
+        "en": "Mirror-polished ceramic insert, scratch-proof and UV-resistant."
+      },
+      "funFact": {
+        "fr": "La céramique est cuite à plus de 1 400 °C avant d'être polie au diamant.",
+        "en": "The ceramic is fired at over 1,400 °C before being diamond-polished."
+      }
+    },
+    {
+      "id": "bezel",
+      "group": "exterior",
+      "models": [
+        "*"
+      ],
+      "explode": [
+        0,
+        0,
+        44
+      ],
+      "order": 3,
+      "anchor": [
+        -14.5,
+        -14.5,
+        6
+      ],
+      "metal": true,
+      "name": {
+        "fr": "Lunette",
+        "en": "Bezel"
+      },
+      "material": {
+        "fr": "Métal massif usiné, cannelé ou cranté",
+        "en": "Solid machined metal, fluted or knurled"
+      },
+      "function": {
+        "fr": "Maintient le verre ; tournante unidirectionnelle sur les modèles de plongée.",
+        "en": "Holds the crystal; unidirectional rotating on dive models."
+      },
+      "description": {
+        "fr": "Anneau de serrage du verre. Sa tranche crantée assure la prise, même avec des gants.",
+        "en": "The ring that secures the crystal. Its knurled edge offers grip, even with gloves."
+      },
+      "funFact": {
+        "fr": "Une lunette de plongée compte 120 crans : un par demi-minute.",
+        "en": "A dive bezel clicks 120 times per turn: one per half-minute."
+      }
+    },
+    {
+      "id": "secondsHand",
+      "group": "exterior",
+      "models": [
+        "*"
+      ],
+      "explode": [
+        0,
+        0,
+        38
+      ],
+      "order": 4,
+      "anchor": [
+        0,
+        9,
+        5.4
+      ],
+      "name": {
+        "fr": "Trotteuse",
+        "en": "Seconds hand"
+      },
+      "material": {
+        "fr": "Acier traité, pointe luminescente",
+        "en": "Treated steel, luminous tip"
+      },
+      "function": {
+        "fr": "Indique les secondes — 8 pas par seconde (28 800 alt/h).",
+        "en": "Shows the seconds — 8 steps per second (28,800 vph)."
+      },
+      "description": {
+        "fr": "Aiguille centrale fine et équilibrée par un contrepoids.",
+        "en": "A slim central hand balanced by a counterweight."
+      },
+      "funFact": {
+        "fr": "Son glissement « fluide » est en réalité une succession de 8 sauts par seconde.",
+        "en": "Its 'smooth' sweep is actually eight tiny jumps per second."
+      }
+    },
+    {
+      "id": "minuteHand",
+      "group": "exterior",
+      "models": [
+        "*"
+      ],
+      "explode": [
+        0,
+        0,
+        33
+      ],
+      "order": 5,
+      "anchor": [
+        0,
+        11,
+        4.9
+      ],
+      "name": {
+        "fr": "Aiguille des minutes",
+        "en": "Minute hand"
+      },
+      "material": {
+        "fr": "Or 18 ct ou acier, remplissage luminescent",
+        "en": "18 ct gold or steel, luminous fill"
+      },
+      "function": {
+        "fr": "Indique les minutes ; atteint le chemin de fer.",
+        "en": "Shows minutes; reaches the minute track."
+      },
+      "description": {
+        "fr": "Aiguille glaive facettée, polie à la main.",
+        "en": "Faceted sword hand, hand-polished."
+      },
+      "funFact": {
+        "fr": "Elle accomplit 8 760 tours par an.",
+        "en": "It completes 8,760 turns a year."
+      }
+    },
+    {
+      "id": "hourHand",
+      "group": "exterior",
+      "models": [
+        "*"
+      ],
+      "explode": [
+        0,
+        0,
+        28
+      ],
+      "order": 6,
+      "anchor": [
+        0,
+        6.5,
+        4.5
+      ],
+      "name": {
+        "fr": "Aiguille des heures",
+        "en": "Hour hand"
+      },
+      "material": {
+        "fr": "Or 18 ct ou acier, remplissage luminescent",
+        "en": "18 ct gold or steel, luminous fill"
+      },
+      "function": {
+        "fr": "Indique les heures, entraînée par la roue des heures.",
+        "en": "Shows the hours, driven by the hour wheel."
+      },
+      "description": {
+        "fr": "Aiguille courte et large pour une lecture immédiate.",
+        "en": "Short, broad hand for instant reading."
+      },
+      "funFact": {
+        "fr": "Elle tourne 12 fois moins vite que l'aiguille des minutes.",
+        "en": "It turns twelve times slower than the minute hand."
+      }
+    },
+    {
+      "id": "subdialHands",
+      "group": "exterior",
+      "models": [
+        "daytona"
+      ],
+      "explode": [
+        0,
+        0,
+        31
+      ],
+      "order": 6,
+      "anchor": [
+        -8.5,
+        0,
+        4.4
+      ],
+      "name": {
+        "fr": "Aiguilles des compteurs",
+        "en": "Sub-dial hands"
+      },
+      "material": {
+        "fr": "Acier poli",
+        "en": "Polished steel"
+      },
+      "function": {
+        "fr": "Compteurs 30 minutes, 12 heures et petite seconde.",
+        "en": "30-minute and 12-hour counters plus small seconds."
+      },
+      "description": {
+        "fr": "Trois aiguilles bâton sur des compteurs azurés.",
+        "en": "Three baton hands over snailed counters."
+      },
+      "funFact": {
+        "fr": "Le compteur de petite seconde tourne en permanence, même chronographe arrêté.",
+        "en": "The small seconds runs continuously, even when the chronograph is stopped."
+      }
+    },
+    {
+      "id": "indices",
+      "group": "exterior",
+      "models": [
+        "*"
+      ],
+      "explode": [
+        0,
+        0,
+        23
+      ],
+      "order": 7,
+      "anchor": [
+        0,
+        13.2,
+        4.1
+      ],
+      "name": {
+        "fr": "Index appliqués",
+        "en": "Applied indices"
+      },
+      "material": {
+        "fr": "Or 18 ct, luminescence bleue longue durée",
+        "en": "18 ct gold, long-lasting blue luminescence"
+      },
+      "function": {
+        "fr": "Repères horaires, lisibles de jour comme de nuit.",
+        "en": "Hour markers, legible day and night."
+      },
+      "description": {
+        "fr": "Index rivetés un à un sur le cadran, puis remplis de matière luminescente.",
+        "en": "Markers riveted one by one to the dial, then filled with luminous compound."
+      },
+      "funFact": {
+        "fr": "La luminescence moderne brille plus de 8 heures après 10 minutes de lumière.",
+        "en": "Modern lume glows for over 8 hours after 10 minutes of light."
+      }
+    },
+    {
+      "id": "dial",
+      "group": "exterior",
+      "models": [
+        "*"
+      ],
+      "explode": [
+        0,
+        0,
+        16
+      ],
+      "order": 8,
+      "anchor": [
+        -8,
+        -7,
+        3.7
+      ],
+      "name": {
+        "fr": "Cadran",
+        "en": "Dial"
+      },
+      "material": {
+        "fr": "Laiton, finition soleillée ou laquée, impressions tampographiées",
+        "en": "Brass, sunburst or lacquer finish, pad-printed markings"
+      },
+      "function": {
+        "fr": "Visage de la montre : porte index, échelles et guichet.",
+        "en": "The watch's face: carries indices, scales and aperture."
+      },
+      "description": {
+        "fr": "Disque de laiton brossé radialement pour capter la lumière en rayons.",
+        "en": "A brass disc brushed radially so light catches it in rays."
+      },
+      "funFact": {
+        "fr": "Un cadran laqué peut recevoir plus de 10 couches de vernis.",
+        "en": "A lacquer dial can receive more than ten coats of varnish."
+      }
+    },
+    {
+      "id": "dateWheel",
+      "group": "exterior",
+      "models": [
+        "datejust",
+        "submariner"
+      ],
+      "explode": [
+        0,
+        0,
+        8
+      ],
+      "order": 9,
+      "anchor": [
+        11.5,
+        0,
+        3.1
+      ],
+      "name": {
+        "fr": "Disque de quantième",
+        "en": "Date disc"
+      },
+      "material": {
+        "fr": "Laiton laqué blanc, chiffres imprimés",
+        "en": "White lacquered brass, printed numerals"
+      },
+      "function": {
+        "fr": "Affiche la date dans le guichet à 3 h.",
+        "en": "Shows the date through the 3 o'clock aperture."
+      },
+      "description": {
+        "fr": "Anneau de 31 chiffres sautant instantanément à minuit.",
+        "en": "A ring of 31 numerals that jumps instantly at midnight."
+      },
+      "funFact": {
+        "fr": "Le saut instantané se prépare pendant plusieurs heures avant minuit.",
+        "en": "The instantaneous jump is primed over several hours before midnight."
+      }
+    },
+    {
+      "id": "crown",
+      "group": "exterior",
+      "models": [
+        "*"
+      ],
+      "explode": [
+        26,
+        0,
+        0
+      ],
+      "order": 3,
+      "anchor": [
+        23.6,
+        0,
+        1
+      ],
+      "metal": true,
+      "name": {
+        "fr": "Couronne vissée",
+        "en": "Screw-down crown"
+      },
+      "material": {
+        "fr": "Métal massif, triple joint d'étanchéité",
+        "en": "Solid metal, triple sealing gasket"
+      },
+      "function": {
+        "fr": "Remontage, mise à l'heure et réglage de la date.",
+        "en": "Winding, time-setting and date adjustment."
+      },
+      "description": {
+        "fr": "Vissée sur le tube, elle garantit l'étanchéité jusqu'à 300 m.",
+        "en": "Screwed onto the tube, it ensures water resistance to 300 m."
+      },
+      "funFact": {
+        "fr": "Trois positions : vissée, remontage, mise à l'heure.",
+        "en": "Three positions: screwed, winding, time-setting."
+      }
+    },
+    {
+      "id": "pushers",
+      "group": "exterior",
+      "models": [
+        "daytona"
+      ],
+      "explode": [
+        24,
+        0,
+        0
+      ],
+      "order": 4,
+      "anchor": [
+        21.5,
+        9.5,
+        1
+      ],
+      "metal": true,
+      "name": {
+        "fr": "Poussoirs de chronographe",
+        "en": "Chronograph pushers"
+      },
+      "material": {
+        "fr": "Métal massif, vissés",
+        "en": "Solid metal, screw-down"
+      },
+      "function": {
+        "fr": "Départ/arrêt (2 h) et remise à zéro (4 h).",
+        "en": "Start/stop (2 o'clock) and reset (4 o'clock)."
+      },
+      "description": {
+        "fr": "Poussoirs vissés pour conserver l'étanchéité.",
+        "en": "Screw-down pushers to preserve water resistance."
+      },
+      "funFact": {
+        "fr": "La remise à zéro fait voler les aiguilles via un cœur en acier.",
+        "en": "Reset snaps the hands back via a heart-shaped steel cam."
+      }
+    },
+    {
+      "id": "case",
+      "group": "exterior",
+      "models": [
+        "*"
+      ],
+      "explode": [
+        0,
+        0,
+        0
+      ],
+      "order": 10,
+      "anchor": [
+        -17.5,
+        13,
+        2
+      ],
+      "metal": true,
+      "name": {
+        "fr": "Carrure",
+        "en": "Middle case"
+      },
+      "material": {
+        "fr": "Bloc massif usiné, flancs polis, cornes satinées",
+        "en": "Solid machined block, polished flanks, satin lugs"
+      },
+      "function": {
+        "fr": "Châssis étanche qui héberge le mouvement.",
+        "en": "The waterproof chassis housing the movement."
+      },
+      "description": {
+        "fr": "Forgée puis usinée dans un bloc unique, avec cornes intégrées.",
+        "en": "Forged then machined from a single block, with integrated lugs."
+      },
+      "funFact": {
+        "fr": "L'acier 904L résiste à la corrosion des eaux salées et chlorées.",
+        "en": "904L steel resists corrosion from salt and chlorinated water."
+      }
+    },
+    {
+      "id": "mainplate",
+      "group": "movement",
+      "models": [
+        "*"
+      ],
+      "explode": [
+        0,
+        0,
+        -14
+      ],
+      "order": 11,
+      "anchor": [
+        -12,
+        6,
+        2.2
+      ],
+      "name": {
+        "fr": "Platine",
+        "en": "Main plate"
+      },
+      "material": {
+        "fr": "Laiton rhodié, perlage",
+        "en": "Rhodium-plated brass, perlage"
+      },
+      "function": {
+        "fr": "Fondation du mouvement : tous les rouages s'y appuient.",
+        "en": "The movement's foundation: every wheel rests on it."
+      },
+      "description": {
+        "fr": "Plaque percée de dizaines de logements usinés au micron.",
+        "en": "A plate drilled with dozens of seats machined to the micron."
+      },
+      "funFact": {
+        "fr": "Le perlage est réalisé point par point avec une meule tournante.",
+        "en": "Perlage is applied dot by dot with a spinning peg."
+      }
+    },
+    {
+      "id": "barrel",
+      "group": "movement",
+      "models": [
+        "*"
+      ],
+      "explode": [
+        0,
+        0,
+        -22
+      ],
+      "order": 12,
+      "anchor": [
+        -4.5,
+        4.5,
+        1.2
+      ],
+      "name": {
+        "fr": "Barillet",
+        "en": "Mainspring barrel"
+      },
+      "material": {
+        "fr": "Laiton, ressort en alliage Nivaflex",
+        "en": "Brass, Nivaflex-alloy mainspring"
+      },
+      "function": {
+        "fr": "Réservoir d'énergie : contient le ressort moteur.",
+        "en": "The energy store: houses the mainspring."
+      },
+      "description": {
+        "fr": "Tambour denté dont le ressort se détend pour entraîner le rouage.",
+        "en": "A toothed drum whose spring unwinds to drive the gear train."
+      },
+      "funFact": {
+        "fr": "Réserve de marche : environ 70 heures.",
+        "en": "Power reserve: about 70 hours."
+      }
+    },
+    {
+      "id": "centerWheel",
+      "group": "movement",
+      "models": [
+        "*"
+      ],
+      "explode": [
+        0,
+        0,
+        -27
+      ],
+      "order": 13,
+      "anchor": [
+        0,
+        0,
+        0.9
+      ],
+      "name": {
+        "fr": "Roue de centre",
+        "en": "Centre wheel"
+      },
+      "material": {
+        "fr": "Laiton doré, pignon en acier",
+        "en": "Gilt brass, steel pinion"
+      },
+      "function": {
+        "fr": "Fait un tour par heure et porte l'aiguille des minutes.",
+        "en": "Makes one turn per hour and carries the minute hand."
+      },
+      "description": {
+        "fr": "Seconde roue du rouage, au centre exact du calibre.",
+        "en": "Second wheel of the train, at the exact centre of the calibre."
+      },
+      "funFact": {
+        "fr": "Ses dents sont taillées selon un profil cycloïdal, pas en développante.",
+        "en": "Its teeth follow a cycloidal profile, not an involute one."
+      }
+    },
+    {
+      "id": "thirdWheel",
+      "group": "movement",
+      "models": [
+        "*"
+      ],
+      "explode": [
+        0,
+        0,
+        -31
+      ],
+      "order": 14,
+      "anchor": [
+        6.6,
+        3.4,
+        0.6
+      ],
+      "name": {
+        "fr": "Roue moyenne",
+        "en": "Third wheel"
+      },
+      "material": {
+        "fr": "Laiton doré, pignon en acier",
+        "en": "Gilt brass, steel pinion"
+      },
+      "function": {
+        "fr": "Relaie et démultiplie la force vers la roue de secondes.",
+        "en": "Relays and steps up the drive to the fourth wheel."
+      },
+      "description": {
+        "fr": "Roue intermédiaire du train de rouage.",
+        "en": "The intermediate wheel of the going train."
+      },
+      "funFact": {
+        "fr": "Ses pivots tournent dans des rubis de moins d'un millimètre.",
+        "en": "Its pivots turn in rubies less than a millimetre wide."
+      }
+    },
+    {
+      "id": "fourthWheel",
+      "group": "movement",
+      "models": [
+        "*"
+      ],
+      "explode": [
+        0,
+        0,
+        -35
+      ],
+      "order": 15,
+      "anchor": [
+        6.4,
+        -3.6,
+        0.6
+      ],
+      "name": {
+        "fr": "Roue de secondes",
+        "en": "Fourth wheel"
+      },
+      "material": {
+        "fr": "Laiton doré, pignon en acier",
+        "en": "Gilt brass, steel pinion"
+      },
+      "function": {
+        "fr": "Fait un tour par minute.",
+        "en": "Makes one turn per minute."
+      },
+      "description": {
+        "fr": "Sur un calibre à seconde centrale, elle est reliée à la trotteuse.",
+        "en": "On a centre-seconds calibre it is linked to the seconds hand."
+      },
+      "funFact": {
+        "fr": "Elle a tourné plus de 500 000 fois en un an.",
+        "en": "It turns more than 500,000 times a year."
+      }
+    },
+    {
+      "id": "escapeWheel",
+      "group": "movement",
+      "models": [
+        "*"
+      ],
+      "explode": [
+        0,
+        0,
+        -39
+      ],
+      "order": 16,
+      "anchor": [
+        2.6,
+        -7.6,
+        0.4
+      ],
+      "name": {
+        "fr": "Roue d'échappement",
+        "en": "Escape wheel"
+      },
+      "material": {
+        "fr": "Nickel-phosphore (LIGA), amagnétique",
+        "en": "Nickel-phosphorus (LIGA), anti-magnetic"
+      },
+      "function": {
+        "fr": "Libère l'énergie par impulsions régulières.",
+        "en": "Releases energy in regular impulses."
+      },
+      "description": {
+        "fr": "15 dents en forme de « club » qui poussent les palettes de l'ancre.",
+        "en": "15 club-shaped teeth that push the pallet stones."
+      },
+      "funFact": {
+        "fr": "C'est elle qui produit le « tic-tac » de la montre.",
+        "en": "It produces the watch's 'tick-tock'."
+      }
+    },
+    {
+      "id": "palletFork",
+      "group": "movement",
+      "models": [
+        "*"
+      ],
+      "explode": [
+        0,
+        0,
+        -43
+      ],
+      "order": 17,
+      "anchor": [
+        -3.2,
+        -8.4,
+        0.3
+      ],
+      "name": {
+        "fr": "Ancre",
+        "en": "Pallet fork"
+      },
+      "material": {
+        "fr": "Acier trempé, palettes en rubis synthétique",
+        "en": "Hardened steel, synthetic ruby pallet stones"
+      },
+      "function": {
+        "fr": "Bascule pour bloquer puis libérer la roue d'échappement.",
+        "en": "Rocks to lock then release the escape wheel."
+      },
+      "description": {
+        "fr": "Pièce en forme d'ancre marine, cœur de l'échappement suisse.",
+        "en": "Anchor-shaped piece at the heart of the Swiss lever escapement."
+      },
+      "funFact": {
+        "fr": "Elle bascule 691 200 fois par jour.",
+        "en": "It rocks 691,200 times a day."
+      }
+    },
+    {
+      "id": "balanceWheel",
+      "group": "movement",
+      "models": [
+        "*"
+      ],
+      "explode": [
+        0,
+        0,
+        -48
+      ],
+      "order": 18,
+      "anchor": [
+        -6.2,
+        -12.1,
+        -0.3
+      ],
+      "name": {
+        "fr": "Balancier",
+        "en": "Balance wheel"
+      },
+      "material": {
+        "fr": "Alliage cuivre-béryllium, masselottes d'or",
+        "en": "Copper-beryllium alloy, gold inertia weights"
+      },
+      "function": {
+        "fr": "Organe réglant : oscille à 4 Hz et bat la mesure du temps.",
+        "en": "The regulating organ: oscillates at 4 Hz, beating time."
+      },
+      "description": {
+        "fr": "Volant d'inertie à masselottes réglables.",
+        "en": "An inertia wheel with adjustable weights."
+      },
+      "funFact": {
+        "fr": "Son amplitude atteint près de 300° à chaque alternance.",
+        "en": "Its amplitude reaches nearly 300° per swing."
+      }
+    },
+    {
+      "id": "hairspring",
+      "group": "movement",
+      "models": [
+        "*"
+      ],
+      "explode": [
+        0,
+        0,
+        -52
+      ],
+      "order": 19,
+      "anchor": [
+        -6.2,
+        -6.2,
+        -0.9
+      ],
+      "name": {
+        "fr": "Spiral",
+        "en": "Hairspring"
+      },
+      "material": {
+        "fr": "Alliage niobium-zirconium, oxydé bleu",
+        "en": "Niobium-zirconium alloy, blue-oxidised"
+      },
+      "function": {
+        "fr": "Ramène le balancier vers son point d'équilibre.",
+        "en": "Returns the balance to its rest point."
+      },
+      "description": {
+        "fr": "Ressort plus fin qu'un cheveu, insensible aux champs magnétiques.",
+        "en": "A spring thinner than a hair, immune to magnetic fields."
+      },
+      "funFact": {
+        "fr": "Son épaisseur : environ 0,04 mm.",
+        "en": "Its thickness: about 0.04 mm."
+      }
+    },
+    {
+      "id": "jewels",
+      "group": "movement",
+      "models": [
+        "*"
+      ],
+      "explode": [
+        0,
+        0,
+        -56
+      ],
+      "order": 20,
+      "anchor": [
+        -4.5,
+        4.5,
+        -1.3
+      ],
+      "name": {
+        "fr": "Rubis",
+        "en": "Jewels"
+      },
+      "material": {
+        "fr": "Rubis synthétique (Al₂O₃ + chrome)",
+        "en": "Synthetic ruby (Al₂O₃ + chromium)"
+      },
+      "function": {
+        "fr": "Paliers quasi sans frottement pour les pivots.",
+        "en": "Near-frictionless bearings for the pivots."
+      },
+      "description": {
+        "fr": "31 pierres percées et polies qui réduisent l'usure.",
+        "en": "31 drilled and polished stones that reduce wear."
+      },
+      "funFact": {
+        "fr": "Leur couleur vient du chrome, comme celle des rubis naturels.",
+        "en": "Their colour comes from chromium, like natural rubies."
+      }
+    },
+    {
+      "id": "bridges",
+      "group": "movement",
+      "models": [
+        "*"
+      ],
+      "explode": [
+        0,
+        0,
+        -61
+      ],
+      "order": 21,
+      "anchor": [
+        7,
+        -1,
+        -1.2
+      ],
+      "name": {
+        "fr": "Ponts",
+        "en": "Bridges"
+      },
+      "material": {
+        "fr": "Laiton rhodié, Côtes de Genève",
+        "en": "Rhodium-plated brass, Geneva stripes"
+      },
+      "function": {
+        "fr": "Maintiennent les rouages entre eux et la platine.",
+        "en": "Hold the wheels between themselves and the plate."
+      },
+      "description": {
+        "fr": "Pont de barillet et pont de rouage, anglés et décorés à la main.",
+        "en": "Barrel and train bridges, bevelled and hand-decorated."
+      },
+      "funFact": {
+        "fr": "Les Côtes de Genève servaient à piéger la poussière.",
+        "en": "Geneva stripes were originally meant to trap dust."
+      }
+    },
+    {
+      "id": "balanceBridge",
+      "group": "movement",
+      "models": [
+        "*"
+      ],
+      "explode": [
+        0,
+        0,
+        -66
+      ],
+      "order": 22,
+      "anchor": [
+        -10.6,
+        -4.4,
+        -1.7
+      ],
+      "name": {
+        "fr": "Pont de balancier",
+        "en": "Balance bridge"
+      },
+      "material": {
+        "fr": "Laiton rhodié, double fixation",
+        "en": "Rhodium-plated brass, dual mounting"
+      },
+      "function": {
+        "fr": "Tient le balancier des deux côtés pour résister aux chocs.",
+        "en": "Holds the balance on both sides to resist shocks."
+      },
+      "description": {
+        "fr": "Pont traversant, plus stable qu'un simple coq.",
+        "en": "A full bridge, more stable than a single cock."
+      },
+      "funFact": {
+        "fr": "Il intègre un amortisseur de chocs à ressort en lyre.",
+        "en": "It hosts a lyre-spring shock absorber."
+      }
+    },
+    {
+      "id": "rotor",
+      "group": "movement",
+      "models": [
+        "*"
+      ],
+      "explode": [
+        0,
+        0,
+        -74
+      ],
+      "order": 23,
+      "anchor": [
+        0,
+        -11,
+        -2.2
+      ],
+      "name": {
+        "fr": "Rotor oscillant",
+        "en": "Oscillating rotor"
+      },
+      "material": {
+        "fr": "Or 18 ct ou tungstène, roulement à billes",
+        "en": "18 ct gold or tungsten, ball bearing"
+      },
+      "function": {
+        "fr": "Remonte le ressort grâce aux mouvements du poignet.",
+        "en": "Winds the mainspring from the wearer's wrist motion."
+      },
+      "description": {
+        "fr": "Masse semi-circulaire montée sur roulement, bidirectionnelle.",
+        "en": "A semicircular mass on a bearing, winding in both directions."
+      },
+      "funFact": {
+        "fr": "Inventé dans les années 1930, il a rendu la montre « perpétuelle ».",
+        "en": "Invented in the 1930s, it made the watch 'perpetual'."
+      }
+    },
+    {
+      "id": "caseback",
+      "group": "exterior",
+      "models": [
+        "*"
+      ],
+      "explode": [
+        0,
+        0,
+        -86
+      ],
+      "order": 24,
+      "anchor": [
+        8,
+        8,
+        -4
+      ],
+      "metal": true,
+      "name": {
+        "fr": "Fond de boîte",
+        "en": "Case back"
+      },
+      "material": {
+        "fr": "Métal massif, vissé, cannelures de serrage",
+        "en": "Solid metal, screw-down, fluted grip"
+      },
+      "function": {
+        "fr": "Ferme hermétiquement le boîtier côté poignet.",
+        "en": "Hermetically seals the case on the wrist side."
+      },
+      "description": {
+        "fr": "Vissé avec un outil spécifique cannelé.",
+        "en": "Screwed down with a dedicated fluted tool."
+      },
+      "funFact": {
+        "fr": "Seul un horloger équipé peut l'ouvrir.",
+        "en": "Only a properly equipped watchmaker can open it."
+      }
+    },
+    {
+      "id": "bracelet",
+      "group": "exterior",
+      "models": [
+        "*"
+      ],
+      "explode": [
+        0,
+        18,
+        0
+      ],
+      "order": 25,
+      "anchor": [
+        8.6,
+        30.5,
+        -6.5
+      ],
+      "metal": true,
+      "name": {
+        "fr": "Bracelet",
+        "en": "Bracelet"
+      },
+      "material": {
+        "fr": "Maillons pleins, satinés et polis",
+        "en": "Solid links, satin and polished"
+      },
+      "function": {
+        "fr": "Assure le confort et la tenue au poignet.",
+        "en": "Ensures comfort and a secure fit on the wrist."
+      },
+      "description": {
+        "fr": "Maillons à 3 rangs (Oyster) ou 5 rangs (Jubilee), articulés par vis.",
+        "en": "Three-row (Oyster) or five-row (Jubilee) links, joined by screws."
+      },
+      "funFact": {
+        "fr": "Un bracelet 5 rangs compte plus de 150 pièces.",
+        "en": "A five-row bracelet has more than 150 components."
+      }
+    },
+    {
+      "id": "clasp",
+      "group": "exterior",
+      "models": [
+        "*"
+      ],
+      "explode": [
+        0,
+        -34,
+        -18
+      ],
+      "order": 26,
+      "anchor": [
+        0,
+        -6,
+        -52
+      ],
+      "metal": true,
+      "name": {
+        "fr": "Fermoir déployant",
+        "en": "Folding clasp"
+      },
+      "material": {
+        "fr": "Métal massif, sécurité à levier",
+        "en": "Solid metal, lever safety catch"
+      },
+      "function": {
+        "fr": "Ferme le bracelet ; rallonge de confort de 5 mm.",
+        "en": "Closes the bracelet; 5 mm comfort extension."
+      },
+      "description": {
+        "fr": "Boucle déployante à double lame, invisible une fois fermée.",
+        "en": "A double-blade deployant buckle, hidden when closed."
+      },
+      "funFact": {
+        "fr": "La rallonge permet de porter la montre sur une combinaison de plongée.",
+        "en": "The extension lets you wear the watch over a wetsuit."
+      }
+    }
+  ]
+}
