@@ -9,7 +9,7 @@ import type { WatchMaterials } from '../materials'
 import { useAtelier } from '../../store/useAtelier'
 
 const TAU = Math.PI * 2
-const DATE_WIN = { x0: 9.75, x1: 13.15, y0: -1.75, y1: 1.75 }
+const DATE_WIN = { x0: 10.15, x1: 13.45, y0: -1.3, y1: 1.3 }
 
 export function Dial({ m, date }: { m: WatchMaterials; date: boolean }) {
   const geo = useDisposable(() => {

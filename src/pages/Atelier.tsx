@@ -30,10 +30,10 @@ export function Atelier() {
       </div>
 
       {/* Identité du modèle */}
-      <div key={watchId} className={`absolute bottom-28 left-[var(--gutter)] max-w-sm md:bottom-10 ${sheetOpen ? 'max-md:hidden' : ''}`} style={{ animation: 'fadeUp 1.1s var(--ease-lux)' }}>
+      <div key={watchId} className={`absolute left-[var(--gutter)] top-20 max-w-sm md:top-auto md:bottom-10 ${sheetOpen ? 'max-md:hidden' : ''}`} style={{ animation: 'fadeUp 1.1s var(--ease-lux)' }}>
         <style>{`@keyframes fadeUp{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:none}}`}</style>
         <div className="eyebrow">{watch.family[lang]}</div>
-        <div className="display mt-2 text-4xl md:text-6xl">{watch.name}</div>
+        <div className="display mt-2 text-3xl md:text-6xl">{watch.name}</div>
         <dl className="mt-4 hidden grid-cols-4 gap-5 md:grid">
           {watch.specs.map((sp) => (
             <div key={sp.label.fr}>

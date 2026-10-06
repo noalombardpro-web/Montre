@@ -48,16 +48,16 @@ export function CameraRig() {
     c.restThreshold = 0.002
   }, [reduced])
 
-  // Changement de page / mode : vol vers la pose de référence
+  // Changement de page / mode / désélection : vol vers la pose de référence
   useEffect(() => {
     const c = ref.current
     if (!c || page !== 'atelier' || selected) return
     const p = POSES[mode]
-    const k = narrow ? 1.45 : 1
-    c.setFocalOffset(0, 0, 0, true)
+    const k = narrow ? 1.9 : 1
+    c.setFocalOffset(0, narrow ? 10 : 0, 0, true)
     c.setLookAt(p.pos[0] * k, p.pos[1] * k, p.pos[2] * k, ...p.target, !reduced)
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [page, mode, resetNonce, narrow])
+  }, [page, mode, resetNonce, narrow, selected === null])
 
   // Sélection : la caméra vole vers la pièce
   useEffect(() => {
@@ -79,9 +79,9 @@ export function CameraRig() {
       if (behind && anim.explode < 0.3 && dir.z > 0) dir.z *= -1
       if (!behind && sphere.center.z > 1 && dir.z < 0) dir.z *= -1
       dir.normalize()
-      const dist = THREE.MathUtils.clamp(sphere.radius * (narrow ? 4.6 : 3.4), 32, 220)
+      const dist = THREE.MathUtils.clamp(sphere.radius * (narrow ? 6.2 : 4.8), 42, 260)
       const p = sphere.center.clone().addScaledVector(dir, dist)
-      c.setFocalOffset(narrow ? 0 : sphere.radius * 0.35, narrow ? -sphere.radius * 0.6 : 0, 0, !reduced)
+      c.setFocalOffset(narrow ? 0 : Math.max(sphere.radius * 0.7, 8), narrow ? Math.max(sphere.radius * 0.9, 9) : 0, 0, !reduced)
       c.setLookAt(p.x, p.y, p.z, sphere.center.x, sphere.center.y, sphere.center.z, !reduced)
     })
     return () => cancelAnimationFrame(id)

@@ -17,8 +17,13 @@ await page.goto(url, { waitUntil: 'load' })
 await page.waitForFunction(() => window.__atelier?.setView && !document.querySelector('[role="status"][aria-busy="true"]'), null, { timeout: 120000 })
 await page.waitForTimeout(3000)
 for (const v of views) {
-  const [name, p, t, keys] = v.split(':')
-  for (const k of keys ? keys.split('') : []) await page.keyboard.press(k)
+  const [name, p, t, keys, ...rest] = v.split(':')
+  const js = rest.join(':')
+  if (js) {
+    await page.evaluate(js)
+    await page.waitForTimeout(Number(process.env.KEYWAIT ?? 4000))
+  }
+  for (const k of keys ? (keys.includes(',') ? keys.split(',') : keys.split('')) : []) await page.keyboard.press(k)
   if (keys) await page.waitForTimeout(Number(process.env.KEYWAIT ?? 4000))
   if (p !== '-') {
     await page.evaluate(([p, t]) => window.__atelier.setView(p.split(',').map(Number), t.split(',').map(Number)), [p, t])

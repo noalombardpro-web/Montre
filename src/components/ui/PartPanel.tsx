@@ -28,7 +28,7 @@ export function PartPanel() {
   return (
     <aside
       aria-labelledby="part-title"
-      className="glass pointer-events-auto fixed inset-x-3 bottom-3 z-30 max-h-[52svh] overflow-y-auto p-6 md:inset-x-auto md:top-24 md:right-6 md:bottom-auto md:max-h-[calc(100svh-8rem)] md:w-[380px] md:p-8"
+      className="glass pointer-events-auto fixed inset-x-3 bottom-3 z-30 max-h-[52svh] overflow-y-auto p-6 md:inset-x-auto md:top-24 md:right-6 md:bottom-auto md:max-h-[calc(100svh-14rem)] md:w-[380px] md:p-8"
       style={{ animation: 'panelIn .7s var(--ease-lux)' }}
     >
       <style>{`@keyframes panelIn{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:none}}`}</style>

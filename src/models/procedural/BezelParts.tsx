@@ -146,7 +146,7 @@ export function Cyclops({ m }: { m: WatchMaterials }) {
       64,
     )
     g.scale(1.12, 1, 1)
-    g.translate(11.45, 0, DIM.crystalZ1 - 0.42)
+    g.translate(11.8, 0, DIM.crystalZ1 - 0.45)
     return g
   }, [])
   return <mesh geometry={geo} material={m.crystal} renderOrder={3} />

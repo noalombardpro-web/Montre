@@ -70,6 +70,7 @@ body.is-atelier {
   touch-action: auto;
 }
 
+@layer components {
 .eyebrow {
   font-size: 10.5px;
   letter-spacing: 0.38em;
@@ -152,6 +153,8 @@ body.is-atelier {
   color: var(--color-ink);
   background: var(--color-champagne);
   border-color: var(--color-champagne);
+}
+
 }
 
 /* Hotspots 3D */
@@ -340,4 +343,19 @@ input[type='range'].lux-range::-moz-range-thumb {
 }
 .hotspot.is-minor::after {
   display: none;
+}
+
+/* Lisibilité du texte au-dessus de la 3D sur mobile */
+@media (max-width: 767px) {
+  .glass-soft {
+    padding: 1.5rem;
+    margin-inline: -0.5rem;
+    background: linear-gradient(180deg, rgb(8 8 10 / 0.55), rgb(8 8 10 / 0.85));
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
+  }
+}
+
+[tabindex='-1']:focus-visible {
+  outline: none;
 }

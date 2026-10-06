@@ -8,6 +8,7 @@ declare global {
       exportGLB: (id?: string) => Promise<ArrayBuffer>
       scene?: THREE.Scene
       setView?: (pos: number[], target: number[]) => void
+      store?: typeof useAtelier
     }
   }
 }
@@ -19,6 +20,7 @@ declare global {
 export function exposeExporter(scene?: THREE.Scene, controls?: { setLookAt: (...a: (number | boolean)[]) => unknown }) {
   window.__atelier = {
     scene,
+    store: useAtelier,
     setView: (pos, target) => controls?.setLookAt(pos[0], pos[1], pos[2], target[0], target[1], target[2], false),
     exportGLB: async (id?: string) => {
       const s = useAtelier.getState()

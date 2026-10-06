@@ -16,17 +16,28 @@ interface Key {
 
 export const LANDING_KEYS: Key[] = [
   // Hero
-  { at: 0.0, pos: [40, 12, 128], target: [0, 0, -4], focal: [-24, 0, 0], focalMobile: [0, -16, 0], explode: 0, movement: 0 },
+  { at: 0.0, pos: [40, 12, 128], target: [0, 0, -4], focal: [-24, 0, 0], focalMobile: [0, 24, 0], explode: 0, movement: 0 },
   // Le boîtier : profil côté couronne
-  { at: 0.2, pos: [112, 22, 62], target: [4, 0, -6], focal: [26, 0, 0], focalMobile: [0, -18, 0], explode: 0, movement: 0 },
+  { at: 0.2, pos: [112, 22, 62], target: [4, 0, -6], focal: [26, 0, 0], focalMobile: [0, 22, 0], explode: 0, movement: 0 },
   // Vue éclatée
-  { at: 0.42, pos: [200, 70, 120], target: [0, 0, -8], focal: [-40, 0, 0], focalMobile: [0, -30, 0], explode: 1, movement: 0 },
-  { at: 0.56, pos: [210, 40, -30], target: [0, 0, -10], focal: [-40, 0, 0], focalMobile: [0, -30, 0], explode: 1, movement: 0 },
+  { at: 0.42, pos: [190, 80, 175], target: [0, 0, -8], focal: [-46, 0, 0], focalMobile: [0, 34, 0], explode: 1, movement: 0 },
+  { at: 0.56, pos: [250, 60, -40], target: [0, 0, -10], focal: [-48, 0, 0], focalMobile: [0, 34, 0], explode: 1, movement: 0 },
   // Le mouvement, vu par le fond
-  { at: 0.74, pos: [-46, 18, -104], target: [0, 0, -2], focal: [22, 0, 0], focalMobile: [0, -14, 0], explode: 0, movement: 1 },
+  { at: 0.74, pos: [-58, 24, -138], target: [0, 0, -2], focal: [26, 0, 0], focalMobile: [0, 24, 0], explode: 0, movement: 1 },
   // Collection
-  { at: 1.0, pos: [0, 6, 150], target: [0, 0, -4], focal: [0, 12, 0], focalMobile: [0, -6, 0], explode: 0, movement: 0 },
+  { at: 1.0, pos: [0, 8, 200], target: [0, 0, -4], focal: [0, 30, 0], focalMobile: [0, 46, 0], explode: 0, movement: 0 },
 ]
+
+/**
+ * Recale les clés sur la position réelle des sections (appelé par la landing au resize).
+ * `anchors` : progression de scroll (0..1) correspondant à chaque clé.
+ */
+export function setLandingAnchors(anchors: number[]) {
+  anchors.forEach((a, i) => {
+    if (LANDING_KEYS[i]) LANDING_KEYS[i].at = a
+  })
+  for (let i = 1; i < LANDING_KEYS.length; i++) LANDING_KEYS[i].at = Math.max(LANDING_KEYS[i].at, LANDING_KEYS[i - 1].at + 1e-3)
+}
 
 const ease = (t: number) => t * t * (3 - 2 * t)
 const lerp = (a: number, b: number, t: number) => a + (b - a) * t

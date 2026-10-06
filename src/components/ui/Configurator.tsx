@@ -37,7 +37,7 @@ export function Configurator() {
   return (
     <aside
       aria-label={t('configure', lang)}
-      className="glass pointer-events-auto fixed inset-x-3 bottom-3 z-30 max-h-[55svh] overflow-y-auto p-6 md:inset-x-auto md:top-24 md:right-6 md:bottom-auto md:max-h-[calc(100svh-8rem)] md:w-[340px] md:p-7"
+      className="glass pointer-events-auto fixed inset-x-3 bottom-3 z-30 max-h-[55svh] overflow-y-auto p-6 md:inset-x-auto md:top-24 md:right-6 md:bottom-auto md:max-h-[calc(100svh-14rem)] md:w-[340px] md:p-7"
     >
       <div className="mb-5 flex items-center justify-between">
         <div>

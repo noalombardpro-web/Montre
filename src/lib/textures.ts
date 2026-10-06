@@ -225,7 +225,7 @@ export function makeDialTexture(o: DialPrint) {
     ctx.lineWidth = 0.14
     ctx.strokeStyle = o.print
     ctx.globalAlpha = 0.65
-    ctx.strokeRect(9.65, -1.85, 3.6, 3.7)
+    ctx.strokeRect(10.05, -1.4, 3.5, 2.8)
     ctx.globalAlpha = 1
   }
   return finish(c)
@@ -355,9 +355,9 @@ export function makeDateTexture(day: number, R: number, size = 1024) {
   ctx.fillStyle = '#0d0d0f'
   for (let d = 1; d <= 31; d++) {
     const a = ((d - day) / 31) * TAU
-    const r = 11.55
+    const r = 11.8
     text(ctx, String(d), Math.cos(a) * r, Math.sin(a) * r, {
-      size: 2.5,
+      size: 2.05,
       angle: a,
       font: SANS,
       weight: 650,
