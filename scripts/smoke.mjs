@@ -46,8 +46,8 @@ async function run(tag, viewport, mobile) {
   await page.waitForFunction(() => location.hash === '#/atelier/submariner', null, T)
   check(true, 'collection → atelier (#/atelier/submariner)')
   await page.waitForSelector('.scene-canvas.is-ready', T)
-  await page.waitForTimeout(1500)
-  check((await page.locator('.hotspot').count()) > 3, 'atelier : hotspots affichés')
+  const spotsOk = await page.waitForFunction(() => document.querySelectorAll('.hotspot').length > 3, null, T).then(() => true, () => false)
+  check(spotsOk, 'atelier : hotspots affichés')
 
   // Modes
   await page.getByRole('radio', { name: /Éclaté/ }).first().click()
