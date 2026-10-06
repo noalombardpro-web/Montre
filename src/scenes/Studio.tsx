@@ -29,7 +29,7 @@ export function Studio({ high }: { high: boolean }) {
         {/* contre-jour chaud */}
         <Lightformer form="ring" intensity={1.6} color="#e9c98f" position={[2, 3, -7]} scale={3} />
         {/* softbox arrière : éclaire le calibre vu par le fond */}
-        <Lightformer form="rect" intensity={2.6} color="#fff8ee" position={[-1, 2, -7]} scale={[9, 4, 1]} />
+        <Lightformer form="rect" intensity={1.8} color="#fff8ee" position={[-1, 2, -7]} scale={[8, 3.5, 1]} />
         {/* lueur froide basse */}
         <Lightformer form="rect" intensity={0.5} color="#9fb6d8" position={[0, -5, 0]} rotation-x={-Math.PI / 2} scale={[10, 10, 1]} />
       </Environment>

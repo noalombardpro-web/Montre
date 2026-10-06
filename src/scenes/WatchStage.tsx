@@ -21,21 +21,32 @@ export function WatchStage({ high }: { high: boolean }) {
   const group = useRef<THREE.Group>(null)
   const swap = useRef({ s: 0, dir: 1 })
 
+  // Transition de modèle : sortie (glisse à gauche), échange, entrée (depuis la droite).
+  // L'effet ne dépend que de watchId : l'échange interne ne doit pas interrompre la timeline.
+  const shownRef = useRef(shown)
   useEffect(() => {
-    if (watchId === shown) return
+    if (watchId === shownRef.current) return
     const reduced = useAtelier.getState().reducedMotion
     const st = swap.current
+    st.dir = 1
     const tl = gsap.timeline()
-    tl.to(st, { s: 1, duration: reduced ? 0.01 : 0.55, ease: 'power2.in', onStart: () => void (st.dir = 1) })
+    tl.to(st, { s: 1, duration: reduced ? 0.01 : 0.55, ease: 'power2.in' })
     tl.add(() => {
+      shownRef.current = watchId
       setShown(watchId)
       st.dir = -1
     })
     tl.to(st, { s: 0, duration: reduced ? 0.01 : 0.9, ease: 'power3.out' })
     return () => {
       tl.kill()
+      // transition interrompue (changement rapide) : on finalise proprement
+      if (shownRef.current !== watchId) {
+        shownRef.current = watchId
+        setShown(watchId)
+      }
+      st.s = 0
     }
-  }, [watchId, shown])
+  }, [watchId])
 
   useFrame((state, dt) => {
     const s = useAtelier.getState()

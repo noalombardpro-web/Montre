@@ -1,14 +1,15 @@
 /**
  * Captures visuelles (desktop + mobile) avec Playwright.
- * Usage : node scripts/screenshots.mjs [baseUrl] [outDir] [route...]
- * Exemple : node scripts/screenshots.mjs http://localhost:5173 screenshots "#/atelier/submariner"
+ * Usage : npm run test:visual [-- baseUrl outDir route...]   (serveur : npm run preview)
+ * Variables : QUERY="?q=low" (qualité), SETTLE=ms (attente après chargement).
+ * Exemple : node scripts/screenshots.mjs http://localhost:4173 docs/screenshots "#/atelier/submariner"
  */
 import { chromium } from 'playwright'
 import fs from 'node:fs'
 import path from 'node:path'
 
-const base = process.argv[2] ?? 'http://localhost:5173'
-const out = process.argv[3] ?? 'screenshots'
+const base = process.argv[2] ?? 'http://localhost:4173'
+const out = process.argv[3] ?? 'docs/screenshots'
 const routes = process.argv.slice(4)
 const scenarios = routes.length
   ? routes.map((r) => ({ name: r.replace(/[^a-z0-9]+/gi, '-').replace(/^-|-$/g, '') || 'home', route: r }))
@@ -17,9 +18,9 @@ const scenarios = routes.length
       { name: 'atelier-submariner', route: '#/atelier/submariner' },
       { name: 'atelier-datejust', route: '#/atelier/datejust' },
       { name: 'atelier-daytona', route: '#/atelier/daytona' },
-      { name: 'atelier-exploded', route: '#/atelier/submariner', keys: ['2'], wait: 2500 },
-      { name: 'atelier-movement', route: '#/atelier/datejust', keys: ['3'], wait: 3000 },
-      { name: 'atelier-xray', route: '#/atelier/daytona', keys: ['4'], wait: 2500 },
+      { name: 'atelier-exploded', route: '#/atelier/submariner', keys: ['2'], wait: 9000 },
+      { name: 'atelier-movement', route: '#/atelier/datejust', keys: ['3'], wait: 10000 },
+      { name: 'atelier-xray', route: '#/atelier/daytona', keys: ['4'], wait: 9000 },
     ]
 const viewports = [
   { tag: 'desktop', width: 1440, height: 900, deviceScaleFactor: 1 },
@@ -40,8 +41,14 @@ for (const vp of viewports) {
   page.on('console', (m) => m.type() === 'error' && console.error(`[${vp.tag}] console:`, m.text()))
   for (const sc of scenarios) {
     await page.goto(`${base}/${process.env.QUERY ?? ''}${sc.route}`, { waitUntil: 'load' })
-    await page.waitForFunction(() => !document.querySelector('[role="status"][aria-busy="true"]'), null, { timeout: 120000 }).catch(() => {})
-    await page.waitForTimeout(Number(process.env.SETTLE ?? 2500))
+    if (sc.route.includes('atelier')) {
+      await page.waitForSelector('.scene-canvas.is-ready', { timeout: 240000 })
+      // rotation auto coupée : captures reproductibles
+      const rot = page.locator('button[title^="Rotation auto"], button[title^="Auto-rotate"]').first()
+      if ((await rot.getAttribute('aria-pressed')) === 'true') await rot.click()
+      await page.keyboard.press('v') // recentre sur la pose de référence
+    }
+    await page.waitForTimeout(Number(process.env.SETTLE ?? 16000))
     for (const k of sc.keys ?? []) await page.keyboard.press(k)
     if (sc.wait) await page.waitForTimeout(sc.wait)
     if (sc.scroll) {
