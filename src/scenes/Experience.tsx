@@ -16,11 +16,12 @@ const DevTools = import.meta.env.DEV ? lazy(() => import('../debug/DevTools')) :
 export default function Experience() {
   const quality = useAtelier((s) => s.quality)
   const page = useAtelier((s) => s.page)
+  const ready = useAtelier((s) => s.sceneReady)
   const high = quality === 'high'
   const [dpr, setDpr] = useState(high ? 1.75 : 1)
   return (
     <Canvas
-      className={`scene-canvas ${page === 'landing' ? 'is-landing' : ''}`}
+      className={`scene-canvas ${page === 'landing' ? 'is-landing' : ''} ${ready ? 'is-ready' : ''}`}
       dpr={[1, dpr]}
       gl={{ antialias: false, powerPreference: 'high-performance', alpha: false, stencil: false }}
       camera={{ fov: 30, near: 2, far: 2000, position: [40, 12, 128] }}

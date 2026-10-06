@@ -23,7 +23,7 @@ export function Atelier() {
       <TopBar />
 
       {/* Colonne gauche : modes + nomenclature */}
-      <div className="absolute left-[var(--gutter)] top-1/2 hidden -translate-y-1/2 flex-col gap-3 md:flex">
+      <div className="absolute left-[var(--gutter)] top-28 hidden max-h-[calc(100svh-19rem)] flex-col gap-3 md:flex">
         <ModeBar />
         <PartsIndexButton open={partsOpen} onClick={togglePartsIndex} />
         <PartsIndex open={partsOpen} onClose={() => setPartsOpen(false)} />

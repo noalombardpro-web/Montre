@@ -83,15 +83,17 @@ export function extrudeZ(
   bevel = 0,
   curveSegments = 24,
 ) {
+  // l'épaisseur du biseau ne dépasse jamais 35 % de la hauteur (sinon la pièce « gonfle »)
+  const bt = Math.min(bevel, depth * 0.35)
   const g = new THREE.ExtrudeGeometry(shape, {
-    depth: Math.max(depth - bevel * 2, 0.001),
+    depth: Math.max(depth - bt * 2, 0.001),
     curveSegments,
     bevelEnabled: bevel > 0,
-    bevelThickness: bevel,
-    bevelSize: bevel,
+    bevelThickness: bt,
+    bevelSize: Math.min(bevel, bt * 1.6),
     bevelSegments: bevel > 0 ? 3 : 0,
   })
-  g.translate(0, 0, z0 + bevel)
+  g.translate(0, 0, z0 + bt)
   return g
 }
 

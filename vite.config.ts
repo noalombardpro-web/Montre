@@ -9,10 +9,13 @@ export default defineConfig({
     chunkSizeWarningLimit: 1600,
     rollupOptions: {
       output: {
-        manualChunks(id) {
-          if (id.includes('node_modules/three/')) return 'three'
-          if (id.includes('@react-three') || id.includes('postprocessing') || id.includes('camera-controls')) return 'r3f'
-          if (id.includes('gsap')) return 'gsap'
+        // Rolldown : regroupement explicite des dépendances lourdes (cache navigateur long terme)
+        advancedChunks: {
+          groups: [
+            { name: 'three', test: /node_modules[\\/]three[\\/]/, priority: 3 },
+            { name: 'r3f', test: /node_modules[\\/](@react-three|postprocessing|camera-controls|three-stdlib|maath|troika)/, priority: 2 },
+            { name: 'gsap', test: /node_modules[\\/]gsap/, priority: 1 },
+          ],
         },
       },
     },

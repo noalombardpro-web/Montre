@@ -7,6 +7,7 @@ import { useDisposable } from '../../lib/useDisposable'
 import type { WatchId } from '../../data/watches'
 import type { WatchMaterials } from '../materials'
 import { useAtelier } from '../../store/useAtelier'
+import { POSTER_MODE } from '../../lib/env'
 
 const TAU = Math.PI * 2
 const DATE_WIN = { x0: 10.15, x1: 13.45, y0: -1.3, y1: 1.3 }
@@ -198,7 +199,7 @@ function useTime(chrono: boolean) {
   if (running && chronoStart.current === 0) chronoStart.current = performance.now()
   if (!running) chronoStart.current = 0
   return () => {
-    const now = new Date()
+    const now = POSTER_MODE ? new Date(2024, 0, 6, 10, 8, 37, 0) : new Date()
     const ms = now.getMilliseconds()
     const sec = now.getSeconds() + Math.floor(ms / 125) / 8
     const min = now.getMinutes() + sec / 60

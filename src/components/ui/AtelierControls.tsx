@@ -53,7 +53,7 @@ export function TopBar() {
           type="button"
           className="px-2 py-2 text-[10.5px] tracking-[0.24em] text-muted hover:text-ivory"
           onClick={() => useAtelier.getState().setLang(lang === 'fr' ? 'en' : 'fr')}
-          aria-label={lang === 'fr' ? 'Switch to English' : 'Passer en français'}
+          aria-label={lang === 'fr' ? 'EN — Switch to English' : 'FR — Passer en français'}
         >
           {lang === 'fr' ? 'EN' : 'FR'}
         </button>

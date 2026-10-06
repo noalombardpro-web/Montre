@@ -9,7 +9,9 @@ import {
   makePerlage,
   makeRotorTexture,
   makeSunburstAnisotropy,
+  deferredTexture,
 } from '../lib/textures'
+import { enqueue } from '../lib/scheduler'
 import { DIM } from './dims'
 
 const METAL_COLOR: Record<Exclude<MetalId, 'twotone'>, string> = {
@@ -43,8 +45,8 @@ export interface WatchMaterials {
 
 let sharedAniso: THREE.DataTexture | null = null
 let sharedBrushed: THREE.Texture | null = null
-let sharedPerlage: THREE.Texture | null = null
-let sharedStripes: THREE.Texture | null = null
+let sharedPerlage: ReturnType<typeof deferredTexture> | null = null
+let sharedStripes: ReturnType<typeof deferredTexture> | null = null
 let sharedRotor: THREE.Texture | null = null
 
 function metalMat(color: string, rough: number, brushed: boolean) {
@@ -55,7 +57,11 @@ function metalMat(color: string, rough: number, brushed: boolean) {
     envMapIntensity: 1.15,
   })
   if (brushed) {
-    sharedBrushed ??= makeBrushed()
+    if (!sharedBrushed) {
+      const d = deferredTexture(makeBrushed, { srgb: false, repeat: true })
+      sharedBrushed = d.tex
+      enqueue(d.job)
+    }
     m.roughnessMap = sharedBrushed
     m.anisotropy = 0.55
     m.anisotropyRotation = Math.PI / 2
@@ -75,7 +81,8 @@ export function createMaterials(watch: WatchDef, cfg: WatchConfig, high: boolean
   const accentBrushed = metalMat(METAL_COLOR[accentMetal], 0.3, true)
 
   const dc = DIAL_COLORS[cfg.dial]
-  const dialTex = makeDialTexture({
+  // Textures dessinées en différé (une par tranche de temps), placeholders immédiats
+  const dialD = deferredTexture(() => makeDialTexture({
     base: dc.base,
     print: dc.print,
     sub: watch.id === 'daytona' ? (cfg.dial === 'black' ? '#c9ccd2' : cfg.dial === 'champagne' ? '#121315' : dc.sub) : dc.sub,
@@ -83,7 +90,9 @@ export function createMaterials(watch: WatchDef, cfg: WatchConfig, high: boolean
     R: DIM.dialR,
     size: high ? 2048 : 1024,
     date: watch.features.date,
-  })
+  }), { color: dc.base })
+  const dialTex = dialD.tex
+  enqueue(dialD.job, true)
   textures.push(dialTex)
   sharedAniso ??= makeSunburstAnisotropy()
   const lacquer = cfg.dial === 'black'
@@ -111,14 +120,21 @@ export function createMaterials(watch: WatchDef, cfg: WatchConfig, high: boolean
   let ceramic: THREE.MeshPhysicalMaterial | null = null
   if (bezelOpt.style === 'dive' || bezelOpt.style === 'tachy') {
     const isCeramic = !!bezelOpt.insert
-    const tex = makeBezelTexture({
-      style: bezelOpt.style,
-      base: isCeramic ? bezelOpt.insert! : METAL_COLOR[accentMetal],
-      print: isCeramic ? (gold ? '#e9c77a' : '#dfe3e8') : '#1a1a1c',
-      R: DIM.bezelR,
-      rIn: DIM.insertRin,
-      size: high ? 2048 : 1024,
-    })
+    const base = isCeramic ? bezelOpt.insert! : METAL_COLOR[accentMetal]
+    const bezelD = deferredTexture(
+      () =>
+        makeBezelTexture({
+          style: bezelOpt.style as 'dive' | 'tachy',
+          base,
+          print: isCeramic ? (gold ? '#e9c77a' : '#dfe3e8') : '#1a1a1c',
+          R: DIM.bezelR,
+          rIn: DIM.insertRin,
+          size: high ? 2048 : 1024,
+        }),
+      { color: base },
+    )
+    const tex = bezelD.tex
+    enqueue(bezelD.job)
     textures.push(tex)
     ceramic = new THREE.MeshPhysicalMaterial({
       map: tex,
@@ -134,9 +150,9 @@ export function createMaterials(watch: WatchDef, cfg: WatchConfig, high: boolean
     ? new THREE.MeshPhysicalMaterial({
         color: '#ffffff',
         metalness: 0,
-        roughness: 0.02,
+        roughness: 0,
         transmission: 1,
-        thickness: 1.2,
+        thickness: 0.6,
         ior: 1.77,
         specularIntensity: 1,
         envMapIntensity: 1.2,
@@ -149,24 +165,32 @@ export function createMaterials(watch: WatchDef, cfg: WatchConfig, high: boolean
         metalness: 0,
         roughness: 0.02,
         transparent: true,
-        opacity: 0.06,
-        envMapIntensity: 0.7,
+        opacity: 0.05,
+        envMapIntensity: 0.35,
         depthWrite: false,
       })
 
   const day = new Date().getDate()
-  const dateTex = makeDateTexture(day, DIM.dateR, high ? 1024 : 512)
+  const dateD = deferredTexture(() => makeDateTexture(day, DIM.dateR, high ? 1024 : 512), { color: '#f4f2ec' })
+  const dateTex = dateD.tex
+  enqueue(dateD.job)
   textures.push(dateTex)
   const dateDisc = new THREE.MeshStandardMaterial({ map: dateTex, roughness: 0.45 })
 
   const dark = new THREE.MeshStandardMaterial({ color: '#0a0a0b', roughness: 0.6, metalness: 0.2 })
 
-  sharedPerlage ??= makePerlage()
-  sharedStripes ??= makeGenevaStripes()
-  const plateTex = sharedPerlage.clone()
+  if (!sharedPerlage) {
+    sharedPerlage = deferredTexture(makePerlage, { srgb: false, repeat: true })
+    enqueue(sharedPerlage.job)
+  }
+  if (!sharedStripes) {
+    sharedStripes = deferredTexture(makeGenevaStripes, { srgb: false, repeat: true })
+    enqueue(sharedStripes.job)
+  }
+  const plateTex = sharedPerlage.derive()
   plateTex.repeat.set(1 / 9, 1 / 9)
   plateTex.offset.set(0.5, 0.5)
-  const stripeTex = sharedStripes.clone()
+  const stripeTex = sharedStripes.derive()
   stripeTex.repeat.set(1 / 24, 1 / 24)
   textures.push(plateTex, stripeTex)
   const plate = new THREE.MeshPhysicalMaterial({
@@ -199,7 +223,9 @@ export function createMaterials(watch: WatchDef, cfg: WatchConfig, high: boolean
     ior: 1.77,
   })
   if (!sharedRotor) {
-    sharedRotor = makeRotorTexture(DIM.movementR)
+    const d = deferredTexture(() => makeRotorTexture(DIM.movementR), { color: '#b9bcc2' })
+    sharedRotor = d.tex
+    enqueue(d.job)
     // UV en mm ; miroir horizontal car la face visible du rotor est côté fond (z négatif)
     sharedRotor.repeat.set(-1 / (2 * DIM.movementR), 1 / (2 * DIM.movementR))
     sharedRotor.offset.set(0.5, 0.5)

@@ -38,6 +38,8 @@ interface AtelierState {
   quality: Quality
   reducedMotion: boolean
   sceneReady: boolean
+  /** Toutes les pièces de la montre affichée sont montées. */
+  staged: boolean
   configOpen: boolean
   helpOpen: boolean
   /** Incrémenté pour demander une action ponctuelle à la scène. */
@@ -75,6 +77,7 @@ export const useAtelier = create<AtelierState>((set, get) => ({
   quality: initialQuality,
   reducedMotion: !!prefersReducedMotion,
   sceneReady: false,
+  staged: false,
   configOpen: false,
   helpOpen: false,
   screenshotNonce: 0,

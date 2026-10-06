@@ -81,6 +81,42 @@ function finish(c: HTMLCanvasElement, srgb = true, aniso = 8) {
   return t
 }
 
+/**
+ * Texture différée : un placeholder 4×4 (même shader, aucun recompilage) est utilisé
+ * immédiatement ; le vrai canvas est dessiné plus tard par l'ordonnanceur.
+ */
+export function deferredTexture(make: () => THREE.Texture, opts: { color?: string; srgb?: boolean; repeat?: boolean } = {}) {
+  const { c, ctx } = canvas(4)
+  ctx.fillStyle = opts.color ?? '#808080'
+  ctx.fillRect(0, 0, 4, 4)
+  const tex = new THREE.CanvasTexture(c)
+  if (opts.srgb !== false) tex.colorSpace = THREE.SRGBColorSpace
+  if (opts.repeat) tex.wrapS = tex.wrapT = THREE.RepeatWrapping
+  tex.anisotropy = 8
+  const family = new Set<THREE.Texture>([tex])
+  let image: HTMLCanvasElement | null = null
+  /** Copie (répétition/offset propres) qui recevra aussi l'image finale. */
+  const derive = () => {
+    const t = tex.clone()
+    if (image) {
+      t.image = image
+      t.needsUpdate = true
+    }
+    family.add(t)
+    return t
+  }
+  const job = () => {
+    image = make().image as HTMLCanvasElement
+    family.forEach((t) => {
+      // le stockage GPU est immuable (texStorage2D) : on libère avant de changer de dimensions
+      t.dispose()
+      t.image = image
+      t.needsUpdate = true
+    })
+  }
+  return { tex, job, derive }
+}
+
 /** Angle « montre » (0 = 12 h, sens horaire) -> angle trigonométrique. */
 const clock = (frac: number) => Math.PI / 2 - frac * TAU
 
@@ -114,8 +150,8 @@ export function makeDialTexture(o: DialPrint) {
   // Brossage soleillé : fins rayons quasi invisibles
   ctx.save()
   ctx.globalAlpha = 0.05
-  for (let i = 0; i < 720; i++) {
-    const a = (i / 720) * TAU
+  for (let i = 0; i < 240; i++) {
+    const a = (i / 240) * TAU
     ctx.strokeStyle = i % 2 ? '#ffffff' : '#000000'
     ctx.lineWidth = 0.02 + Math.random() * 0.03
     ctx.beginPath()
@@ -368,7 +404,7 @@ export function makeDateTexture(day: number, R: number, size = 1024) {
 }
 
 /** Perlage (graining circulaire) : bump + rugosité pour la platine. */
-export function makePerlage(size = 512, cells = 16) {
+export function makePerlage(size = 512, cells = 12) {
   const { c, ctx } = canvas(size)
   ctx.fillStyle = '#808080'
   ctx.fillRect(0, 0, size, size)
@@ -378,12 +414,12 @@ export function makePerlage(size = 512, cells = 16) {
       const cx = (x + (y % 2) * 0.5) * step
       const cy = y * step * 0.92
       const r = step * 0.68
-      for (let k = 0; k < 28; k++) {
-        const a0 = (k / 28) * TAU
+      for (let k = 0; k < 14; k++) {
+        const a0 = (k / 14) * TAU
         ctx.strokeStyle = k % 2 ? 'rgba(255,255,255,0.35)' : 'rgba(0,0,0,0.3)'
         ctx.lineWidth = 1.2
         ctx.beginPath()
-        ctx.arc(cx, cy, r * (0.2 + 0.8 * ((k * 7) % 28) / 28), a0, a0 + 1.2)
+        ctx.arc(cx, cy, r * (0.2 + (0.8 * ((k * 5) % 14)) / 14), a0, a0 + 1.6)
         ctx.stroke()
       }
       const g = ctx.createRadialGradient(cx, cy, 0, cx, cy, r)

@@ -25,7 +25,7 @@ export function Studio({ high }: { high: boolean }) {
         <Lightformer form="rect" intensity={2.4} color="#ffffff" position={[-6, 1, 1]} rotation-y={Math.PI / 2} scale={[12, 0.8, 1]} />
         <Lightformer form="rect" intensity={1.8} color="#f3ecdf" position={[6, 0.5, -1]} rotation-y={-Math.PI / 2} scale={[12, 0.6, 1]} />
         {/* face avant douce */}
-        <Lightformer form="rect" intensity={0.9} color="#ffffff" position={[0, 0, 7]} scale={[6, 3, 1]} />
+        <Lightformer form="rect" intensity={0.35} color="#ffffff" position={[3, 2, 7]} scale={[3, 1.5, 1]} />
         {/* contre-jour chaud */}
         <Lightformer form="ring" intensity={1.6} color="#e9c98f" position={[2, 3, -7]} scale={3} />
         {/* softbox arrière : éclaire le calibre vu par le fond */}

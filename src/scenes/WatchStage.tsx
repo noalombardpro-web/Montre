@@ -70,7 +70,7 @@ export function WatchStage({ high }: { high: boolean }) {
       {def.glb ? (
         <GLBWatch url={def.glb} />
       ) : (
-        <ProceduralWatch id={shown} config={configs[shown]} high={high} />
+        <ProceduralWatch key={shown} id={shown} config={configs[shown]} high={high} />
       )}
     </group>
   )

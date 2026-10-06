@@ -359,3 +359,22 @@ input[type='range'].lux-range::-moz-range-thumb {
 [tabindex='-1']:focus-visible {
   outline: none;
 }
+
+.scene-canvas {
+  opacity: 0;
+  transition: opacity 1.4s var(--ease-lux);
+}
+.scene-canvas.is-ready {
+  opacity: 1;
+}
+
+/* Poster de façade (remplacé en fondu par la 3D) */
+.hero-poster {
+  position: fixed;
+  z-index: 1;
+  pointer-events: none;
+  transition: opacity 1.4s var(--ease-lux);
+}
+.hero-poster.is-hidden {
+  opacity: 0;
+}

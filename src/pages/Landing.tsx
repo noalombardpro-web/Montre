@@ -7,6 +7,7 @@ import { anim, useAtelier } from '../store/useAtelier'
 import { navigate } from '../lib/router'
 import { setLandingAnchors } from '../scenes/landingKeyframes'
 import { IconArrow } from '../components/ui/Icons'
+import { HeroPoster } from '../components/ui/HeroPoster'
 
 gsap.registerPlugin(ScrollTrigger)
 
@@ -50,7 +51,7 @@ const STATS = [
   { v: '70 h', l: { fr: 'réserve de marche', en: 'power reserve' } },
 ]
 
-export function Landing() {
+export function Landing({ poster = true }: { poster?: boolean }) {
   const lang = useAtelier((s) => s.lang)
   const ready = useAtelier((s) => s.sceneReady)
   const watchId = useAtelier((s) => s.watchId)
@@ -127,6 +128,7 @@ export function Landing() {
 
   return (
     <div ref={root} className="relative">
+      {poster && <HeroPoster />}
       {/* En-tête */}
       <header className="fixed inset-x-0 top-0 z-40 flex items-center justify-between bg-gradient-to-b from-ink via-ink/70 to-transparent px-[var(--gutter)] pb-8 pt-5 md:bg-none md:py-7">
         <a href="#/" className="flex items-center gap-3" aria-label="Watch Atelier">
@@ -140,7 +142,7 @@ export function Landing() {
             type="button"
             className="text-[10.5px] tracking-[0.24em] text-muted hover:text-ivory"
             onClick={() => useAtelier.getState().setLang(lang === 'fr' ? 'en' : 'fr')}
-            aria-label={lang === 'fr' ? 'Switch to English' : 'Passer en français'}
+            aria-label={lang === 'fr' ? 'EN — Switch to English' : 'FR — Passer en français'}
           >
             {lang === 'fr' ? 'EN' : 'FR'}
           </button>
@@ -226,7 +228,6 @@ export function Landing() {
                 onFocus={() => useAtelier.getState().setWatch(w.id)}
                 onClick={() => enter(w.id)}
                 className={`group flex w-full flex-col items-start gap-3 p-6 text-left transition duration-700 md:p-8 ${watchId === w.id ? 'bg-white/[0.03]' : 'hover:bg-white/[0.02]'}`}
-                aria-label={`${w.name} — ${t('explore', lang)}`}
               >
                 <div className="flex w-full items-center justify-between">
                   <span className="text-[10px] tracking-[0.3em] text-muted">0{i + 1}</span>

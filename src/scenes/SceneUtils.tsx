@@ -1,32 +1,20 @@
 import { useEffect, useRef } from 'react'
 import { useFrame, useThree } from '@react-three/fiber'
+import { pendingJobs } from '../lib/scheduler'
 import { useAtelier } from '../store/useAtelier'
 
-/** Pré-compile les shaders puis signale que la scène est prête (fin de l'écran de chargement). */
+/**
+ * Signale que la scène est prête (fin de l'écran de chargement) : toutes les pièces montées
+ * (shaders compilés au fil des étapes), puis quelques frames rendues.
+ */
 export function ReadyGate() {
-  const { gl, scene, camera } = useThree()
   const frames = useRef(0)
-  const compiled = useRef(false)
-  useEffect(() => {
-    let cancelled = false
-    const run = async () => {
-      try {
-        await gl.compileAsync(scene, camera)
-      } catch {
-        /* compilation paresseuse en repli */
-      }
-      if (!cancelled) compiled.current = true
-    }
-    const id = setTimeout(run, 50)
-    return () => {
-      cancelled = true
-      clearTimeout(id)
-    }
-  }, [gl, scene, camera])
+  const t0 = useRef(performance.now())
   useFrame(() => {
-    if (!compiled.current || useAtelier.getState().sceneReady) return
+    const s = useAtelier.getState()
+    if (s.sceneReady || !s.staged) return
     frames.current++
-    if (frames.current > 6) useAtelier.getState().set({ sceneReady: true })
+    if (frames.current > 3 && (pendingJobs() === 0 || performance.now() - t0.current > 6000)) s.set({ sceneReady: true })
   })
   return null
 }
