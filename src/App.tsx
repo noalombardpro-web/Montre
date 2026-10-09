@@ -8,6 +8,8 @@ import { Cursor } from './components/ui/Cursor'
 import { WebGLFallback } from './components/ui/WebGLFallback'
 import { Landing } from './pages/Landing'
 import { Atelier } from './pages/Atelier'
+import { Collection } from './pages/Collection'
+import { TickSound } from './components/ui/TickSound'
 
 // Le moteur 3D (three + R3F + postprocessing) est chargé à part : la page s'affiche immédiatement.
 const Experience = lazy(() => import('./scenes/Experience'))
@@ -49,6 +51,7 @@ export default function App() {
 
   useEffect(() => {
     document.body.classList.toggle('is-atelier', page === 'atelier')
+    document.body.classList.toggle('is-collection', page === 'collection')
   }, [page])
   useEffect(() => {
     document.documentElement.lang = lang
@@ -72,11 +75,12 @@ export default function App() {
       )}
       {!POSTER_MODE && (
         <main id="main" className="relative z-10">
-          {page === 'landing' ? <Landing poster={webgl} /> : <Atelier />}
+          {page === 'landing' ? <Landing poster={webgl} /> : page === 'collection' ? <Collection /> : <Atelier />}
         </main>
       )}
       {webgl && !POSTER_MODE && page === 'atelier' && <Loader />}
       {!POSTER_MODE && <Cursor />}
+      <TickSound />
       {LevaRoot && (
         <Suspense fallback={null}>
           <LevaRoot />

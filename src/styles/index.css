@@ -416,3 +416,8 @@ input[type='range'].lux-range::-moz-range-thumb {
   mask-composite: intersect;
   object-fit: contain;
 }
+
+/* Collection : la scène 3D est masquée (rendu suspendu) */
+body.is-collection .scene-canvas {
+  visibility: hidden;
+}

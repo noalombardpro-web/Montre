@@ -1,9 +1,11 @@
 import { ContactShadows, Environment, Lightformer } from '@react-three/drei'
-import { useFrame } from '@react-three/fiber'
+import { useFrame, useThree } from '@react-three/fiber'
 import { useRef } from 'react'
-import type { Group } from 'three'
-import { anim } from '../store/useAtelier'
+import * as THREE from 'three'
+import { anim, useAtelier } from '../store/useAtelier'
 import { useDebug } from '../store/useDebug'
+import { braceletBottom } from '../models/procedural/Bracelet'
+import { WATCH_BY_ID } from '../data/watches'
 
 /**
  * Studio photo procédural (HDRI généré en temps réel par des « lightformers ») :
@@ -11,9 +13,22 @@ import { useDebug } from '../store/useDebug'
  */
 export function Studio({ high }: { high: boolean }) {
   const d = useDebug()
-  const shadows = useRef<Group>(null)
-  useFrame(() => {
-    if (shadows.current) shadows.current.visible = anim.explode < 0.15 && anim.movement < 0.5
+  const shadows = useRef<THREE.Group>(null)
+  const keys = useRef<THREE.DirectionalLight[]>([])
+  const scene = useThree((st) => st.scene)
+  const wrist = useAtelier((st) => st.wrist)
+  const watchId = useAtelier((st) => st.watchId)
+  const scale = (WATCH_BY_ID[watchId]?.style.diameter ?? 40) / 40
+  const floorY = braceletBottom(wrist) * scale
+  useFrame((_, dt) => {
+    const st = useAtelier.getState()
+    if (shadows.current) shadows.current.visible = anim.explode < 0.15 && anim.movement < 0.5 && !st.tour && !st.night
+    // Mode nuit : on éteint progressivement le studio, seule la luminescence reste
+    const target = st.night ? 0.03 : d.envIntensity
+    scene.environmentIntensity = THREE.MathUtils.damp(scene.environmentIntensity ?? 1, target, 3, dt)
+    keys.current.forEach((l, i) => {
+      if (l) l.intensity = THREE.MathUtils.damp(l.intensity, st.night ? 0 : d.keyLight * (i ? 0.8 : 1), 3, dt)
+    })
   })
   return (
     <>
@@ -33,16 +48,17 @@ export function Studio({ high }: { high: boolean }) {
         {/* lueur froide basse */}
         <Lightformer form="rect" intensity={0.5} color="#9fb6d8" position={[0, -5, 0]} rotation-x={-Math.PI / 2} scale={[10, 10, 1]} />
       </Environment>
-      <directionalLight position={[40, 80, 60]} intensity={d.keyLight} color="#fff3e2" />
-      <directionalLight position={[-30, 40, -90]} intensity={d.keyLight * 0.8} color="#f4efe6" />
+      <directionalLight ref={(l) => void (l && (keys.current[0] = l))} position={[40, 80, 60]} intensity={d.keyLight} color="#fff3e2" />
+      <directionalLight ref={(l) => void (l && (keys.current[1] = l))} position={[-30, 40, -90]} intensity={d.keyLight * 0.8} color="#f4efe6" />
       <ambientLight intensity={0.06} />
       <group ref={shadows}>
         <ContactShadows
-          position={[0, -32.5, -18]}
-          scale={[120, 120]}
+          key={`${wrist}-${watchId}`}
+          position={[0, floorY - 0.8, -18 * scale]}
+          scale={[160, 160]}
           resolution={high ? 512 : 256}
           blur={2.4}
-          far={40}
+          far={50}
           opacity={0.65}
           color="#000000"
           frames={high ? Infinity : 1}

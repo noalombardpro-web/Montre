@@ -5,6 +5,10 @@ import * as THREE from 'three'
 import { PART_BY_ID } from '../data/parts'
 import { anim, useAtelier, type Mode } from '../store/useAtelier'
 import { landingPose } from './landingKeyframes'
+import { useTourSteps } from '../store/useTour'
+import type { TourView } from '../data/tours'
+import { getPath } from '../models/procedural/Bracelet'
+import { WATCH_BY_ID } from '../data/watches'
 
 type Pose = { pos: [number, number, number]; target: [number, number, number] }
 
@@ -29,6 +33,8 @@ export function CameraRig() {
   const resetNonce = useAtelier((s) => s.resetNonce)
   const watchId = useAtelier((s) => s.watchId)
   const reduced = useAtelier((s) => s.reducedMotion)
+  const tour = useAtelier((s) => s.tour)
+  const steps = useTourSteps()
   const lastInteraction = useRef(0)
   const narrow = size.width < 760
 
@@ -51,13 +57,52 @@ export function CameraRig() {
   // Changement de page / mode / désélection : vol vers la pose de référence
   useEffect(() => {
     const c = ref.current
-    if (!c || page !== 'atelier' || selected) return
+    if (!c || page !== 'atelier' || selected || tour) return
     const p = POSES[mode]
-    const k = narrow ? 1.9 : 1
+    // recul proportionnel à la taille réelle de la montre et de sa boucle de bracelet
+    const st = useAtelier.getState()
+    const fit = THREE.MathUtils.clamp(((getPath(st.wrist).a + 6) * (WATCH_BY_ID[st.watchId]?.style.diameter ?? 40)) / 40 / 34, 1, 1.7)
+    const k = (narrow ? 1.9 : 1) * (mode === 'movement' ? 1 : fit)
     c.setFocalOffset(0, narrow ? 10 : 0, 0, true)
     c.setLookAt(p.pos[0] * k, p.pos[1] * k, p.pos[2] * k, ...p.target, !reduced)
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [page, mode, resetNonce, narrow, selected === null])
+  }, [page, mode, resetNonce, narrow, selected === null, !!tour, watchId])
+
+  // Visite guidée : cadrage de chaque étape (pièces à leur position assemblée)
+  useEffect(() => {
+    const c = ref.current
+    if (!c || page !== 'atelier' || !tour || !steps) return
+    const step = steps[tour.step]
+    if (!step) return
+    const id = requestAnimationFrame(() => {
+      box.makeEmpty()
+      for (const pid of step.parts) {
+        const obj = scene.getObjectByName(pid)
+        if (!obj) continue
+        const saved = obj.position.clone()
+        obj.position.set(0, 0, 0)
+        obj.updateMatrixWorld(true)
+        const b = new THREE.Box3().setFromObject(obj, true)
+        obj.position.copy(saved)
+        obj.updateMatrixWorld(true)
+        if (!b.isEmpty()) box.union(b)
+      }
+      if (box.isEmpty()) return
+      box.getBoundingSphere(sphere)
+      const DIRS: Record<TourView, [number, number, number]> = {
+        back: [-0.35, 0.28, -1],
+        front: [0.28, 0.18, 1],
+        three4: [0.75, 0.38, 0.85],
+      }
+      const dir = new THREE.Vector3(...DIRS[step.view]).normalize()
+      const dist = THREE.MathUtils.clamp(sphere.radius * (narrow ? 7 : 5.4), 75, 320)
+      const pos = sphere.center.clone().addScaledVector(dir, dist)
+      // le sujet se décale à gauche du panneau de visite (ou au-dessus sur mobile)
+      c.setFocalOffset(narrow ? 0 : Math.min(sphere.radius * 0.35, 9), narrow ? Math.max(sphere.radius * 1.1, 16) : 0, 0, !reduced)
+      c.setLookAt(pos.x, pos.y, pos.z, sphere.center.x, sphere.center.y, sphere.center.z, !reduced)
+    })
+    return () => cancelAnimationFrame(id)
+  }, [tour, steps, page, scene, reduced, narrow])
 
   // Sélection : la caméra vole vers la pièce
   useEffect(() => {
@@ -105,7 +150,7 @@ export function CameraRig() {
     }
     c.enabled = true
     const idle = performance.now() - lastInteraction.current > 2600
-    if (s.autoRotate && !s.selected && idle && !s.reducedMotion && s.sceneReady) {
+    if (s.autoRotate && !s.selected && !s.tour && !s.quiz && idle && !s.reducedMotion && s.sceneReady) {
       c.azimuthAngle += dt * 0.11
     }
   })

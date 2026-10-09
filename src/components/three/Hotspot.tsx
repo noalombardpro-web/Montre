@@ -23,11 +23,13 @@ export function Hotspot({ meta }: { meta: PartMeta }) {
   const isolate = useAtelier((s) => s.isolate)
   const lang = useAtelier((s) => s.lang)
   const ready = useAtelier((s) => s.sceneReady)
+  const busy = useAtelier((s) => !!s.tour || s.quiz)
   const group = useRef<THREE.Group>(null)
   const el = useRef<HTMLButtonElement>(null)
 
   const show =
     ready &&
+    !busy &&
     page === 'atelier' &&
     enabled &&
     !(isolate && selected && selected !== meta.id) &&

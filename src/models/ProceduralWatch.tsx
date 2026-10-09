@@ -6,7 +6,10 @@ import { WATCH_BY_ID, type WatchConfig, type WatchId } from '../data/watches'
 import { createMaterials, disposeMaterials } from './materials'
 import { Caseback, CaseMiddle, Crown, Pushers } from './procedural/CaseParts'
 import { Bezel, BezelInsert, Crystal, Cyclops } from './procedural/BezelParts'
-import { DateWheel, Dial, HourHand, Indices, MinuteHand, SecondsHand, SubdialHands } from './procedural/DialParts'
+import { DateWheel, DayWheel, Dial, GmtHand, HourHand, Indices, MinuteHand, MoonDisc, SecondsHand, SubdialHands } from './procedural/DialParts'
+import { dialLayout } from './dialLayout'
+import { partsFor } from '../data/parts'
+import { EnergyFlow } from '../components/three/EnergyFlow'
 import {
   BalanceBridge,
   BalanceWheel,
@@ -47,174 +50,214 @@ function useStages() {
   return stage
 }
 
+const STAGE_OF: Record<string, number> = {
+  case: 0, crown: 0, pushers: 0, bezel: 0, bezelInsert: 0,
+  dial: 1, indices: 1, dateWheel: 1, dayWheel: 1, moonphase: 1, hourHand: 1, minuteHand: 1, secondsHand: 1, subdialHands: 1, gmtHand: 1,
+  crystal: 2, cyclops: 2,
+  bracelet: 3,
+  clasp: 4, caseback: 4,
+  mainplate: 5, barrel: 5, centerWheel: 5, thirdWheel: 5, fourthWheel: 5,
+  escapeWheel: 6, palletFork: 6, balanceWheel: 6, hairspring: 6, jewels: 6,
+  bridges: 7, balanceBridge: 7, rotor: 7,
+}
+
 /**
- * Montre générée entièrement par le code (aucun asset externe) :
- * chaque pièce est un nœud nommé selon parts.json.
+ * Montre générée entièrement par le code (aucun asset externe) à partir de son
+ * descripteur de style : chaque pièce est un nœud nommé selon parts.json.
  */
 export function ProceduralWatch({ id, config, high }: { id: WatchId; config: WatchConfig; high: boolean }) {
   const watch = WATCH_BY_ID[id]
-  const m = useMemo(() => createMaterials(watch, config, high), [watch, config, high])
+  const lang = useAtelier((s) => s.lang)
+  const wrist = useAtelier((s) => s.wrist)
+  const night = useAtelier((s) => s.night)
+  const m = useMemo(() => createMaterials(watch, config, high, lang), [watch, config, high, lang])
   useEffect(() => () => disposeMaterials(m), [m])
+  // Mode nuit : la luminescence se révèle (le bloom la fait rayonner)
+  useEffect(() => {
+    m.lume.emissiveIntensity = night ? 2.6 : 0.18
+    m.lume.color.set(night ? '#a9f5d9' : '#eef1e6')
+  }, [m, night])
+  const style = watch.style
+  const layout = useMemo(() => dialLayout(style), [style])
   const bezel = watch.bezels.find((b) => b.id === config.bezel) ?? watch.bezels[0]
-  const { date, chrono, crownGuards } = watch.features
-  const twoTone = config.metal === 'twotone'
+  const twoTone = config.metal === 'twotone' || config.metal === 'twotone-rose'
   const stage = useStages()
+  const present = useMemo(() => new Set(partsFor(watch, config).map((p) => p.id)), [watch, config])
+  const show = (pid: string) => present.has(pid) && stage > (STAGE_OF[pid] ?? 0)
+  const glide = watch.specs.movement === 'springdrive'
+  const scale = style.diameter / 40
 
   return (
-    <group name={`watch-${id}`}>
-      {stage > 0 && (
+    <group name={`watch-${id}`} scale={scale}>
+      {show('case') && (
         <Part id="case">
-          <CaseMiddle m={m} guards={crownGuards} />
+          <CaseMiddle m={m} guards={!!style.crownGuards} integrated={style.lugs === 'integrated'} />
         </Part>
       )}
-      {stage > 0 && (
+      {show('crown') && (
         <Part id="crown">
           <Crown m={m} />
         </Part>
       )}
-      {stage > 0 && chrono && (
+      {show('pushers') && (
         <Part id="pushers">
           <Pushers m={m} />
         </Part>
       )}
-      {stage > 0 && (
+      {show('bezel') && (
         <Part id="bezel">
-          <Bezel m={m} style={bezel.style} accent={twoTone} />
+          <Bezel m={m} option={bezel} accent={twoTone} />
         </Part>
       )}
-      {stage > 0 && (bezel.style === 'dive' || bezel.style === 'tachy') && (
+      {show('bezelInsert') && (
         <Part id="bezelInsert">
           <BezelInsert m={m} style={bezel.style} />
         </Part>
       )}
-      {stage > 2 && (
+      {show('crystal') && (
         <Part id="crystal">
           <Crystal m={m} />
         </Part>
       )}
-      {stage > 2 && date && (
+      {show('cyclops') && (
         <Part id="cyclops">
-          <Cyclops m={m} />
+          <Cyclops m={m} angle={layout.date?.angle} r={layout.date?.r} />
         </Part>
       )}
-      {stage > 1 && (
+      {show('dial') && (
         <Part id="dial">
-          <Dial m={m} date={date} />
+          <Dial m={m} layout={layout} />
         </Part>
       )}
-      {stage > 1 && (
+      {show('indices') && (
         <Part id="indices">
-          <Indices m={m} model={id} date={date} />
+          <Indices m={m} style={style} layout={layout} />
         </Part>
       )}
-      {stage > 1 && date && (
+      {show('dateWheel') && (
         <Part id="dateWheel">
           <DateWheel m={m} />
         </Part>
       )}
-      {stage > 1 && (
+      {show('dayWheel') && (
+        <Part id="dayWheel">
+          <DayWheel m={m} />
+        </Part>
+      )}
+      {show('moonphase') && (
+        <Part id="moonphase">
+          <MoonDisc m={m} layout={layout} />
+        </Part>
+      )}
+      {show('hourHand') && (
         <Part id="hourHand">
-          <HourHand m={m} model={id} />
+          <HourHand m={m} style={style} />
         </Part>
       )}
-      {stage > 1 && (
+      {show('gmtHand') && (
+        <Part id="gmtHand">
+          <GmtHand m={m} />
+        </Part>
+      )}
+      {show('minuteHand') && (
         <Part id="minuteHand">
-          <MinuteHand m={m} model={id} />
+          <MinuteHand m={m} style={style} />
         </Part>
       )}
-      {stage > 1 && (
+      {show('secondsHand') && (
         <Part id="secondsHand">
-          <SecondsHand m={m} model={id} chrono={chrono} />
+          <SecondsHand m={m} style={style} glide={glide} />
         </Part>
       )}
-      {stage > 1 && chrono && (
+      {show('subdialHands') && (
         <Part id="subdialHands">
-          <SubdialHands m={m} />
+          <SubdialHands m={m} layout={layout} glide={glide} />
         </Part>
       )}
 
-      {stage > 5 && (
+      {show('mainplate') && (
         <Part id="mainplate">
           <MainPlate m={m} />
         </Part>
       )}
-      {stage > 5 && (
+      {show('barrel') && (
         <Part id="barrel">
           <Barrel m={m} />
         </Part>
       )}
-      {stage > 5 && (
+      {show('centerWheel') && (
         <Part id="centerWheel">
           <CenterWheel m={m} />
         </Part>
       )}
-      {stage > 5 && (
+      {show('thirdWheel') && (
         <Part id="thirdWheel">
           <ThirdWheel m={m} />
         </Part>
       )}
-      {stage > 5 && (
+      {show('fourthWheel') && (
         <Part id="fourthWheel">
           <FourthWheel m={m} />
         </Part>
       )}
-      {stage > 6 && (
+      {show('escapeWheel') && (
         <Part id="escapeWheel">
           <EscapeWheel m={m} />
         </Part>
       )}
-      {stage > 6 && (
+      {show('palletFork') && (
         <Part id="palletFork">
           <PalletFork m={m} />
         </Part>
       )}
-      {stage > 6 && (
+      {show('balanceWheel') && (
         <Part id="balanceWheel">
           <BalanceWheel m={m} />
         </Part>
       )}
-      {stage > 6 && (
+      {show('hairspring') && (
         <Part id="hairspring">
           <Hairspring m={m} />
         </Part>
       )}
-      {stage > 6 && (
+      {show('jewels') && (
         <Part id="jewels">
           <Jewels m={m} />
         </Part>
       )}
-      {stage > 7 && (
+      {show('bridges') && (
         <Part id="bridges">
           <Bridges m={m} />
         </Part>
       )}
-      {stage > 7 && (
+      {show('balanceBridge') && (
         <Part id="balanceBridge">
           <BalanceBridge m={m} />
         </Part>
       )}
-      {stage > 7 && (
+      {show('rotor') && (
         <Part id="rotor">
           <Rotor m={m} />
         </Part>
       )}
-      {stage > 4 && (
+      {show('caseback') && (
         <Part id="caseback">
           <Caseback m={m} />
         </Part>
       )}
 
-      {stage > 3 && (
+      {show('bracelet') && (
         <Part id="bracelet">
-          <Bracelet m={m} type={config.bracelet} twoTone={twoTone} />
+          <Bracelet m={m} type={config.bracelet} twoTone={twoTone} integrated={style.lugs === 'integrated'} wrist={wrist} />
         </Part>
       )}
-      {stage > 4 && (
+      {show('clasp') && (
         <Part id="clasp">
-          <Clasp m={m} />
+          <Clasp m={m} type={config.bracelet} wrist={wrist} />
         </Part>
       )}
-      {stage >= STAGES && <ExplodeLines watch={id} />}
+      {stage >= STAGES && <ExplodeLines watch={watch} config={config} />}
+      {stage >= STAGES && <EnergyFlow />}
     </group>
   )
 }

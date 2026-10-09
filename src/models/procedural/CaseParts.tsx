@@ -7,7 +7,23 @@ import type { WatchMaterials } from '../materials'
 /** Matrice (u, v, d) -> (x = d, y = u, z = v) : extrusion d'un profil latéral. */
 const SIDE = new THREE.Matrix4().set(0, 0, 1, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1)
 
-function lugGeometry() {
+function lugGeometry(integrated: boolean) {
+  if (integrated) {
+    // épaulement large qui prolonge le boîtier jusqu'au bracelet (montres à bracelet intégré)
+    const profile: P2[] = [
+      [13.5, -2.4],
+      [19.5, -2.3],
+      [22.6, -1.6],
+      [23.2, 0.2],
+      [22.4, 1.9],
+      [19.4, 3.2],
+      [13.5, 4.3],
+    ]
+    const one = extrudeZ(smoothShape(profile, [], 90), 22.6, 0, 0.5, 12)
+    one.applyMatrix4(SIDE)
+    one.translate(-11.3, 0, 0)
+    return merge([one, one.clone().rotateZ(Math.PI)])
+  }
   const profile: P2[] = [
     [14.2, -2.3],
     [19.2, -2.2],
@@ -49,7 +65,7 @@ function crownGuardGeometry() {
   return merge([up, down])
 }
 
-export function CaseMiddle({ m, guards }: { m: WatchMaterials; guards: boolean }) {
+export function CaseMiddle({ m, guards, integrated = false }: { m: WatchMaterials; guards: boolean; integrated?: boolean }) {
   const geos = useDisposable(() => {
     const profile = roundProfile(
       [
@@ -68,7 +84,7 @@ export function CaseMiddle({ m, guards }: { m: WatchMaterials; guards: boolean }
       6,
     )
     const middle = lathe(profile, 160)
-    const lugs = lugGeometry()
+    const lugs = lugGeometry(integrated)
     const guard = guards ? crownGuardGeometry() : null
     // Rehaut (anneau intérieur incliné entre cadran et verre)
     const flange = lathe(
@@ -81,7 +97,7 @@ export function CaseMiddle({ m, guards }: { m: WatchMaterials; guards: boolean }
       128,
     )
     return { middle, lugs, guard, flange }
-  }, [guards])
+  }, [guards, integrated])
   return (
     <group>
       <mesh geometry={geos.middle} material={m.metal} castShadow />

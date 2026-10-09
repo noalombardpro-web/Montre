@@ -1,5 +1,8 @@
 import { useEffect, useLayoutEffect, useRef } from 'react'
-import { WATCHES, type WatchId } from '../data/watches'
+import { BRANDS, WATCHES, type WatchId } from '../data/watches'
+import { WatchThumb } from '../components/ui/WatchThumb'
+
+const FEATURED = WATCHES.filter((w) => w.featured)
 import { t } from '../data/i18n'
 import { anim, useAtelier } from '../store/useAtelier'
 import { navigate } from '../lib/router'
@@ -199,31 +202,41 @@ export function Landing({ poster = true }: { poster?: boolean }) {
             <h2 className="display mt-4 text-5xl md:text-6xl">{COPY.collectionTitle[lang]}</h2>
           </div>
         </div>
-        <ul className="reveal grid gap-px bg-line md:grid-cols-3">
-          {WATCHES.map((w, i) => (
+        <ul className="reveal grid gap-px bg-line sm:grid-cols-2 lg:grid-cols-4">
+          {FEATURED.map((w) => (
             <li key={w.id} className="bg-ink">
               <button
                 type="button"
                 onMouseEnter={() => useAtelier.getState().setWatch(w.id)}
                 onFocus={() => useAtelier.getState().setWatch(w.id)}
                 onClick={() => enter(w.id)}
-                className={`group flex w-full flex-col items-start gap-3 p-6 text-left transition duration-700 md:p-8 ${watchId === w.id ? 'bg-white/[0.03]' : 'hover:bg-white/[0.02]'}`}
+                className={`group flex w-full items-center gap-4 p-5 text-left transition duration-700 ${watchId === w.id ? 'bg-white/[0.03]' : 'hover:bg-white/[0.02]'}`}
               >
-                <div className="flex w-full items-center justify-between">
-                  <span className="text-[10px] tracking-[0.3em] text-muted">0{i + 1}</span>
-                  <span className={`h-px w-10 bg-gold transition-all duration-700 ${watchId === w.id ? 'w-16 opacity-100' : 'opacity-30'}`} />
-                </div>
-                <span className="display text-4xl">{w.name}</span>
-                <span className="eyebrow !text-[9.5px]">{w.family[lang]}</span>
-                <span className="text-[13.5px] leading-relaxed text-ivory/60">{w.intro[lang]}</span>
-                <span className="mt-2 inline-flex items-center gap-3 text-[10.5px] uppercase tracking-[0.26em] text-champagne">
-                  {t('explore', lang)}
-                  <IconArrow width={14} height={14} className="transition-transform duration-500 group-hover:translate-x-1.5" />
+                <WatchThumb def={w} size={58} />
+                <span className="min-w-0">
+                  <span className="eyebrow block !text-[9px]">{BRANDS[w.brand].name}</span>
+                  <span className="display mt-1 block truncate text-2xl">{w.name}</span>
+                  <span className="mt-1 block truncate text-[11.5px] text-ivory/55">{w.tagline[lang]}</span>
                 </span>
               </button>
             </li>
           ))}
         </ul>
+        <div className="reveal mt-6 flex flex-wrap items-center gap-6">
+          <a
+            href="#/collection"
+            className="btn-lux"
+            onClick={(e) => {
+              e.preventDefault()
+              navigate('collection')
+            }}
+          >
+            {lang === 'fr' ? `Voir les ${WATCHES.length} montres` : `See all ${WATCHES.length} watches`} <IconArrow width={16} height={16} />
+          </a>
+          <span className="text-[11px] uppercase tracking-[0.22em] text-muted">
+            {new Set(WATCHES.map((w) => w.brand)).size} {lang === 'fr' ? 'maisons · recherche · comparateur' : 'houses · search · comparison'}
+          </span>
+        </div>
         <footer className="mt-10 flex flex-col justify-between gap-4 border-t border-line pt-6 text-[11px] leading-relaxed text-muted md:flex-row">
           <p className="max-w-2xl">{COPY.legal[lang]}</p>
           <p>© {new Date().getFullYear()} Watch Atelier</p>

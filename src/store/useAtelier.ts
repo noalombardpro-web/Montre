@@ -1,9 +1,10 @@
 import { create } from 'zustand'
 import type { Lang } from '../data/parts'
-import { WATCHES, WATCH_BY_ID, type WatchConfig, type WatchId } from '../data/watches'
+import { DEFAULT_WATCH, WATCHES, WATCH_BY_ID, type WatchConfig, type WatchId } from '../data/watches'
 
 export type Mode = 'normal' | 'exploded' | 'movement' | 'xray'
-export type Page = 'landing' | 'atelier'
+export type Page = 'landing' | 'atelier' | 'collection'
+export type TourId = 'assembly' | 'energy'
 export type Quality = 'high' | 'low'
 
 const prefersReducedMotion =
@@ -42,6 +43,22 @@ interface AtelierState {
   staged: boolean
   configOpen: boolean
   helpOpen: boolean
+  /** Tiroir de choix du modèle dans l'atelier. */
+  drawerOpen: boolean
+  /** Tour de poignet (mm) : dimensionne la boucle du bracelet. */
+  wrist: number
+  /** Mode nuit : lumière éteinte, luminescence révélée. */
+  night: boolean
+  /** Vue en coupe : position du plan de coupe (mm, sur l'axe X) ou null. */
+  cut: number | null
+  /** Tic-tac synthétisé (Web Audio). */
+  sound: boolean
+  /** Visite guidée en cours (montage pas à pas, trajet de l'énergie). */
+  tour: { id: TourId; step: number } | null
+  /** Quiz « quelle est cette pièce ? ». */
+  quiz: boolean
+  /** Références sélectionnées pour le comparateur (max 3). */
+  compare: WatchId[]
   /** Incrémenté pour demander une action ponctuelle à la scène. */
   screenshotNonce: number
   resetNonce: number
@@ -53,7 +70,9 @@ interface AtelierState {
   setExplode: (v: number) => void
   select: (id: string | null) => void
   hover: (id: string | null) => void
-  toggle: (k: 'wireframe' | 'slowMo' | 'isolate' | 'autoRotate' | 'hotspots' | 'configOpen' | 'helpOpen') => void
+  toggle: (k: 'wireframe' | 'slowMo' | 'isolate' | 'autoRotate' | 'hotspots' | 'configOpen' | 'helpOpen' | 'drawerOpen' | 'night' | 'sound' | 'quiz') => void
+  startTour: (id: TourId | null) => void
+  toggleCompare: (id: WatchId) => void
   set: (patch: Partial<AtelierState>) => void
   setLang: (l: Lang) => void
   screenshot: () => void
@@ -62,7 +81,7 @@ interface AtelierState {
 
 export const useAtelier = create<AtelierState>((set, get) => ({
   page: 'landing',
-  watchId: 'submariner',
+  watchId: DEFAULT_WATCH,
   configs: Object.fromEntries(WATCHES.map((w) => [w.id, { ...w.defaults }])) as Record<WatchId, WatchConfig>,
   mode: 'normal',
   explode: 0,
@@ -80,13 +99,21 @@ export const useAtelier = create<AtelierState>((set, get) => ({
   staged: false,
   configOpen: false,
   helpOpen: false,
+  drawerOpen: false,
+  wrist: 185,
+  night: false,
+  cut: null,
+  sound: false,
+  tour: null,
+  quiz: false,
+  compare: [],
   screenshotNonce: 0,
   resetNonce: 0,
 
-  setPage: (page) => set({ page, selected: null, isolate: false }),
+  setPage: (page) => set({ page, selected: null, isolate: false, tour: null, quiz: false, drawerOpen: false }),
   setWatch: (watchId) => {
     if (!WATCH_BY_ID[watchId] || watchId === get().watchId) return
-    set({ watchId, selected: null, isolate: false })
+    set({ watchId, selected: null, isolate: false, tour: null })
   },
   setConfig: (patch) => {
     const { watchId, configs } = get()
@@ -111,6 +138,21 @@ export const useAtelier = create<AtelierState>((set, get) => ({
     document.documentElement.lang = lang
     set({ lang })
   },
+  startTour: (id) =>
+    set({
+      tour: id ? { id, step: 0 } : null,
+      selected: null,
+      isolate: false,
+      quiz: false,
+      configOpen: false,
+      mode: id === 'energy' ? 'movement' : 'normal',
+      explode: 0,
+      cut: null,
+    }),
+  toggleCompare: (id) => {
+    const c = get().compare
+    set({ compare: c.includes(id) ? c.filter((x) => x !== id) : [...c, id].slice(-3) })
+  },
   screenshot: () => set({ screenshotNonce: get().screenshotNonce + 1 }),
   resetView: () => set({ resetNonce: get().resetNonce + 1, selected: null, isolate: false }),
 }))
@@ -126,4 +168,6 @@ export const anim = {
   scroll: 0,
   /** Décalage de transition entre modèles. */
   swap: 0,
+  /** Progression 0..1 de l'animation de l'étape de visite en cours. */
+  tourT: 1,
 }

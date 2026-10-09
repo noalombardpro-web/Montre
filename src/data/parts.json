@@ -3,20 +3,18 @@
     "units": "Millimètres. Repère : +Z = face cadran (vers l'observateur), +Y = 12 h, +X = 3 h (couronne).",
     "id": "Nom du nœud 3D (identique dans le modèle procédural et dans un GLB exporté).",
     "group": "exterior | movement — détermine la visibilité des hotspots selon le mode.",
-    "models": "Liste des modèles concernés, ou [\"*\"] pour tous.",
     "explode": "Vecteur de déplacement [x,y,z] en mm à 100 % d'éclatement.",
     "order": "Rang dans la séquence d'éclatement (stagger) — 0 part en premier.",
     "anchor": "Position locale [x,y,z] du hotspot et de l'origine des lignes de liaison.",
     "metal": "true si le matériau suit le métal choisi dans le configurateur.",
-    "name/material/function/description/funFact": "Textes bilingues { fr, en }."
+    "name/material/function/description/funFact": "Textes bilingues { fr, en }.",
+    "requires": "Condition d'existence : cyclops | insert | date | day | chrono | subdials | gmt | moon | centerSeconds (absent = toutes les montres).",
+    "howItWorks/assembly/tools/links": "Fiche pédagogique : fonctionnement, montage, outils, pièces liées (ids)."
   },
   "parts": [
     {
       "id": "crystal",
       "group": "exterior",
-      "models": [
-        "*"
-      ],
       "explode": [
         0,
         0,
@@ -47,15 +45,34 @@
       "funFact": {
         "fr": "Seul le diamant peut rayer un verre saphir.",
         "en": "Only diamond can scratch a sapphire crystal."
-      }
+      },
+      "howItWorks": {
+        "fr": "Le saphir est taillé, poli puis traité antireflet sur sa face interne. Il est serré dans la lunette par un joint en polymère : c'est ce serrage qui assure l'étanchéité côté cadran.",
+        "en": "Sapphire is cut, polished and anti-reflection coated on its inner face. It is held in the bezel by a polymer gasket: that compression seals the dial side."
+      },
+      "assembly": {
+        "fr": "Graisser légèrement le joint, centrer le verre sur la lunette, puis l'emboîter à la presse avec des matrices en Delrin pour ne pas le rayer. Vérifier l'étanchéité au testeur.",
+        "en": "Lightly grease the gasket, centre the crystal on the bezel, then press it in with Delrin dies so it isn't scratched. Check water resistance on a tester."
+      },
+      "tools": [
+        {
+          "fr": "Presse à verre / à fond",
+          "en": "Crystal & caseback press"
+        },
+        {
+          "fr": "Graisse silicone pour joints",
+          "en": "Silicone gasket grease"
+        }
+      ],
+      "links": [
+        "bezel",
+        "cyclops",
+        "case"
+      ]
     },
     {
       "id": "cyclops",
       "group": "exterior",
-      "models": [
-        "datejust",
-        "submariner"
-      ],
       "explode": [
         0,
         0,
@@ -86,15 +103,30 @@
       "funFact": {
         "fr": "Sa position est alignée au centième de millimètre près.",
         "en": "Its position is aligned to a hundredth of a millimetre."
-      }
+      },
+      "howItWorks": {
+        "fr": "Lentille plan-convexe : ses rayons convergent pour former une image virtuelle agrandie du chiffre de date situé juste dessous.",
+        "en": "A plano-convex lens: its rays converge to form an enlarged virtual image of the date numeral just below."
+      },
+      "assembly": {
+        "fr": "Collée au verre par un adhésif optique durci aux UV, avant la pose du verre, à l'aide d'un gabarit qui l'aligne exactement sur le guichet.",
+        "en": "Bonded to the crystal with UV-cured optical adhesive, before the crystal is fitted, using a jig that aligns it exactly over the aperture."
+      },
+      "tools": [
+        {
+          "fr": "Loupe ×4",
+          "en": "4× loupe"
+        }
+      ],
+      "links": [
+        "crystal",
+        "dateWheel"
+      ],
+      "requires": "cyclops"
     },
     {
       "id": "bezelInsert",
       "group": "exterior",
-      "models": [
-        "submariner",
-        "daytona"
-      ],
       "explode": [
         0,
         0,
@@ -125,14 +157,31 @@
       "funFact": {
         "fr": "La céramique est cuite à plus de 1 400 °C avant d'être polie au diamant.",
         "en": "The ceramic is fired at over 1,400 °C before being diamond-polished."
-      }
+      },
+      "howItWorks": {
+        "fr": "Sur une lunette de plongée, on aligne le triangle sur la minute du départ : la grande aiguille indique ensuite le temps écoulé. Sur un GMT, l'échelle 24 h se lit avec l'aiguille rouge. Sur un tachymètre, on lit une vitesse au bout d'une distance connue.",
+        "en": "On a dive bezel you align the triangle with the minute hand at the start: the hand then shows elapsed time. On a GMT, the 24-hour scale is read with the red hand. On a tachymeter, you read a speed after a known distance."
+      },
+      "assembly": {
+        "fr": "Collé ou serti dans la gorge de la lunette, puis la perle luminescente est posée à 12 h.",
+        "en": "Glued or crimped into the bezel groove, then the luminous pip is set at 12 o'clock."
+      },
+      "tools": [
+        {
+          "fr": "Brucelles",
+          "en": "Tweezers"
+        }
+      ],
+      "links": [
+        "bezel",
+        "minuteHand",
+        "gmtHand"
+      ],
+      "requires": "insert"
     },
     {
       "id": "bezel",
       "group": "exterior",
-      "models": [
-        "*"
-      ],
       "explode": [
         0,
         0,
@@ -164,14 +213,30 @@
       "funFact": {
         "fr": "Une lunette de plongée compte 120 crans : un par demi-minute.",
         "en": "A dive bezel clicks 120 times per turn: one per half-minute."
-      }
+      },
+      "howItWorks": {
+        "fr": "Une lunette tournante unidirectionnelle s'appuie sur un ressort à cliquet (120 ou 60 crans) : elle ne peut tourner que dans le sens qui raccourcit le temps de plongée, par sécurité.",
+        "en": "A unidirectional rotating bezel rides on a ratchet spring (120 or 60 clicks): it only turns the way that shortens the remaining dive time, for safety."
+      },
+      "assembly": {
+        "fr": "Poser le ressort à cliquet dans la gorge de la carrure, puis emboîter la lunette en force à la presse. Une lunette fixe est vissée ou chassée sur le boîtier.",
+        "en": "Fit the click spring in the caseband groove, then snap the bezel on with a press. A fixed bezel is screwed or press-fitted onto the case."
+      },
+      "tools": [
+        {
+          "fr": "Presse à verre / à fond",
+          "en": "Crystal & caseback press"
+        }
+      ],
+      "links": [
+        "bezelInsert",
+        "crystal",
+        "case"
+      ]
     },
     {
       "id": "secondsHand",
       "group": "exterior",
-      "models": [
-        "*"
-      ],
       "explode": [
         0,
         0,
@@ -202,14 +267,34 @@
       "funFact": {
         "fr": "Son glissement « fluide » est en réalité une succession de 8 sauts par seconde.",
         "en": "Its 'smooth' sweep is actually eight tiny jumps per second."
-      }
+      },
+      "howItWorks": {
+        "fr": "Chassée sur l'axe de la roue de secondes (ou de la roue de chronographe), elle avance d'un pas à chaque alternance du balancier : 8 fois par seconde à 28 800 alt/h.",
+        "en": "Press-fitted on the fourth-wheel arbor (or the chronograph wheel), it advances one step per balance swing: 8 times a second at 28,800 vph."
+      },
+      "assembly": {
+        "fr": "Dernière aiguille posée, à la potence pose-aiguilles, en vérifiant qu'elle ne touche ni la minute ni le verre (ébat vertical).",
+        "en": "Last hand fitted, with the hand press, checking it touches neither the minute hand nor the crystal (vertical clearance)."
+      },
+      "tools": [
+        {
+          "fr": "Pose-aiguilles",
+          "en": "Hand-setting press"
+        },
+        {
+          "fr": "Loupe ×4",
+          "en": "4× loupe"
+        }
+      ],
+      "links": [
+        "fourthWheel",
+        "minuteHand"
+      ],
+      "requires": "centerSeconds"
     },
     {
       "id": "minuteHand",
       "group": "exterior",
-      "models": [
-        "*"
-      ],
       "explode": [
         0,
         0,
@@ -240,14 +325,29 @@
       "funFact": {
         "fr": "Elle accomplit 8 760 tours par an.",
         "en": "It completes 8,760 turns a year."
-      }
+      },
+      "howItWorks": {
+        "fr": "Elle est entraînée par la chaussée, un tube monté à friction sur la roue de centre : la friction permet la mise à l'heure sans abîmer le rouage.",
+        "en": "Driven by the cannon pinion, a tube friction-fitted on the centre wheel: the friction allows time-setting without damaging the train."
+      },
+      "assembly": {
+        "fr": "Posée après l'aiguille des heures, exactement sur 12 h quand l'aiguille des heures est sur une heure ronde.",
+        "en": "Fitted after the hour hand, exactly on 12 when the hour hand points to a full hour."
+      },
+      "tools": [
+        {
+          "fr": "Pose-aiguilles",
+          "en": "Hand-setting press"
+        }
+      ],
+      "links": [
+        "centerWheel",
+        "hourHand"
+      ]
     },
     {
       "id": "hourHand",
       "group": "exterior",
-      "models": [
-        "*"
-      ],
       "explode": [
         0,
         0,
@@ -278,14 +378,29 @@
       "funFact": {
         "fr": "Elle tourne 12 fois moins vite que l'aiguille des minutes.",
         "en": "It turns twelve times slower than the minute hand."
-      }
+      },
+      "howItWorks": {
+        "fr": "La minuterie (roue de minuterie + roue des heures) démultiplie par 12 le mouvement de la chaussée : un tour en 12 heures.",
+        "en": "The motion works (minute wheel + hour wheel) reduce the cannon pinion's motion by 12: one turn in 12 hours."
+      },
+      "assembly": {
+        "fr": "Première aiguille posée sur le canon de la roue des heures, au moment précis où la date bascule (minuit) pour synchroniser le quantième.",
+        "en": "First hand fitted on the hour-wheel pipe, at the precise moment the date flips (midnight) to synchronise the calendar."
+      },
+      "tools": [
+        {
+          "fr": "Pose-aiguilles",
+          "en": "Hand-setting press"
+        }
+      ],
+      "links": [
+        "minuteHand",
+        "dateWheel"
+      ]
     },
     {
       "id": "subdialHands",
       "group": "exterior",
-      "models": [
-        "daytona"
-      ],
       "explode": [
         0,
         0,
@@ -298,32 +413,53 @@
         4.4
       ],
       "name": {
-        "fr": "Aiguilles des compteurs",
+        "fr": "Aiguilles auxiliaires",
         "en": "Sub-dial hands"
       },
       "material": {
-        "fr": "Acier poli",
-        "en": "Polished steel"
+        "fr": "Acier poli ou bleui",
+        "en": "Polished or blued steel"
       },
       "function": {
-        "fr": "Compteurs 30 minutes, 12 heures et petite seconde.",
-        "en": "30-minute and 12-hour counters plus small seconds."
+        "fr": "Petite seconde et compteurs de chronographe.",
+        "en": "Small seconds and chronograph counters."
       },
       "description": {
-        "fr": "Trois aiguilles bâton sur des compteurs azurés.",
-        "en": "Three baton hands over snailed counters."
+        "fr": "Aiguilles bâton posées sur des compteurs azurés.",
+        "en": "Baton hands over snailed sub-dials."
       },
       "funFact": {
-        "fr": "Le compteur de petite seconde tourne en permanence, même chronographe arrêté.",
+        "fr": "La petite seconde tourne en permanence, même chronographe arrêté.",
         "en": "The small seconds runs continuously, even when the chronograph is stopped."
-      }
+      },
+      "howItWorks": {
+        "fr": "Petite seconde : chassée directement sur la roue de secondes. Compteurs de chronographe : entraînés par la roue de compteur, ramenés à zéro par des cœurs en acier frappés par des marteaux.",
+        "en": "Small seconds: press-fitted directly on the fourth wheel. Chronograph counters: driven by the counter wheel, reset by steel heart cams struck by hammers."
+      },
+      "assembly": {
+        "fr": "Posées avant les aiguilles centrales, chacune sur son axe excentré, puis contrôlées sur zéro après une remise à zéro.",
+        "en": "Fitted before the central hands, each on its off-centre arbor, then checked on zero after a reset."
+      },
+      "tools": [
+        {
+          "fr": "Pose-aiguilles",
+          "en": "Hand-setting press"
+        },
+        {
+          "fr": "Loupe ×4",
+          "en": "4× loupe"
+        }
+      ],
+      "links": [
+        "dial",
+        "fourthWheel",
+        "pushers"
+      ],
+      "requires": "subdials"
     },
     {
       "id": "indices",
       "group": "exterior",
-      "models": [
-        "*"
-      ],
       "explode": [
         0,
         0,
@@ -354,14 +490,32 @@
       "funFact": {
         "fr": "La luminescence moderne brille plus de 8 heures après 10 minutes de lumière.",
         "en": "Modern lume glows for over 8 hours after 10 minutes of light."
-      }
+      },
+      "howItWorks": {
+        "fr": "Chaque index porte deux pieds qui traversent le cadran et sont rivés au dos. La matière luminescente (aluminate de strontium) stocke la lumière et la restitue pendant des heures.",
+        "en": "Each marker has two feet that pass through the dial and are riveted on the back. The luminous compound (strontium aluminate) stores light and releases it for hours."
+      },
+      "assembly": {
+        "fr": "Posés un à un à la brucelle avant la livraison du cadran à l'emboîteur, puis la luminescence est déposée à la seringue.",
+        "en": "Set one by one with tweezers before the dial reaches the caser, then the lume is applied by syringe."
+      },
+      "tools": [
+        {
+          "fr": "Brucelles",
+          "en": "Tweezers"
+        },
+        {
+          "fr": "Loupe ×4",
+          "en": "4× loupe"
+        }
+      ],
+      "links": [
+        "dial"
+      ]
     },
     {
       "id": "dial",
       "group": "exterior",
-      "models": [
-        "*"
-      ],
       "explode": [
         0,
         0,
@@ -392,15 +546,34 @@
       "funFact": {
         "fr": "Un cadran laqué peut recevoir plus de 10 couches de vernis.",
         "en": "A lacquer dial can receive more than ten coats of varnish."
-      }
+      },
+      "howItWorks": {
+        "fr": "Plaque de laiton de 0,4 mm : ses deux pieds s'engagent dans la platine et sont bloqués par des vis excentriques latérales. Le décor (soleillé, laque, tapisserie…) est obtenu par brossage, galvanoplastie ou frappe.",
+        "en": "A 0.4 mm brass plate: its two feet engage in the main plate and are locked by side eccentric screws. The finish (sunburst, lacquer, tapisserie…) comes from brushing, electroplating or stamping."
+      },
+      "assembly": {
+        "fr": "Poser le cadran sur le mouvement, guichet aligné sur la date, serrer les vis de pieds. Toucher uniquement les bords, avec des doigtiers.",
+        "en": "Lay the dial on the movement, aperture aligned with the date, tighten the foot screws. Touch only the edges, with finger cots."
+      },
+      "tools": [
+        {
+          "fr": "Tournevis horloger",
+          "en": "Watchmaker screwdriver"
+        },
+        {
+          "fr": "Brucelles",
+          "en": "Tweezers"
+        }
+      ],
+      "links": [
+        "indices",
+        "mainplate",
+        "dateWheel"
+      ]
     },
     {
       "id": "dateWheel",
       "group": "exterior",
-      "models": [
-        "datejust",
-        "submariner"
-      ],
       "explode": [
         0,
         0,
@@ -431,14 +604,35 @@
       "funFact": {
         "fr": "Le saut instantané se prépare pendant plusieurs heures avant minuit.",
         "en": "The instantaneous jump is primed over several hours before midnight."
-      }
+      },
+      "howItWorks": {
+        "fr": "À minuit, un doigt entraîneur arme progressivement un sautoir pendant plusieurs heures, puis le relâche : le disque saute d'un cran (1/31 de tour) instantanément.",
+        "en": "At midnight a driving finger slowly tensions a jumper over several hours, then releases it: the disc jumps one step (1/31 turn) instantly."
+      },
+      "assembly": {
+        "fr": "Posé côté cadran sur la platine, maintenu par la plaque de quantième vissée, avec son sautoir et son correcteur rapide.",
+        "en": "Fitted on the dial side of the plate, held by the screwed calendar plate, with its jumper and quick-set corrector."
+      },
+      "tools": [
+        {
+          "fr": "Brucelles",
+          "en": "Tweezers"
+        },
+        {
+          "fr": "Tournevis horloger",
+          "en": "Watchmaker screwdriver"
+        }
+      ],
+      "links": [
+        "dial",
+        "cyclops",
+        "hourHand"
+      ],
+      "requires": "date"
     },
     {
       "id": "crown",
       "group": "exterior",
-      "models": [
-        "*"
-      ],
       "explode": [
         26,
         0,
@@ -470,14 +664,34 @@
       "funFact": {
         "fr": "Trois positions : vissée, remontage, mise à l'heure.",
         "en": "Three positions: screwed, winding, time-setting."
-      }
+      },
+      "howItWorks": {
+        "fr": "Position 0 : vissée (étanche). Position 1 : remontage — la tige entraîne le pignon coulant, puis la roue de couronne et le rochet. Position 2 : mise à l'heure — la tirette bascule le pignon coulant vers la minuterie.",
+        "en": "Position 0: screwed down (sealed). Position 1: winding — the stem drives the sliding pinion, then the crown wheel and ratchet. Position 2: time-setting — the setting lever shifts the sliding pinion to the motion works."
+      },
+      "assembly": {
+        "fr": "Introduire la tige de remontoir dans le mouvement emboîté, la couper à longueur, visser la couronne sur la tige puis sur le tube.",
+        "en": "Insert the winding stem into the cased movement, cut it to length, screw the crown onto the stem, then onto the tube."
+      },
+      "tools": [
+        {
+          "fr": "Tournevis horloger",
+          "en": "Watchmaker screwdriver"
+        },
+        {
+          "fr": "Graisse silicone pour joints",
+          "en": "Silicone gasket grease"
+        }
+      ],
+      "links": [
+        "case",
+        "barrel",
+        "bridges"
+      ]
     },
     {
       "id": "pushers",
       "group": "exterior",
-      "models": [
-        "daytona"
-      ],
       "explode": [
         24,
         0,
@@ -509,14 +723,34 @@
       "funFact": {
         "fr": "La remise à zéro fait voler les aiguilles via un cœur en acier.",
         "en": "Reset snaps the hands back via a heart-shaped steel cam."
-      }
+      },
+      "howItWorks": {
+        "fr": "À 2 h, départ/arrêt : le poussoir fait tourner la roue à colonnes qui embraye le chronographe. À 4 h, remise à zéro : les marteaux frappent les cœurs des compteurs.",
+        "en": "At 2 o'clock, start/stop: the pusher turns the column wheel that engages the chronograph. At 4, reset: the hammers strike the counters' heart cams."
+      },
+      "assembly": {
+        "fr": "Vissés dans la carrure avec leurs joints, après l'emboîtage, puis réglés pour un toucher franc.",
+        "en": "Screwed into the case with their gaskets after casing, then adjusted for a crisp feel."
+      },
+      "tools": [
+        {
+          "fr": "Tournevis horloger",
+          "en": "Watchmaker screwdriver"
+        },
+        {
+          "fr": "Graisse silicone pour joints",
+          "en": "Silicone gasket grease"
+        }
+      ],
+      "links": [
+        "subdialHands",
+        "case"
+      ],
+      "requires": "chrono"
     },
     {
       "id": "case",
       "group": "exterior",
-      "models": [
-        "*"
-      ],
       "explode": [
         0,
         0,
@@ -548,14 +782,35 @@
       "funFact": {
         "fr": "L'acier 904L résiste à la corrosion des eaux salées et chlorées.",
         "en": "904L steel resists corrosion from salt and chlorinated water."
-      }
+      },
+      "howItWorks": {
+        "fr": "La carrure encaisse les chocs et protège de l'eau : fond, verre, couronne et poussoirs y sont tous serrés sur des joints. Ses cornes reçoivent les barrettes du bracelet.",
+        "en": "The middle case absorbs shocks and keeps water out: caseback, crystal, crown and pushers all seal against gaskets. Its lugs receive the bracelet spring bars."
+      },
+      "assembly": {
+        "fr": "Le mouvement habillé (cadran + aiguilles) est posé dans un cercle d'emboîtage, puis glissé dans la carrure côté fond.",
+        "en": "The dressed movement (dial + hands) sits in a casing ring, then slides into the case from the back."
+      },
+      "tools": [
+        {
+          "fr": "Bague de calage",
+          "en": "Movement holder"
+        },
+        {
+          "fr": "Presse à verre / à fond",
+          "en": "Crystal & caseback press"
+        }
+      ],
+      "links": [
+        "crystal",
+        "bezel",
+        "caseback",
+        "crown"
+      ]
     },
     {
       "id": "mainplate",
       "group": "movement",
-      "models": [
-        "*"
-      ],
       "explode": [
         0,
         0,
@@ -586,14 +841,34 @@
       "funFact": {
         "fr": "Le perlage est réalisé point par point avec une meule tournante.",
         "en": "Perlage is applied dot by dot with a spinning peg."
-      }
+      },
+      "howItWorks": {
+        "fr": "Toutes les pièces y sont référencées : les trous de pivot, chassés de rubis, fixent la position exacte de chaque mobile au centième de millimètre.",
+        "en": "Everything is referenced to it: the pivot holes, set with jewels, fix each wheel's exact position to a hundredth of a millimetre."
+      },
+      "assembly": {
+        "fr": "Première pièce posée sur le porte-mouvement, rubis déjà chassés. On commence par la minuterie côté cadran, puis on retourne la platine.",
+        "en": "First part placed on the movement holder, jewels already set. The dial-side motion works go first, then the plate is turned over."
+      },
+      "tools": [
+        {
+          "fr": "Bague de calage",
+          "en": "Movement holder"
+        },
+        {
+          "fr": "Potence à chasser",
+          "en": "Jewelling tool"
+        }
+      ],
+      "links": [
+        "barrel",
+        "bridges",
+        "dial"
+      ]
     },
     {
       "id": "barrel",
       "group": "movement",
-      "models": [
-        "*"
-      ],
       "explode": [
         0,
         0,
@@ -624,14 +899,38 @@
       "funFact": {
         "fr": "Réserve de marche : environ 70 heures.",
         "en": "Power reserve: about 70 hours."
-      }
+      },
+      "howItWorks": {
+        "fr": "Le ressort moteur, enroulé autour de l'arbre, pousse le tambour denté qui entraîne le rouage. Une bride glissante évite de casser le ressort quand il est armé à fond par le rotor.",
+        "en": "The mainspring, coiled around the arbor, pushes the toothed drum that drives the train. A slipping bridle stops the spring from breaking when the rotor fully winds it."
+      },
+      "assembly": {
+        "fr": "Ressort enroulé à la machine dans le tambour, couvercle claqué, arbre huilé, puis barillet posé dans la platine et maintenu par le pont de barillet.",
+        "en": "Spring wound into the drum by machine, lid snapped on, arbor oiled, then the barrel goes into the plate, held by the barrel bridge."
+      },
+      "tools": [
+        {
+          "fr": "Pince à barillet",
+          "en": "Barrel pliers"
+        },
+        {
+          "fr": "Huilier",
+          "en": "Oiler"
+        },
+        {
+          "fr": "Brucelles",
+          "en": "Tweezers"
+        }
+      ],
+      "links": [
+        "centerWheel",
+        "rotor",
+        "crown"
+      ]
     },
     {
       "id": "centerWheel",
       "group": "movement",
-      "models": [
-        "*"
-      ],
       "explode": [
         0,
         0,
@@ -662,14 +961,34 @@
       "funFact": {
         "fr": "Ses dents sont taillées selon un profil cycloïdal, pas en développante.",
         "en": "Its teeth follow a cycloidal profile, not an involute one."
-      }
+      },
+      "howItWorks": {
+        "fr": "Engrène directement avec le barillet et fait un tour par heure : elle porte la chaussée, donc l'aiguille des minutes.",
+        "en": "Meshes directly with the barrel and turns once an hour: it carries the cannon pinion, hence the minute hand."
+      },
+      "assembly": {
+        "fr": "Posée dans son rubis de platine avant les autres mobiles du rouage ; son pivot traverse jusqu'au côté cadran.",
+        "en": "Fitted into its plate jewel before the other train wheels; its pivot reaches through to the dial side."
+      },
+      "tools": [
+        {
+          "fr": "Brucelles",
+          "en": "Tweezers"
+        },
+        {
+          "fr": "Loupe ×4",
+          "en": "4× loupe"
+        }
+      ],
+      "links": [
+        "barrel",
+        "thirdWheel",
+        "minuteHand"
+      ]
     },
     {
       "id": "thirdWheel",
       "group": "movement",
-      "models": [
-        "*"
-      ],
       "explode": [
         0,
         0,
@@ -700,14 +1019,29 @@
       "funFact": {
         "fr": "Ses pivots tournent dans des rubis de moins d'un millimètre.",
         "en": "Its pivots turn in rubies less than a millimetre wide."
-      }
+      },
+      "howItWorks": {
+        "fr": "Multiplie la vitesse entre la roue de centre (1 tour/h) et la roue de secondes (1 tour/min) : chaque engrenage roue/pignon multiplie par environ 7 à 8.",
+        "en": "Steps up speed between the centre wheel (1 rev/h) and the fourth wheel (1 rev/min): each wheel/pinion pair multiplies by roughly 7 to 8."
+      },
+      "assembly": {
+        "fr": "Posée à la brucelle dans son rubis, pignon engrené avec la roue de centre.",
+        "en": "Placed with tweezers into its jewel, pinion meshed with the centre wheel."
+      },
+      "tools": [
+        {
+          "fr": "Brucelles",
+          "en": "Tweezers"
+        }
+      ],
+      "links": [
+        "centerWheel",
+        "fourthWheel"
+      ]
     },
     {
       "id": "fourthWheel",
       "group": "movement",
-      "models": [
-        "*"
-      ],
       "explode": [
         0,
         0,
@@ -738,14 +1072,34 @@
       "funFact": {
         "fr": "Elle a tourné plus de 500 000 fois en un an.",
         "en": "It turns more than 500,000 times a year."
-      }
+      },
+      "howItWorks": {
+        "fr": "Fait exactement un tour par minute : c'est elle qui porte la trotteuse (ou la petite seconde). Elle transmet l'énergie au pignon d'échappement.",
+        "en": "Turns exactly once a minute: it carries the seconds hand (or small seconds). It passes energy on to the escape pinion."
+      },
+      "assembly": {
+        "fr": "Posée, puis les trois mobiles sont recouverts par le pont de rouage ; on vérifie qu'ils tournent librement (ébats).",
+        "en": "Fitted, then all three wheels are covered by the train bridge; you check they spin freely (end-shake)."
+      },
+      "tools": [
+        {
+          "fr": "Brucelles",
+          "en": "Tweezers"
+        },
+        {
+          "fr": "Loupe ×4",
+          "en": "4× loupe"
+        }
+      ],
+      "links": [
+        "thirdWheel",
+        "escapeWheel",
+        "secondsHand"
+      ]
     },
     {
       "id": "escapeWheel",
       "group": "movement",
-      "models": [
-        "*"
-      ],
       "explode": [
         0,
         0,
@@ -776,14 +1130,37 @@
       "funFact": {
         "fr": "C'est elle qui produit le « tic-tac » de la montre.",
         "en": "It produces the watch's 'tick-tock'."
-      }
+      },
+      "howItWorks": {
+        "fr": "Elle voudrait tourner sans arrêt, poussée par le rouage, mais l'ancre la bloque. À chaque oscillation du balancier, elle s'échappe d'une demi-dent et donne une impulsion à l'ancre : c'est le tic-tac.",
+        "en": "Driven by the train, it wants to spin freely, but the pallet fork locks it. With each balance swing it escapes half a tooth and gives the fork an impulse: that's the tick-tock."
+      },
+      "assembly": {
+        "fr": "Posée avec l'ancre sous le pont d'ancre ; ses dents sont lubrifiées avec une huile spéciale d'échappement en quantité infime.",
+        "en": "Fitted with the pallet fork under the pallet bridge; its teeth are lubricated with a tiny amount of special escapement oil."
+      },
+      "tools": [
+        {
+          "fr": "Brucelles",
+          "en": "Tweezers"
+        },
+        {
+          "fr": "Huilier",
+          "en": "Oiler"
+        },
+        {
+          "fr": "Loupe ×4",
+          "en": "4× loupe"
+        }
+      ],
+      "links": [
+        "fourthWheel",
+        "palletFork"
+      ]
     },
     {
       "id": "palletFork",
       "group": "movement",
-      "models": [
-        "*"
-      ],
       "explode": [
         0,
         0,
@@ -814,14 +1191,37 @@
       "funFact": {
         "fr": "Elle bascule 691 200 fois par jour.",
         "en": "It rocks 691,200 times a day."
-      }
+      },
+      "howItWorks": {
+        "fr": "Ses deux palettes en rubis bloquent et libèrent tour à tour la roue d'échappement. Sa fourchette reçoit la cheville du balancier et lui renvoie une impulsion à chaque alternance.",
+        "en": "Its two ruby pallets alternately lock and release the escape wheel. Its fork receives the balance impulse pin and gives it a push at every swing."
+      },
+      "assembly": {
+        "fr": "Posée après la roue d'échappement ; on contrôle à la loupe la « chute » et le « repos » des palettes, puis on visse le pont d'ancre.",
+        "en": "Fitted after the escape wheel; drop and lock are checked under the loupe, then the pallet bridge is screwed on."
+      },
+      "tools": [
+        {
+          "fr": "Brucelles",
+          "en": "Tweezers"
+        },
+        {
+          "fr": "Loupe ×4",
+          "en": "4× loupe"
+        },
+        {
+          "fr": "Tournevis horloger",
+          "en": "Watchmaker screwdriver"
+        }
+      ],
+      "links": [
+        "escapeWheel",
+        "balanceWheel"
+      ]
     },
     {
       "id": "balanceWheel",
       "group": "movement",
-      "models": [
-        "*"
-      ],
       "explode": [
         0,
         0,
@@ -852,14 +1252,34 @@
       "funFact": {
         "fr": "Son amplitude atteint près de 300° à chaque alternance.",
         "en": "Its amplitude reaches nearly 300° per swing."
-      }
+      },
+      "howItWorks": {
+        "fr": "Volant d'inertie qui oscille à fréquence fixe (4 Hz) grâce au spiral. C'est lui, et non le ressort, qui détermine la précision : chaque alternance laisse passer une quantité fixe d'énergie.",
+        "en": "An inertia wheel oscillating at a fixed frequency (4 Hz) thanks to the hairspring. It, not the mainspring, sets the accuracy: each swing lets a fixed amount of energy through."
+      },
+      "assembly": {
+        "fr": "Posé avec son spiral sous le pont de balancier, puis réglé au chronocomparateur : marche, amplitude et repère (symétrie du tic et du tac).",
+        "en": "Fitted with its hairspring under the balance bridge, then regulated on a timegrapher: rate, amplitude and beat error (tick/tock symmetry)."
+      },
+      "tools": [
+        {
+          "fr": "Brucelles",
+          "en": "Tweezers"
+        },
+        {
+          "fr": "Chronocomparateur",
+          "en": "Timegrapher"
+        }
+      ],
+      "links": [
+        "hairspring",
+        "palletFork",
+        "balanceBridge"
+      ]
     },
     {
       "id": "hairspring",
       "group": "movement",
-      "models": [
-        "*"
-      ],
       "explode": [
         0,
         0,
@@ -890,14 +1310,33 @@
       "funFact": {
         "fr": "Son épaisseur : environ 0,04 mm.",
         "en": "Its thickness: about 0.04 mm."
-      }
+      },
+      "howItWorks": {
+        "fr": "Ressort spiral qui ramène le balancier vers sa position de repos. Plus il est rigide, plus le balancier oscille vite : sa longueur active règle l'avance ou le retard.",
+        "en": "A coiled spring returning the balance to rest. The stiffer it is, the faster the balance swings: its active length sets the watch fast or slow."
+      },
+      "assembly": {
+        "fr": "Goupillé dans la virole (au centre) et le piton (à l'extérieur) ; on le centre et l'aplanit à la brucelle sous binoculaire avant de poser le balancier.",
+        "en": "Pinned into the collet (centre) and the stud (outside); it is centred and flattened with tweezers under a microscope before the balance is fitted."
+      },
+      "tools": [
+        {
+          "fr": "Brucelles",
+          "en": "Tweezers"
+        },
+        {
+          "fr": "Loupe ×4",
+          "en": "4× loupe"
+        }
+      ],
+      "links": [
+        "balanceWheel",
+        "balanceBridge"
+      ]
     },
     {
       "id": "jewels",
       "group": "movement",
-      "models": [
-        "*"
-      ],
       "explode": [
         0,
         0,
@@ -928,14 +1367,33 @@
       "funFact": {
         "fr": "Leur couleur vient du chrome, comme celle des rubis naturels.",
         "en": "Their colour comes from chromium, like natural rubies."
-      }
+      },
+      "howItWorks": {
+        "fr": "Les pivots d'acier tournent dans des trous de rubis synthétique polis : le frottement est minimal et l'usure quasi nulle, même après des décennies.",
+        "en": "Steel pivots turn in polished synthetic-ruby holes: friction is minimal and wear almost nil, even after decades."
+      },
+      "assembly": {
+        "fr": "Chassés à force dans la platine et les ponts avec une potence, à la bonne hauteur pour régler l'ébat de chaque mobile.",
+        "en": "Press-fitted into the plate and bridges with a jewelling tool, at the right height to set each wheel's end-shake."
+      },
+      "tools": [
+        {
+          "fr": "Potence à chasser",
+          "en": "Jewelling tool"
+        },
+        {
+          "fr": "Huilier",
+          "en": "Oiler"
+        }
+      ],
+      "links": [
+        "mainplate",
+        "bridges"
+      ]
     },
     {
       "id": "bridges",
       "group": "movement",
-      "models": [
-        "*"
-      ],
       "explode": [
         0,
         0,
@@ -966,14 +1424,38 @@
       "funFact": {
         "fr": "Les Côtes de Genève servaient à piéger la poussière.",
         "en": "Geneva stripes were originally meant to trap dust."
-      }
+      },
+      "howItWorks": {
+        "fr": "Ils tiennent l'autre extrémité des axes : chaque mobile tourne entre un rubis de platine et un rubis de pont. Le pont de barillet porte aussi le rochet et la roue de couronne du remontage.",
+        "en": "They hold the other end of the arbors: each wheel turns between a plate jewel and a bridge jewel. The barrel bridge also carries the winding ratchet and crown wheel."
+      },
+      "assembly": {
+        "fr": "Poser le pont en guidant chaque pivot dans son rubis, sans forcer, puis serrer les vis bleuies progressivement en croix.",
+        "en": "Lower the bridge guiding each pivot into its jewel, without force, then tighten the blued screws gradually in a cross pattern."
+      },
+      "tools": [
+        {
+          "fr": "Tournevis horloger",
+          "en": "Watchmaker screwdriver"
+        },
+        {
+          "fr": "Brucelles",
+          "en": "Tweezers"
+        },
+        {
+          "fr": "Bois de nettoyage",
+          "en": "Pegwood"
+        }
+      ],
+      "links": [
+        "mainplate",
+        "barrel",
+        "thirdWheel"
+      ]
     },
     {
       "id": "balanceBridge",
       "group": "movement",
-      "models": [
-        "*"
-      ],
       "explode": [
         0,
         0,
@@ -1004,14 +1486,33 @@
       "funFact": {
         "fr": "Il intègre un amortisseur de chocs à ressort en lyre.",
         "en": "It hosts a lyre-spring shock absorber."
-      }
+      },
+      "howItWorks": {
+        "fr": "Il tient le balancier par le haut et porte l'amortisseur de chocs : en cas de choc, le rubis se déplace et le ressort en lyre le recentre, protégeant les pivots ultra-fins.",
+        "en": "It holds the balance from above and carries the shock absorber: on impact the jewel moves and the lyre spring re-centres it, protecting the ultra-thin pivots."
+      },
+      "assembly": {
+        "fr": "Posé au-dessus du balancier, fixé par deux vis ; on vérifie que le balancier oscille librement dès qu'on lui donne une impulsion.",
+        "en": "Placed over the balance, fixed with two screws; you check the balance swings freely as soon as it is nudged."
+      },
+      "tools": [
+        {
+          "fr": "Tournevis horloger",
+          "en": "Watchmaker screwdriver"
+        },
+        {
+          "fr": "Loupe ×4",
+          "en": "4× loupe"
+        }
+      ],
+      "links": [
+        "balanceWheel",
+        "hairspring"
+      ]
     },
     {
       "id": "rotor",
       "group": "movement",
-      "models": [
-        "*"
-      ],
       "explode": [
         0,
         0,
@@ -1042,14 +1543,29 @@
       "funFact": {
         "fr": "Inventé dans les années 1930, il a rendu la montre « perpétuelle ».",
         "en": "Invented in the 1930s, it made the watch 'perpetual'."
-      }
+      },
+      "howItWorks": {
+        "fr": "Masse décentrée montée sur roulement : chaque mouvement du poignet la fait pivoter. Des roues d'inversion transforment ses rotations dans les deux sens en remontage du barillet.",
+        "en": "An off-centre weight on a bearing: every wrist movement swings it. Reversing wheels turn its rotation in either direction into barrel winding."
+      },
+      "assembly": {
+        "fr": "Dernière pièce du mouvement, vissée au centre sur le mécanisme automatique, après le réglage final.",
+        "en": "Last part of the movement, screwed at the centre onto the automatic module, after final regulation."
+      },
+      "tools": [
+        {
+          "fr": "Tournevis horloger",
+          "en": "Watchmaker screwdriver"
+        }
+      ],
+      "links": [
+        "barrel",
+        "bridges"
+      ]
     },
     {
       "id": "caseback",
       "group": "exterior",
-      "models": [
-        "*"
-      ],
       "explode": [
         0,
         0,
@@ -1081,14 +1597,33 @@
       "funFact": {
         "fr": "Seul un horloger équipé peut l'ouvrir.",
         "en": "Only a properly equipped watchmaker can open it."
-      }
+      },
+      "howItWorks": {
+        "fr": "Son filetage écrase un joint torique contre la carrure : plus il est serré, plus l'étanchéité est forte. Les cannelures servent d'appui à la clé.",
+        "en": "Its thread compresses an O-ring against the case: the tighter it is, the better the seal. The flutes give the wrench its grip."
+      },
+      "assembly": {
+        "fr": "Graisser le joint, visser le fond à la main puis serrer à la clé de fond au couple prescrit. Contrôle d'étanchéité à l'air puis à l'eau.",
+        "en": "Grease the gasket, hand-tighten the caseback, then torque it with the caseback wrench. Water-resistance test in air then water."
+      },
+      "tools": [
+        {
+          "fr": "Clé de fond cannelée",
+          "en": "Fluted caseback wrench"
+        },
+        {
+          "fr": "Graisse silicone pour joints",
+          "en": "Silicone gasket grease"
+        }
+      ],
+      "links": [
+        "case",
+        "rotor"
+      ]
     },
     {
       "id": "bracelet",
       "group": "exterior",
-      "models": [
-        "*"
-      ],
       "explode": [
         0,
         18,
@@ -1120,14 +1655,33 @@
       "funFact": {
         "fr": "Un bracelet 5 rangs compte plus de 150 pièces.",
         "en": "A five-row bracelet has more than 150 components."
-      }
+      },
+      "howItWorks": {
+        "fr": "Chaque maillon est articulé par une vis ou une goupille ; la forme de la boucle s'adapte au poignet. Ici, la longueur suit le tour de poignet réglé dans le configurateur.",
+        "en": "Each link pivots on a screw or pin; the loop takes the shape of the wrist. Here, its length follows the wrist size set in the configurator."
+      },
+      "assembly": {
+        "fr": "Ajuster la longueur en retirant des maillons, puis fixer les embouts entre les cornes avec des barrettes à ressort (outil pompe).",
+        "en": "Adjust length by removing links, then fit the end pieces between the lugs with spring bars (spring-bar tool)."
+      },
+      "tools": [
+        {
+          "fr": "Outil pompe",
+          "en": "Spring-bar tool"
+        },
+        {
+          "fr": "Tournevis horloger",
+          "en": "Watchmaker screwdriver"
+        }
+      ],
+      "links": [
+        "case",
+        "clasp"
+      ]
     },
     {
       "id": "clasp",
       "group": "exterior",
-      "models": [
-        "*"
-      ],
       "explode": [
         0,
         -34,
@@ -1159,7 +1713,185 @@
       "funFact": {
         "fr": "La rallonge permet de porter la montre sur une combinaison de plongée.",
         "en": "The extension lets you wear the watch over a wetsuit."
-      }
+      },
+      "howItWorks": {
+        "fr": "Une boucle déployante replie deux lames sous le poignet ; un levier de sécurité empêche l'ouverture accidentelle. Une boucle ardillon, elle, traverse un trou du bracelet.",
+        "en": "A deployant clasp folds two blades under the wrist; a safety lever prevents accidental opening. A tang buckle simply goes through a hole in the strap."
+      },
+      "assembly": {
+        "fr": "Monté sur le dernier maillon avec une barrette ; la rallonge de confort se règle sans outil.",
+        "en": "Mounted on the last link with a spring bar; the comfort extension adjusts without tools."
+      },
+      "tools": [
+        {
+          "fr": "Outil pompe",
+          "en": "Spring-bar tool"
+        }
+      ],
+      "links": [
+        "bracelet"
+      ]
+    },
+    {
+      "id": "gmtHand",
+      "group": "exterior",
+      "requires": "gmt",
+      "explode": [
+        0,
+        0,
+        31
+      ],
+      "order": 5,
+      "anchor": [
+        0,
+        -12.2,
+        4.4
+      ],
+      "name": {
+        "fr": "Aiguille 24 heures",
+        "en": "24-hour hand"
+      },
+      "material": {
+        "fr": "Acier laqué rouge ou orange",
+        "en": "Red or orange lacquered steel"
+      },
+      "function": {
+        "fr": "Affiche un second fuseau horaire sur l'échelle 24 h.",
+        "en": "Shows a second time zone on the 24-hour scale."
+      },
+      "description": {
+        "fr": "Aiguille-flèche faisant un tour en 24 heures.",
+        "en": "An arrow hand turning once in 24 hours."
+      },
+      "funFact": {
+        "fr": "Créée pour que les pilotes de la Pan Am lisent l’heure de Greenwich et l’heure locale.",
+        "en": "Created so Pan Am pilots could read Greenwich time and local time."
+      },
+      "howItWorks": {
+        "fr": "Portée par une roue qui fait un tour en 24 heures : son extrémité pointe l'heure d'un second fuseau sur la lunette graduée 24 h. Ici, elle affiche le temps universel (UTC).",
+        "en": "Carried by a wheel turning once in 24 hours: its tip points to a second time zone on the 24-hour bezel. Here it shows universal time (UTC)."
+      },
+      "assembly": {
+        "fr": "Posée entre l'aiguille des heures et celle des minutes, sur un canon intermédiaire.",
+        "en": "Fitted between the hour and minute hands, on an intermediate pipe."
+      },
+      "tools": [
+        {
+          "fr": "Pose-aiguilles",
+          "en": "Hand-setting press"
+        }
+      ],
+      "links": [
+        "hourHand",
+        "bezelInsert"
+      ]
+    },
+    {
+      "id": "dayWheel",
+      "group": "exterior",
+      "requires": "day",
+      "explode": [
+        0,
+        0,
+        10
+      ],
+      "order": 9,
+      "anchor": [
+        0,
+        11.6,
+        3.3
+      ],
+      "name": {
+        "fr": "Disque des jours",
+        "en": "Day disc"
+      },
+      "material": {
+        "fr": "Laiton laqué, noms imprimés",
+        "en": "Lacquered brass, printed names"
+      },
+      "function": {
+        "fr": "Affiche le jour de la semaine en toutes lettres à 12 h.",
+        "en": "Spells out the day of the week at 12 o’clock."
+      },
+      "description": {
+        "fr": "Sept jours imprimés, ici dans la langue de l’interface.",
+        "en": "Seven days printed, here in the interface language."
+      },
+      "funFact": {
+        "fr": "Certaines versions proposent le jour dans plus de 25 langues.",
+        "en": "Some versions offer the day in more than 25 languages."
+      },
+      "howItWorks": {
+        "fr": "Même principe que le quantième mais avec 7 positions ; un second sautoir le fait basculer exactement à minuit, en même temps que la date.",
+        "en": "Same principle as the date disc but with 7 positions; a second jumper flips it exactly at midnight, together with the date."
+      },
+      "assembly": {
+        "fr": "Posé au-dessus du disque de quantième, puis réglé dans la langue choisie (deux langues gravées).",
+        "en": "Fitted above the date disc, then set to the chosen language (two languages engraved)."
+      },
+      "tools": [
+        {
+          "fr": "Brucelles",
+          "en": "Tweezers"
+        }
+      ],
+      "links": [
+        "dateWheel",
+        "dial"
+      ]
+    },
+    {
+      "id": "moonphase",
+      "group": "exterior",
+      "requires": "moon",
+      "explode": [
+        0,
+        0,
+        10
+      ],
+      "order": 9,
+      "anchor": [
+        0,
+        -7.6,
+        3.3
+      ],
+      "name": {
+        "fr": "Disque de phases de lune",
+        "en": "Moon-phase disc"
+      },
+      "material": {
+        "fr": "Laiton laqué bleu, lunes dorées",
+        "en": "Blue lacquered brass, gilt moons"
+      },
+      "function": {
+        "fr": "Indique la phase de la Lune à travers un guichet.",
+        "en": "Shows the Moon’s phase through an aperture."
+      },
+      "description": {
+        "fr": "Deux lunes peintes sur un disque étoilé.",
+        "en": "Two moons painted on a starry disc."
+      },
+      "funFact": {
+        "fr": "Les meilleures phases de lune ne dérivent que d’un jour en 122 ans.",
+        "en": "The best moon phases drift by only one day in 122 years."
+      },
+      "howItWorks": {
+        "fr": "Un disque à 59 dents avance d'une dent par jour : deux lunations de 29,5 jours font un tour. Ici, la position suit la vraie phase de la Lune, calculée en temps réel.",
+        "en": "A 59-tooth disc advances one tooth a day: two 29.5-day lunations make one turn. Here, the position follows the real Moon phase, computed in real time."
+      },
+      "assembly": {
+        "fr": "Posé sous le cadran, réglé sur la date de la dernière pleine lune avec le correcteur.",
+        "en": "Fitted under the dial, set to the date of the last full moon with the corrector."
+      },
+      "tools": [
+        {
+          "fr": "Brucelles",
+          "en": "Tweezers"
+        }
+      ],
+      "links": [
+        "dial"
+      ]
     }
   ]
 }

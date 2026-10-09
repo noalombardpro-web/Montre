@@ -2,7 +2,7 @@ import { useMemo } from 'react'
 import { useFrame } from '@react-three/fiber'
 import * as THREE from 'three'
 import { partsFor } from '../../data/parts'
-import type { WatchId } from '../../data/watches'
+import type { WatchConfig, WatchDef } from '../../data/watches'
 import { staggered } from '../../lib/explode'
 import { anim } from '../../store/useAtelier'
 
@@ -10,8 +10,8 @@ import { anim } from '../../store/useAtelier'
  * Lignes de liaison (axes de montage) : un trait pointillé fin relie la position
  * assemblée de chaque pièce à sa position éclatée.
  */
-export function ExplodeLines({ watch }: { watch: WatchId }) {
-  const parts = useMemo(() => partsFor(watch).filter((p) => p.explode.some((v) => v !== 0)), [watch])
+export function ExplodeLines({ watch, config }: { watch: WatchDef; config: WatchConfig }) {
+  const parts = useMemo(() => partsFor(watch, config).filter((p) => p.explode.some((v) => v !== 0)), [watch, config])
   const { geo, mat, line } = useMemo(() => {
     const geo = new THREE.BufferGeometry()
     geo.setAttribute('position', new THREE.BufferAttribute(new Float32Array(parts.length * 6), 3))

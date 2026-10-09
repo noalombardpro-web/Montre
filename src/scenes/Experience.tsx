@@ -9,6 +9,8 @@ import { WatchStage } from './WatchStage'
 import { Effects } from './Effects'
 import { ReadyGate, Screenshot } from './SceneUtils'
 import { MovementClock } from '../models/procedural/MovementParts'
+import { TourDriver } from './TourDriver'
+import { CutPlane } from './CutPlane'
 
 const DevTools = import.meta.env.DEV ? lazy(() => import('../debug/DevTools')) : () => null
 
@@ -21,6 +23,7 @@ export default function Experience() {
   const [dpr, setDpr] = useState(high ? 1.75 : 1)
   return (
     <Canvas
+      frameloop={page === 'collection' ? 'never' : 'always'}
       className={`scene-canvas ${page === 'landing' ? 'is-landing' : ''} ${ready ? 'is-ready' : ''}`}
       dpr={[1, dpr]}
       gl={{ antialias: false, powerPreference: 'high-performance', alpha: false, stencil: false }}
@@ -45,6 +48,8 @@ export default function Experience() {
       />
       <AdaptiveEvents />
       <MovementClock />
+      <TourDriver />
+      <CutPlane />
       <Suspense fallback={null}>
         <Studio high={high} />
         <WatchStage high={high} />
