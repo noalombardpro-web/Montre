@@ -157,7 +157,9 @@ async function run(tag, viewport, mobile) {
   check((await page.locator('li.coll-card').count()) === 1, 'collection : recherche « nautilus »')
   await page.getByPlaceholder(/Marque, modèle/).fill('')
   await page.getByRole('button', { name: /Comparer/ }).nth(0).click()
-  await page.getByRole('button', { name: /Comparer/ }).nth(1).click()
+  // la barre de comparaison fixée en bas peut masquer le bas de l'écran : on centre le bouton avant de cliquer
+  await page.getByRole('button', { name: /Comparer/ }).nth(1).evaluate((el) => el.scrollIntoView({ block: 'center' }))
+  await page.getByRole('button', { name: /Comparer/ }).nth(1).click({ force: true })
   await page.locator('.btn-lux', { hasText: 'Comparer' }).click()
   check(await page.getByRole('dialog', { name: 'Comparateur' }).isVisible(), 'comparateur : tableau affiché')
   await page.keyboard.press('Escape')
