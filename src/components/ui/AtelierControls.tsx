@@ -252,7 +252,7 @@ export function ExperiencesPanel() {
   return (
     <div className="glass pointer-events-auto p-1 md:min-w-[190px]">
       <div className="px-3 pb-1 pt-2 text-[9px] uppercase tracking-[0.3em] text-gold">{L('Découvrir', 'Discover')}</div>
-      <ul className="grid grid-cols-3 gap-0.5 md:grid-cols-1">
+      <ul className="grid grid-cols-2 gap-0.5 md:grid-cols-1">
         {items.map((it) => (
           <li key={it.key}>
             <button

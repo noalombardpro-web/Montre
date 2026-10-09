@@ -3,13 +3,13 @@
  * vers public/models/<id>.src.glb, puis `npm run optimize` produit les versions compressées.
  * Nécessite le serveur de dev : `npm run dev` (l'exporteur n'existe qu'en développement).
  *
- * Usage : npm run export:glb [-- http://localhost:5173]
+ * Usage : npm run export:glb [-- http://localhost:5173 id1 id2 …]  (ids : voir src/data/watches.ts)
  */
 import { chromium } from 'playwright'
 import fs from 'node:fs'
 
 const base = process.argv[2] ?? 'http://localhost:5173'
-const ids = ['datejust', 'submariner', 'daytona']
+const ids = process.argv.length > 3 ? process.argv.slice(3) : ['rolex-submariner-date', 'rolex-daytona', 'patek-nautilus-5711']
 fs.mkdirSync('public/models', { recursive: true })
 const browser = await chromium.launch({
   executablePath: process.env.CHROMIUM_PATH || (fs.existsSync('/opt/pw-browsers/chromium') ? '/opt/pw-browsers/chromium' : undefined),

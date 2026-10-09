@@ -1,5 +1,5 @@
 import * as THREE from 'three'
-import { DIAL_COLORS, BRACELETS, type MetalId, type WatchConfig, type WatchDef } from '../data/watches'
+import { DIAL_COLORS, BRACELETS, type WatchConfig, type WatchDef } from '../data/watches'
 import type { Lang } from '../data/parts'
 import {
   makeBezelTexture,
@@ -20,16 +20,9 @@ import {
 import { enqueue } from '../lib/scheduler'
 import { DIM } from './dims'
 import { dialLayout } from './dialLayout'
+import { METAL_COLOR, type BaseMetal } from '../data/metals'
 
-type BaseMetal = Exclude<MetalId, 'twotone' | 'twotone-rose'>
-export const METAL_COLOR: Record<BaseMetal, string> = {
-  steel: '#c9ccd1',
-  titanium: '#a9adb3',
-  yellow: '#f2c76e',
-  rose: '#eab49c',
-  white: '#dfe1e4',
-  platinum: '#e2e4e8',
-}
+export { METAL_COLOR }
 const METAL_ROUGH: Record<BaseMetal, number> = { steel: 0.13, titanium: 0.3, yellow: 0.12, rose: 0.12, white: 0.1, platinum: 0.1 }
 
 const STRAP_COLOR: Record<string, string> = {

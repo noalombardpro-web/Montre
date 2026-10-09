@@ -55,7 +55,7 @@ for (const vp of viewports) {
       await page.evaluate((y) => window.scrollTo(0, y * (document.body.scrollHeight - innerHeight)), sc.scroll)
       await page.waitForTimeout(3000)
     }
-    const file = path.join(out, `${sc.name}-${vp.tag}.png`)
+    const file = path.join(out, `${sc.name}-${vp.tag}.png`) // convertir ensuite en WebP pour la doc
     await page.screenshot({ path: file, timeout: 180000 })
     console.log('saved', file)
   }

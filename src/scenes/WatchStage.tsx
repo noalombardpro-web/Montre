@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react'
+import { Component, useEffect, useRef, useState, type ReactNode } from 'react'
 import { useFrame } from '@react-three/fiber'
 import * as THREE from 'three'
 import gsap from 'gsap'
@@ -80,10 +80,23 @@ export function WatchStage({ high }: { high: boolean }) {
   return (
     <group ref={group}>
       {def.glb || GLB_SOURCE ? (
-        <GLBWatch key={shown} url={def.glb ?? `/models/${shown}.glb`} />
+        <GlbFallback key={shown} fallback={<ProceduralWatch id={shown} config={configs[shown]} high={high} />}>
+          <GLBWatch url={def.glb ?? `/models/${shown}.glb`} />
+        </GlbFallback>
       ) : (
         <ProceduralWatch key={shown} id={shown} config={configs[shown]} high={high} />
       )}
     </group>
   )
+}
+
+/** Si le GLB est absent ou invalide, on retombe sur le modèle procédural. */
+class GlbFallback extends Component<{ children: ReactNode; fallback: ReactNode }, { failed: boolean }> {
+  state = { failed: false }
+  static getDerivedStateFromError() {
+    return { failed: true }
+  }
+  render() {
+    return this.state.failed ? this.props.fallback : this.props.children
+  }
 }

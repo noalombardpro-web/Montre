@@ -40,9 +40,10 @@ const COPY = {
   collectionEyebrow: { fr: '04 — La collection', en: '04 — The collection' },
   collectionTitle: { fr: 'Choisissez votre pièce', en: 'Choose your piece' },
   legal: {
-    fr: "Projet de démonstration. Modèles génériques « -style » générés procéduralement : aucun logo ni marque déposée n'est reproduit, aucune affiliation avec un fabricant.",
-    en: 'Demo project. Generic "-style" models generated procedurally: no logo or registered trademark is reproduced, no affiliation with any manufacturer.',
+    fr: "Projet de démonstration non affilié. Les noms de marques et de modèles sont cités à titre descriptif ; les montres sont des interprétations 3D procédurales sans logo ni marque figurative. Données indicatives.",
+    en: 'Unaffiliated demo project. Brand and model names are used descriptively; the watches are procedural 3D interpretations without logos or figurative marks. Indicative data.',
   },
+
 }
 
 const STATS = [

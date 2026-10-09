@@ -4,7 +4,9 @@
 
 Toutes les montres (boîtes, cadrans, bracelets, calibres) sont **générées procéduralement** par le code de ce dépôt (`src/models/procedural/`). Aucun modèle tiers n'est inclus. Les fichiers `public/models/*.glb` sont des exports de ces modèles procéduraux (`npm run export:glb` + `npm run optimize`).
 
-Les noms « Datejust-style », « Submariner-style », « Daytona-style » désignent uniquement un **type** de montre ; aucun logo, couronne ou marque déposée n'est reproduit. Le branding « ATELIER » est fictif.
+## Marques citées
+
+Rolex, Patek Philippe, Audemars Piguet, Vacheron Constantin, Omega, Tudor, IWC Schaffhausen, Breitling, Zenith, Jaeger-LeCoultre, A. Lange & Söhne, Grand Seiko, Blancpain, Breguet, Cartier et TAG Heuer, ainsi que les noms de modèles et références associés, sont des marques de leurs propriétaires respectifs. Ils sont cités à titre descriptif pour identifier les montres interprétées ; ce projet n'est ni affilié à ces maisons ni approuvé par elles. Aucun logo, couronne, marque figurative ou désignation déposée n'est reproduit sur les modèles 3D, dont les cadrans portent un branding fictif « ATELIER ». Les données techniques proviennent d'informations publiques et sont indicatives.
 
 Si vous ajoutez un modèle tiers (CC0 / CC-BY), indiquez ici : titre, auteur, URL source, licence, modifications.
 

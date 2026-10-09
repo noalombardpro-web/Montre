@@ -10,7 +10,7 @@ for form in desktop mobile; do
   PRESET=""; [ "$form" = desktop ] && PRESET="--preset=desktop"
   CHROME_PATH=$CHROME npx lighthouse "$URL" $PRESET \
     --only-categories=performance,accessibility,best-practices,seo \
-    --chrome-flags="--headless=new --no-sandbox" \
+    --chrome-flags="--headless=new --no-sandbox" --disable-full-page-screenshot \
     --output=json --output=html --output-path="$OUT/$form" --quiet
   node -e "
     const d = require(require('path').resolve('$OUT/$form.report.json'));

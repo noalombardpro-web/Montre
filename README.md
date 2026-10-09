@@ -1,12 +1,16 @@
 # Watch Atelier
 
-Visualiseur 3D interactif de montres de prestige : rotation libre, **vue éclatée** pièce par pièce, **mouvement mécanique animé**, fiches techniques, **configurateur** temps réel et landing en scrollytelling. Trois modèles génériques : *Datejust-style*, *Submariner-style*, *Daytona-style*.
+Visualiseur 3D interactif de montres de prestige : **36 références réelles de 16 maisons** (Rolex, Patek Philippe, Audemars Piguet, Vacheron Constantin, Omega, Tudor, IWC, Breitling, Zenith, Jaeger-LeCoultre, A. Lange & Söhne, Grand Seiko, Blancpain, Breguet, Cartier, TAG Heuer), **vue éclatée**, **montage pas à pas**, **trajet de l'énergie** dans le calibre, explications pièce par pièce, quiz, mode nuit, vue en coupe, tic-tac sonore, configurateur et comparateur.
 
-| Landing | Atelier | Vue éclatée | Calibre |
+| Landing | Royal Oak | Montage pas à pas | Trajet de l'énergie |
 | --- | --- | --- | --- |
-| ![](docs/screenshots/landing-hero-desktop.png) | ![](docs/screenshots/atelier-submariner-desktop.png) | ![](docs/screenshots/atelier-exploded-desktop.png) | ![](docs/screenshots/atelier-movement-desktop.png) |
+| ![](docs/screenshots/landing-hero-desktop.webp) | ![](docs/screenshots/atelier-royal-oak-desktop.webp) | ![](docs/screenshots/tour-assembly-desktop.webp) | ![](docs/screenshots/tour-energy-desktop.webp) |
 
-> Projet de démonstration. Aucun logo ni marque déposée n'est reproduit ; branding fictif « ATELIER ». Aucune affiliation avec un fabricant.
+| Collection | Day-Date | Mode nuit | Vue en coupe |
+| --- | --- | --- | --- |
+| ![](docs/screenshots/collection-desktop.webp) | ![](docs/screenshots/day-date-desktop.webp) | ![](docs/screenshots/night-desktop.webp) | ![](docs/screenshots/cutaway-desktop.webp) |
+
+> **Marques et modèles.** Les noms de marques, de modèles et les références sont cités à titre descriptif (usage nominatif) pour identifier les montres interprétées. Les modèles 3D sont des **interprétations procédurales** : aucun logo, aucune couronne, aucune marque figurative ni désignation déposée n'est reproduit sur les cadrans (impression générique « ATELIER »). Projet non affilié aux fabricants ; données techniques indicatives.
 
 ---
 
@@ -30,15 +34,44 @@ Node ≥ 20. Déploiement : `dist/` est statique (routage par hash, aucune réé
 | `npm run export:glb` | Exporte les 3 montres procédurales en GLB (`public/models/<id>.src.glb`) — nécessite `npm run dev` |
 | `npm run optimize` | Compresse les GLB de `public/models/` (dedup, instancing, prune, weld, textures WebP ≤ 2048, **Meshopt**). Échoue si un modèle dépasse 8 Mo |
 | `npm run poster` | Regénère l'image de façade du hero (`public/poster.webp`) depuis le rendu 3D réel |
-| `npm run test:smoke` | Test end-to-end Playwright desktop + mobile (navigation, modes, sélection, isolation, configurateur, raccourcis, capture PNG, erreurs JS) — nécessite `npm run preview` |
+| `npm run test:smoke` | Test end-to-end Playwright desktop + mobile (navigation, modes, fiches à onglets, isolation, configurateur, tour de poignet, visites guidées, quiz, nuit, coupe, collection, comparateur, capture PNG, erreurs JS) — nécessite `npm run preview` |
 | `npm run test:visual` | Captures Playwright desktop + mobile dans `docs/screenshots/` |
 | `npm run lighthouse` | Audit Lighthouse desktop + mobile du build |
 
-Paramètres d'URL utiles : `?q=low` / `?q=high` (force la qualité), `?source=glb` (charge les GLB optimisés au lieu du procédural), `?debug` (panneau Leva, dev uniquement), `?poster` (rendu sans interface).
+Paramètres d'URL utiles : `?q=low` / `?q=high` (force la qualité), `?source=glb` (charge `public/models/<id>.glb` s'il existe — à générer avec `npm run export:glb` puis `npm run optimize` — sinon repli automatique sur le procédural), `?debug` (panneau Leva, dev uniquement), `?poster` (rendu sans interface).
+
+Routes : `#/` landing · `#/collection` collection · `#/atelier/<id>` atelier · `#/atelier/<id>/<cadran>.<lunette>.<bracelet>.<métal>` configuration partagée (bouton « Partager »).
 
 ---
 
 ## Fonctionnalités
+
+### Collection
+
+- **36 références** réelles décrites par un style paramétrique (diamètre, index, aiguilles, motif de cadran, lunette, complications) : Submariner, GMT-Master II, Daytona, Datejust, Day-Date, Explorer, Nautilus, Aquanaut, Calatrava, Royal Oak, Overseas, Speedmaster, Seamaster, Black Bay 58, Pelagos, Mark XX, Portugieser, Navitimer, Chronomaster, Master Ultra Thin Moon, Saxonia, Snowflake, Fifty Fathoms, Classique, Ballon Bleu, Carrera…
+- **Page Collection** : recherche (marque, modèle, référence, calibre), filtres par maison et par famille, tri (maison, année, diamètre, étanchéité), vignettes vectorielles générées depuis le style, **comparateur** côte à côte (2–3 montres, meilleures valeurs en évidence).
+- Dans l'atelier : tiroir de sélection (recherche, groupé par maison), modèle précédent / suivant, lien de configuration partageable.
+
+### Rendu paramétrique
+
+- Index : bâtons, plongée (pastilles, triangle), courts, Explorer 3-6-9, chiffres arabes (aviation), romains, obus, sticks luminescents.
+- Aiguilles : dauphine, glaive, bâton, feuille, crayon, **Breguet « pomme »** ; acier, acier bleui ou or.
+- Cadrans : soleillé (anisotropie), laqué, mat, **Tapisserie**, rainures horizontales, vagues, guilloché, « neige » granuleuse, émail.
+- Lunettes : cannelée, lisse, fine, **Clous de Paris**, plongée 60 min, tachymètre, **GMT bicolore 24 h**, 24 h acier gravé, **règle à calcul**, **octogonale à 8 vis**, octogone adouci, **six pans**.
+- Complications : date (à 3 h ou 4 h 30, avec loupe), **jour en toutes lettres**, chronographe 3 ou 2 compteurs, **aiguille GMT (UTC)**, petite seconde, **phases de lune réelles** (calculées en temps réel), trotteuse glissante pour le Spring Drive.
+- Boîtiers : cornes classiques ou **intégrées** (épaulement continu), protège-couronne, poussoirs ; diamètre réel de 36 à 45 mm.
+- Bracelets **agrandis et dimensionnés au tour de poignet** (150–220 mm, curseur dans le configurateur) : trois rangs, cinq rangs, Président, intégré en H, **cuir alligator cousu** (surpiqûres instanciées, passant, boucle ardillon), caoutchouc, toile de voile.
+- Métaux : acier, titane, or jaune, or rose, or gris, platine, bicolores jaune et rose.
+
+### Comprendre et apprendre
+
+- **Fiche à onglets** pour chacune des 33 pièces : *Aperçu* (matériau, rôle, anecdote), *Fonctionnement* (comment elle marche, pièces en interaction — liens cliquables), *Montage* (comment on l'emboîte, outils de l'horloger).
+- **Montage pas à pas** (19 étapes) : la montre se construit sous vos yeux dans l'ordre de l'établi — platine, barillet, rouage, ponts, échappement, balancier, rotor, cadran, aiguilles, emboîtage, lunette, fond, couronne, bracelet — chaque pièce « vole » à sa place, caméra cadrée, outils listés, lecture automatique.
+- **Trajet de l'énergie** (6 étapes) : du poignet au rotor, au ressort, au rouage, à l'échappement (au ralenti), au balancier puis aux aiguilles, avec un **flux lumineux animé** qui parcourt le rouage.
+- **Quiz des pièces** : une pièce est isolée, quatre propositions, score et anecdote.
+- **Mode nuit** : le studio s'éteint, la luminescence s'illumine (bloom).
+- **Vue en coupe** : plan de découpe réglable qui tranche boîtier, cadran et mouvement.
+- **Tic-tac** synthétisé (Web Audio) à la cadence du balancier, ralenti compris (silencieux pour le Spring Drive).
 
 - **Viewer 3D** — caméra à inertie douce (camera-controls), zoom borné, rotation automatique après inactivité, studio d'éclairage procédural (lightformers, aucun HDRI à télécharger), ombres de contact, PBR : acier 904L, or jaune, or rose, bicolore, céramique, cadrans laqués ou **soleillés** (carte d'anisotropie radiale), verre saphir **transmissif** (IOR 1,77), bloom léger sur la luminescence, tonemapping AgX.
 - **Vue éclatée** — slider 0 → 100 % (+ mode Éclaté et scroll sur la landing). Chaque pièce suit son vecteur d'explosion (`parts.json`) avec easing et **stagger** séquentiel ; les maillons du bracelet s'écartent un à un ; **lignes de liaison** pointillées entre position assemblée et éclatée.
@@ -51,7 +84,7 @@ Paramètres d'URL utiles : `?q=low` / `?q=high` (force la qualité), `?source=gl
 
 ### Raccourcis clavier (atelier)
 
-`1`–`4` modes · `E` éclaté · `←` `→` pièce précédente/suivante · `I` isoler · `Échap` fermer · `R` rotation auto · `H` repères · `W` fil de fer · `M` ralenti · `C` configurateur · `P` nomenclature · `V` recentrer · `S` capture PNG · `[` `]` modèle précédent/suivant · `?` aide.
+`1`–`4` modes · `E` éclaté · `G` montage pas à pas · `J` trajet de l'énergie · `Q` quiz · `N` nuit · `X` coupe · `T` tic-tac · `←` `→` pièce ou étape précédente/suivante · `I` isoler · `Échap` fermer · `R` rotation auto · `H` repères · `W` fil de fer · `M` ralenti · `C` configurateur · `P` nomenclature · `K` collection · `V` recentrer · `S` capture PNG · `[` `]` modèle précédent/suivant · `?` aide.
 
 ---
 
@@ -60,20 +93,23 @@ Paramètres d'URL utiles : `?q=low` / `?q=high` (force la qualité), `?source=gl
 ```
 src/
   App.tsx                  routage par hash, façade (chargement différé de la 3D)
-  pages/                   Landing (scrollytelling) · Atelier (UI flottante)
+  pages/                   Landing (scrollytelling) · Atelier (UI flottante) · Collection (recherche, filtres, comparateur)
   scenes/                  Experience (Canvas unique), Studio, CameraRig, WatchStage,
                            Effects, landingKeyframes, SceneUtils (ready gate, capture PNG)
   components/three/        Part (nœud interactif), Hotspot, ExplodeLines, overrides (X-ray, translucidité)
   components/ui/           PartPanel, Configurator, AtelierControls, Loader, Cursor, HeroPoster, Icons…
   models/
-    ProceduralWatch.tsx    assemblage d'une montre (montage progressif par étapes)
+    ProceduralWatch.tsx    assemblage d'une montre depuis son style (montage progressif par étapes)
+    dialLayout.ts          disposition du cadran partagée texture / géométrie (compteurs, guichets)
     GLBWatch.tsx           chargement d'un GLB dont les nœuds sont nommés selon parts.json
     materials.ts           bibliothèque PBR selon la configuration
     dims.ts                cotes de référence (mm)
     procedural/            CaseParts, BezelParts, DialParts, MovementParts, Bracelet
   data/
-    parts.json             nomenclature + métadonnées + vecteurs d'explosion (documenté en tête)
-    watches.ts             catalogue, options du configurateur
+    parts.json             33 pièces : métadonnées, fonctionnement, montage, outils, liens, vecteurs d'explosion
+    watches.ts             36 références, 16 maisons, styles paramétriques, options du configurateur
+    tours.ts               visites guidées (montage pas à pas, trajet de l'énergie)
+    metals.ts              palette des métaux (partagée UI / 3D)
     i18n.ts                textes d'interface FR/EN
   lib/                     geometry (profils, révolutions modulées, engrenages…), textures (canvas),
                            scheduler (tâches différées), explode (stagger), router, env
@@ -112,11 +148,27 @@ Pièces : verre saphir, loupe, disque de lunette, lunette, aiguilles (heures, mi
 
 ## Ajouter un modèle
 
-### A. Variante procédurale (recommandé)
+### A. Nouvelle référence procédurale (recommandé — aucune ligne de 3D à écrire)
 
-1. Ajouter une entrée dans `WATCHES` (`src/data/watches.ts`) : `id`, nom générique, specs, `features` (`date`, `chrono`, `crownGuards`), options de lunette/cadran, configuration par défaut.
-2. Étendre si besoin le type `WatchId`, puis les branches par modèle dans `procedural/DialParts.tsx` (index, aiguilles), `lib/textures.ts` (impressions du cadran) et `ProceduralWatch.tsx`.
-3. Ajouter les pièces spécifiques dans `parts.json` (`models: ["monid"]`).
+Ajouter une entrée dans `WATCHES` (`src/data/watches.ts`) :
+
+```ts
+{
+  id: 'marque-modele', brand: 'omega', name: 'Seamaster', reference: '…', year: 2024, category: 'diver',
+  tagline: T('…', '…'), intro: T('…', '…'),
+  specs: { calibre: '8800', movement: 'auto', reserve: 55, water: 300 },
+  style: {
+    diameter: 42, indices: 'dive', hands: 'sword', pattern: 'waves', lugs: 'classic',
+    date: true, gmt: false, chrono: undefined, smallSeconds: false, moonphase: false,
+    print: { top: ['AUTOMATIC'], bottom: ['300 m'] },   // textes génériques, jamais de marque
+  },
+  bezels: [B.dive('blue', 'Céramique bleue', 'Blue ceramic', '#14295a')],
+  dials: ['blue', 'black'], bracelets: ['oyster', 'rubber-blue'], metals: ['steel', 'titanium'],
+  defaults: { dial: 'blue', bezel: 'blue', bracelet: 'oyster', metal: 'steel' },
+}
+```
+
+La géométrie, les textures, les pièces présentes (via `requires` dans `parts.json`), les visites guidées, la vignette et la fiche de comparaison en découlent automatiquement. Pour un nouveau style (index, aiguille, lunette…), ajouter une branche dans `procedural/DialParts.tsx`, `procedural/BezelParts.tsx` ou `lib/textures.ts`.
 
 ### B. Modèle GLB (CC0 / CC-BY ou maison)
 
@@ -136,7 +188,9 @@ Mesures Lighthouse (build de production, Chromium headless) :
 | | Performance | Accessibilité | Bonnes pratiques | SEO |
 | --- | --- | --- | --- | --- |
 | Desktop | **100** | 100 | 100 | 100 |
-| Mobile | **98** | 100 | 100 | 100 |
+| Mobile | **96** | 100 | 100 | 100 |
+
+(La page Collection obtient aussi 100 en accessibilité et bonnes pratiques.)
 
 Techniques :
 
@@ -144,7 +198,7 @@ Techniques :
 - **Découpage** : chunks `react`, `three`, `r3f`, `gsap` ; GSAP et Leva absents du chemin critique (Leva absent du build).
 - **Montage progressif** : les pièces sont montées en 8 étapes (une toutes les deux frames) et les textures canvas sont dessinées par un ordonnanceur `requestIdleCallback` sur des placeholders 4×4 (aucune recompilation de shader) → pas de long task bloquante.
 - **Rendu** : DPR adaptatif (`PerformanceMonitor` : 1 → 1,75/2), qualité auto (`low` sur pointeur tactile ou ≤ 4 cœurs : pas de transmission, pas de MSAA, ombres de contact figées), **instancing** des maillons, géométries/textures partagées et libérées, effets légers (bloom mipmap, AgX, vignette).
-- **Modèles GLB** : 2,4 – 2,9 Mo par montre après `npm run optimize` (18 Mo bruts).
+- **Modèles GLB** : 2,4 – 2,9 Mo par montre après `npm run optimize` (≈ 18 Mo bruts), mesurés sur les exports procéduraux.
 - Repli élégant (illustration SVG) si WebGL 2 est indisponible.
 
 ## Accessibilité
@@ -156,7 +210,8 @@ Lien d'évitement, `lang` dynamique FR/EN, rôles ARIA (radiogroups pour modes/o
 ## Choix & hypothèses
 
 - **Modèles 100 % procéduraux.** Recherche préalable de GLB libres : les modèles trouvés sont soit des maillages uniques générés par IA (pièces non séparées), soit des mouvements isolés sous licence d'attribution sans boîte/cadran cohérents, soit payants ou soumis à compte. Aucun ne fournit une montre complète **et** un calibre en pièces nommées. Les montres sont donc générées par le code (révolutions de profils congés, lunettes cannelées/crantées par modulation, engrenages à denture et croisillons, échappement à dents « club », spiral en tube, bracelets instanciés sur une super-ellipse), ce qui garantit l'absence de marque déposée, un poids nul en téléchargement et des pièces parfaitement nommées. Le pipeline GLB (export, compression, chargement) est néanmoins complet et testé.
-- **Noms génériques** « -style » et branding fictif « ATELIER » ; aucune couronne, aucun texte de marque. Les impressions (« Chronomètre certifié », « Abysses 300 m », « Tachymètre ») sont génériques.
+- **Marques réelles, cadrans neutres.** À la demande, le catalogue utilise les vrais noms de marques, modèles et références (usage descriptif). Les cadrans restent volontairement neutres : aucun logo, couronne, ni désignation déposée (« Oyster Perpetual », « Cosmograph », « Co-Axial », « Spring Drive »…) n'est imprimé — uniquement « ATELIER » et des mentions génériques (« Automatic », « 300 m », « Tachymètre »). Si vous disposez des droits, les impressions se règlent dans `style.print`.
+- **Fidélité.** Chaque montre est une interprétation à partir de quelques paramètres : proportions, finitions et mouvements (tous représentés par un même calibre automatique générique) ne sont pas des reproductions exactes.
 - **Studio procédural** plutôt qu'un HDRI externe : reflets contrôlés, aucune dépendance réseau.
 - **Canvas unique** partagé landing/atelier pour des transitions 3D continues ; routage par hash pour un hébergement statique sans configuration.
 - **Textures** dessinées au canvas (cadrans, lunettes, quantième, perlage, Côtes de Genève, rotor) plutôt que KTX2 : quelques Ko de code au lieu de Mo d'images. Les GLB exportés embarquent ces textures en WebP (KTX2 nécessiterait l'outil externe `toktx`, absent ici — `textureCompress` peut être remplacé par `toktx` dans `scripts/optimize.mjs`).

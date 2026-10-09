@@ -1,6 +1,6 @@
 import { memo } from 'react'
 import { DIAL_COLORS, type WatchConfig, type WatchDef } from '../../data/watches'
-import { METAL_COLOR } from '../../models/materials'
+import { METAL_COLOR } from '../../data/metals'
 import { dialLayout } from '../../models/dialLayout'
 
 const TAU = Math.PI * 2
