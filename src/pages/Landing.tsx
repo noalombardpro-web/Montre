@@ -1,6 +1,6 @@
 import { useEffect, useLayoutEffect, useRef } from 'react'
 import { BRANDS, WATCHES, type WatchId } from '../data/watches'
-import { WatchThumb } from '../components/ui/WatchThumb'
+import { WatchImage } from '../components/ui/WatchThumb'
 
 const FEATURED = WATCHES.filter((w) => w.featured)
 import { t } from '../data/i18n'
@@ -213,7 +213,7 @@ export function Landing({ poster = true }: { poster?: boolean }) {
                 onClick={() => enter(w.id)}
                 className={`group flex w-full items-center gap-4 p-5 text-left transition duration-700 ${watchId === w.id ? 'bg-white/[0.03]' : 'hover:bg-white/[0.02]'}`}
               >
-                <WatchThumb def={w} size={58} />
+                <WatchImage def={w} size={58} className="h-[58px] w-[58px] shrink-0" />
                 <span className="min-w-0">
                   <span className="eyebrow block !text-[9px]">{BRANDS[w.brand].name}</span>
                   <span className="display mt-1 block truncate text-2xl">{w.name}</span>

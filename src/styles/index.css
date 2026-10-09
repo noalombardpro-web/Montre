@@ -421,3 +421,174 @@ input[type='range'].lux-range::-moz-range-thumb {
 body.is-collection .scene-canvas {
   visibility: hidden;
 }
+
+/* Mode vignette (?thumb) : fond transparent, canvas visible immédiatement */
+.thumb-mode,
+.thumb-mode body,
+.thumb-mode #root {
+  background: transparent !important;
+}
+.thumb-mode .scene-canvas {
+  opacity: 1 !important;
+  transition: none !important;
+}
+
+/* ---------- Collection : fond animé ---------- */
+.coll-aurora {
+  position: absolute;
+  border-radius: 9999px;
+  filter: blur(48px);
+  will-change: transform;
+}
+.coll-aurora-a {
+  width: 72vmax;
+  height: 72vmax;
+  left: -24vmax;
+  top: -30vmax;
+  background: radial-gradient(closest-side, rgba(201, 169, 106, 0.2), transparent 70%);
+  animation: collA 34s ease-in-out infinite alternate;
+}
+.coll-aurora-b {
+  width: 62vmax;
+  height: 62vmax;
+  right: -22vmax;
+  top: 6vh;
+  background: radial-gradient(closest-side, rgba(70, 120, 210, 0.16), transparent 70%);
+  animation: collB 42s ease-in-out infinite alternate;
+}
+.coll-aurora-c {
+  width: 56vmax;
+  height: 56vmax;
+  left: 26vw;
+  bottom: -32vmax;
+  background: radial-gradient(closest-side, rgba(40, 170, 150, 0.1), transparent 70%);
+  animation: collC 50s ease-in-out infinite alternate;
+}
+@keyframes collA {
+  from { transform: translate3d(0, 0, 0) scale(1); }
+  to { transform: translate3d(14vmax, 9vmax, 0) scale(1.18); }
+}
+@keyframes collB {
+  from { transform: translate3d(0, 0, 0) scale(1); }
+  to { transform: translate3d(-12vmax, 7vmax, 0) scale(1.12); }
+}
+@keyframes collC {
+  from { transform: translate3d(0, 0, 0); }
+  to { transform: translate3d(-9vmax, -12vmax, 0) scale(1.2); }
+}
+.coll-grid {
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(255, 255, 255, 0.045) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.045) 1px, transparent 1px);
+  background-size: 72px 72px;
+  -webkit-mask-image: radial-gradient(ellipse 85% 65% at 50% 0%, #000 15%, transparent 78%);
+  mask-image: radial-gradient(ellipse 85% 65% at 50% 0%, #000 15%, transparent 78%);
+  animation: collGrid 60s linear infinite;
+}
+@keyframes collGrid {
+  to { background-position: 72px 72px; }
+}
+.coll-grain {
+  position: absolute;
+  inset: -50%;
+  opacity: 0.07;
+  background-image: url("data:image/svg+xml;utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  animation: collGrain 1.2s steps(6) infinite;
+}
+@keyframes collGrain {
+  0% { transform: translate(0, 0); }
+  20% { transform: translate(-3%, 2%); }
+  40% { transform: translate(2%, -3%); }
+  60% { transform: translate(-2%, -1%); }
+  80% { transform: translate(3%, 3%); }
+  100% { transform: translate(0, 0); }
+}
+.coll-scan {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  height: 1px;
+  opacity: 0.7;
+  background: linear-gradient(90deg, transparent, rgba(227, 207, 159, 0.6), transparent);
+  animation: collScan 9s linear infinite;
+}
+@keyframes collScan {
+  from { transform: translateY(-10vh); }
+  to { transform: translateY(110vh); }
+}
+.coll-marquee-track {
+  animation: collMarquee 48s linear infinite;
+}
+@keyframes collMarquee {
+  to { transform: translateX(-50%); }
+}
+
+/* Cartes */
+.coll-card {
+  border: 1px solid var(--color-line);
+  transition: border-color 0.6s, transform 0.6s var(--ease-lux);
+}
+.coll-card:hover {
+  border-color: rgba(227, 207, 159, 0.35);
+  transform: translateY(-3px);
+}
+.coll-glow {
+  position: absolute;
+  inset: 14%;
+  border-radius: 9999px;
+  background: radial-gradient(closest-side, color-mix(in srgb, var(--glow) 60%, transparent), transparent 72%);
+  filter: blur(18px);
+  opacity: 0.6;
+  transition: opacity 0.8s, scale 1s var(--ease-lux);
+  animation: collPulse 7s ease-in-out infinite;
+}
+.coll-card:hover .coll-glow {
+  opacity: 1;
+  scale: 1.08;
+}
+@keyframes collPulse {
+  0%, 100% { opacity: 0.45; transform: scale(0.96); }
+  50% { opacity: 0.9; transform: scale(1.04); }
+}
+.coll-ring {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 78%;
+  aspect-ratio: 1;
+  translate: -50% -50%;
+  border-radius: 9999px;
+  border: 1px dashed rgba(227, 207, 159, 0.22);
+  animation: collSpin 40s linear infinite;
+}
+@keyframes collSpin {
+  to { transform: rotate(360deg); }
+}
+.coll-sheen {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(105deg, transparent 40%, rgba(255, 255, 255, 0.07) 50%, transparent 60%);
+  transform: translateX(-100%);
+  transition: transform 1.1s var(--ease-lux);
+}
+.coll-card:hover .coll-sheen {
+  transform: translateX(100%);
+}
+.coll-float {
+  animation: collFloat 7s ease-in-out infinite;
+  filter: drop-shadow(0 18px 26px rgba(0, 0, 0, 0.6));
+}
+@keyframes collFloat {
+  0%, 100% { transform: translateY(-4px); }
+  50% { transform: translateY(4px); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .coll-aurora-a, .coll-aurora-b, .coll-aurora-c, .coll-grid, .coll-grain, .coll-scan,
+  .coll-marquee-track, .coll-glow, .coll-ring, .coll-float {
+    animation: none !important;
+  }
+}

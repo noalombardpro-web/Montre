@@ -34,6 +34,7 @@ Node ≥ 20. Déploiement : `dist/` est statique (routage par hash, aucune réé
 | `npm run export:glb` | Exporte les 3 montres procédurales en GLB (`public/models/<id>.src.glb`) — nécessite `npm run dev` |
 | `npm run optimize` | Compresse les GLB de `public/models/` (dedup, instancing, prune, weld, textures WebP ≤ 2048, **Meshopt**). Échoue si un modèle dépasse 8 Mo |
 | `npm run poster` | Regénère l'image de façade du hero (`public/poster.webp`) depuis le rendu 3D réel |
+| `npm run thumbs` | Rend les 36 vignettes de la collection avec le moteur 3D (fond transparent) dans `public/thumbs/` — nécessite `npm run dev` (≈ 1 min par montre) |
 | `npm run test:smoke` | Test end-to-end Playwright desktop + mobile (navigation, modes, fiches à onglets, isolation, configurateur, tour de poignet, visites guidées, quiz, nuit, coupe, collection, comparateur, capture PNG, erreurs JS) — nécessite `npm run preview` |
 | `npm run test:visual` | Captures Playwright desktop + mobile dans `docs/screenshots/` |
 | `npm run lighthouse` | Audit Lighthouse desktop + mobile du build |
@@ -48,6 +49,8 @@ Routes : `#/` landing · `#/collection` collection · `#/atelier/<id>` atelier �
 
 ### Collection
 
+- **Vignettes 3D** : chaque référence est rendue avec le même moteur que l'atelier (fond transparent, cadrage identique). Régénération : `npm run thumbs`.
+- **Fond animé** : aurores dorées et bleutées, grille en dérive, grain et balayage lumineux (désactivés si « réduire les animations » est activé).
 - **36 références** réelles décrites par un style paramétrique (diamètre, index, aiguilles, motif de cadran, lunette, complications) : Submariner, GMT-Master II, Daytona, Datejust, Day-Date, Explorer, Nautilus, Aquanaut, Calatrava, Royal Oak, Overseas, Speedmaster, Seamaster, Black Bay 58, Pelagos, Mark XX, Portugieser, Navitimer, Chronomaster, Master Ultra Thin Moon, Saxonia, Snowflake, Fifty Fathoms, Classique, Ballon Bleu, Carrera…
 - **Page Collection** : recherche (marque, modèle, référence, calibre), filtres par maison et par famille, tri (maison, année, diamètre, étanchéité), vignettes vectorielles générées depuis le style, **comparateur** côte à côte (2–3 montres, meilleures valeurs en évidence).
 - Dans l'atelier : tiroir de sélection (recherche, groupé par maison), modèle précédent / suivant, lien de configuration partageable.

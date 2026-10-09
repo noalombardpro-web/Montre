@@ -154,7 +154,7 @@ async function run(tag, viewport, mobile) {
   // Collection + comparateur
   await page.goto(`${base}/?q=low#/collection`, { waitUntil: 'load' })
   await page.getByPlaceholder(/Marque, modèle/).fill('nautilus')
-  check((await page.locator('main ul > li').count()) === 1, 'collection : recherche « nautilus »')
+  check((await page.locator('li.coll-card').count()) === 1, 'collection : recherche « nautilus »')
   await page.getByPlaceholder(/Marque, modèle/).fill('')
   await page.getByRole('button', { name: /Comparer/ }).nth(0).click()
   await page.getByRole('button', { name: /Comparer/ }).nth(1).click()

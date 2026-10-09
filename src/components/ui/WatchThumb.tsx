@@ -1,5 +1,5 @@
-import { memo } from 'react'
-import { DIAL_COLORS, type WatchConfig, type WatchDef } from '../../data/watches'
+import { memo, useState } from 'react'
+import { DIAL_COLORS, fullName, type WatchConfig, type WatchDef } from '../../data/watches'
 import { METAL_COLOR } from '../../data/metals'
 import { dialLayout } from '../../models/dialLayout'
 
@@ -188,3 +188,21 @@ export const WatchThumb = memo(function WatchThumb({ def, config, size = 160 }: 
     </svg>
   )
 })
+
+/** Vignette rendue en 3D (public/thumbs) ; repli sur le dessin vectoriel si l'image manque. */
+export function WatchImage({ def, size = 240, className = '' }: { def: WatchDef; size?: number; className?: string }) {
+  const [failed, setFailed] = useState(false)
+  if (failed) return <WatchThumb def={def} size={size} />
+  return (
+    <img
+      src={`/thumbs/${def.id}.webp`}
+      alt={fullName(def)}
+      width={size}
+      height={size}
+      loading="lazy"
+      decoding="async"
+      onError={() => setFailed(true)}
+      className={`aspect-square object-contain ${className}`}
+    />
+  )
+}

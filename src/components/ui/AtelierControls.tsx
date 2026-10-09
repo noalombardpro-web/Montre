@@ -25,7 +25,7 @@ import {
   IconWire,
   IconWrench,
 } from './Icons'
-import { WatchThumb } from './WatchThumb'
+import { WatchImage } from './WatchThumb'
 
 export const MODES: { id: Mode; key: string; label: Key }[] = [
   { id: 'normal', key: '1', label: 'normal' },
@@ -171,7 +171,7 @@ export function ModelDrawer() {
                       aria-current={w.id === watchId}
                       className={`flex w-full items-center gap-3 px-2 py-2 text-left transition hover:bg-white/[0.04] ${w.id === watchId ? 'bg-white/[0.05]' : ''}`}
                     >
-                      <WatchThumb def={w} size={34} />
+                      <WatchImage def={w} size={34} className="h-[34px] w-[34px] shrink-0" />
                       <span className="min-w-0 flex-1">
                         <span className={`block truncate font-serif text-[17px] ${w.id === watchId ? 'text-champagne' : 'text-ivory'}`}>{w.name}</span>
                         <span className="block truncate text-[10.5px] text-muted">

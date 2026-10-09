@@ -2,7 +2,7 @@
 
 ## Modèles 3D
 
-Toutes les montres (boîtes, cadrans, bracelets, calibres) sont **générées procéduralement** par le code de ce dépôt (`src/models/procedural/`). Aucun modèle tiers n'est inclus. Les fichiers `public/models/*.glb` sont des exports de ces modèles procéduraux (`npm run export:glb` + `npm run optimize`).
+Toutes les montres (boîtes, cadrans, bracelets, calibres) sont **générées procéduralement** par le code de ce dépôt (`src/models/procedural/`). Aucun modèle tiers n'est inclus. Les vignettes de la collection (`public/thumbs/`) sont des rendus de ces mêmes modèles, produits par `npm run thumbs`. Les fichiers `public/models/*.glb` sont des exports de ces modèles procéduraux (`npm run export:glb` + `npm run optimize`).
 
 ## Marques citées
 

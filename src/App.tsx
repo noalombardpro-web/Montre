@@ -2,7 +2,7 @@ import { lazy, Suspense, useEffect, useState } from 'react'
 import { useAtelier } from './store/useAtelier'
 import { useHashRouter } from './lib/router'
 import { hasWebGL2 } from './lib/webgl'
-import { POSTER_MODE } from './lib/env'
+import { CLEAN, THUMB_MODE } from './lib/env'
 import { Loader } from './components/ui/Loader'
 import { Cursor } from './components/ui/Cursor'
 import { WebGLFallback } from './components/ui/WebGLFallback'
@@ -21,7 +21,7 @@ const LevaRoot = import.meta.env.DEV ? lazy(() => import('./debug/LevaRoot')) : 
  * Dans l'atelier, il est chargé immédiatement.
  */
 function use3DTrigger(page: string) {
-  const [go, setGo] = useState(page === 'atelier' || POSTER_MODE)
+  const [go, setGo] = useState(page === 'atelier' || CLEAN)
   useEffect(() => {
     if (go) return
     if (page === 'atelier') {
@@ -43,6 +43,9 @@ function use3DTrigger(page: string) {
 }
 
 export default function App() {
+  useEffect(() => {
+    if (THUMB_MODE) document.documentElement.classList.add('thumb-mode')
+  }, [])
   useHashRouter()
   const page = useAtelier((s) => s.page)
   const lang = useAtelier((s) => s.lang)
@@ -59,13 +62,13 @@ export default function App() {
 
   return (
     <>
-      {!POSTER_MODE && (
+      {!CLEAN && (
         <a href="#main" className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[200] glass px-4 py-2 text-sm">
           {lang === 'fr' ? 'Aller au contenu' : 'Skip to content'}
         </a>
       )}
       {webgl ? (
-        load3D && (
+        load3D && page !== 'collection' && (
           <Suspense fallback={null}>
             <Experience />
           </Suspense>
@@ -73,13 +76,13 @@ export default function App() {
       ) : (
         <WebGLFallback />
       )}
-      {!POSTER_MODE && (
+      {!CLEAN && (
         <main id="main" className="relative z-10">
           {page === 'landing' ? <Landing poster={webgl} /> : page === 'collection' ? <Collection /> : <Atelier />}
         </main>
       )}
-      {webgl && !POSTER_MODE && page === 'atelier' && <Loader />}
-      {!POSTER_MODE && <Cursor />}
+      {webgl && !CLEAN && page === 'atelier' && <Loader />}
+      {!CLEAN && <Cursor />}
       <TickSound />
       {LevaRoot && (
         <Suspense fallback={null}>

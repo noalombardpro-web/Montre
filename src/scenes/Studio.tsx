@@ -4,6 +4,7 @@ import { useRef } from 'react'
 import * as THREE from 'three'
 import { anim, useAtelier } from '../store/useAtelier'
 import { useDebug } from '../store/useDebug'
+import { THUMB_MODE } from '../lib/env'
 import { braceletBottom } from '../models/procedural/Bracelet'
 import { WATCH_BY_ID } from '../data/watches'
 
@@ -22,7 +23,7 @@ export function Studio({ high }: { high: boolean }) {
   const floorY = braceletBottom(wrist) * scale
   useFrame((_, dt) => {
     const st = useAtelier.getState()
-    if (shadows.current) shadows.current.visible = anim.explode < 0.15 && anim.movement < 0.5 && !st.tour && !st.night
+    if (shadows.current) shadows.current.visible = anim.explode < 0.15 && anim.movement < 0.5 && !st.tour && !st.night && !THUMB_MODE
     // Mode nuit : on éteint progressivement le studio, seule la luminescence reste
     const target = st.night ? 0.03 : d.envIntensity
     scene.environmentIntensity = THREE.MathUtils.damp(scene.environmentIntensity ?? 1, target, 3, dt)

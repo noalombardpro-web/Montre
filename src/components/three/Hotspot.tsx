@@ -4,6 +4,7 @@ import { useFrame } from '@react-three/fiber'
 import * as THREE from 'three'
 import type { PartMeta } from '../../data/parts'
 import { anim, useAtelier } from '../../store/useAtelier'
+import { THUMB_MODE } from '../../lib/env'
 
 const v = new THREE.Vector3()
 const c = new THREE.Vector3()
@@ -28,6 +29,7 @@ export function Hotspot({ meta }: { meta: PartMeta }) {
   const el = useRef<HTMLButtonElement>(null)
 
   const show =
+    !THUMB_MODE &&
     ready &&
     !busy &&
     page === 'atelier' &&

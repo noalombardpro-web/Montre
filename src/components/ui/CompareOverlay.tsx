@@ -1,7 +1,7 @@
 import { useEffect, useRef } from 'react'
 import { BRACELETS, BRANDS, CATEGORIES, METALS, WATCH_BY_ID, complications, specList } from '../../data/watches'
 import { useAtelier } from '../../store/useAtelier'
-import { WatchThumb } from './WatchThumb'
+import { WatchImage } from './WatchThumb'
 import { IconClose } from './Icons'
 
 /** Comparateur côte à côte (2 à 3 références). */
@@ -50,7 +50,7 @@ export function CompareOverlay({ onClose, onOpen }: { onClose: () => void; onOpe
                 <th className="w-40" />
                 {watches.map((w) => (
                   <th key={w.id} className="px-3 pb-5 align-bottom font-normal">
-                    <WatchThumb def={w} size={84} />
+                    <WatchImage def={w} size={84} className="h-[84px] w-[84px]" />
                     <div className="eyebrow mt-3 !text-[9px]">{BRANDS[w.brand].name}</div>
                     <div className="display mt-1 text-2xl">{w.name}</div>
                     <button type="button" className="mt-2 text-[10px] uppercase tracking-[0.22em] text-champagne hover:underline" onClick={() => onOpen(w.id)}>
